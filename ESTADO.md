@@ -16,11 +16,12 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Brecha LATAM confirmada: no evaluada explícitamente en el documento — se asume por idioma español del documento y canal de venta Hotmart; validar con primeros usuarios
 - Precio de referencia del mercado: $4.99/semana - $19.99/mes (apps de IA visual)
 
-## Dirección de Arte (Sesión 2 — pendiente)
-- FICHA-ARTE.md: NO existe todavía — se crea en la Sesión 2
-- ¿Hubo referencia visual del usuario?: NO — se preguntará con opciones concretas en Sesión 2
-- Resumen: pendiente
-- Personalidad: pendiente (candidatos a explorar: cercano/coach, premium/editorial de moda, motivador sin ser agresivo)
+## Dirección de Arte (Sesión 2 — en curso)
+- FICHA-ARTE.md: NO existe todavía — se crea al cerrar esta etapa, cuando el usuario elija/combine una opción
+- ¿Hubo referencia visual del usuario?: NO — eligió Ruta 1 ("propóngamelo tú"), 2026-09-17
+- Ruta de diseño: propuesta propia (Protocolo A/B/C) — comparativa en `direcciones-abc.html` (raíz del proyecto)
+- 3 opciones presentadas: A) Coach Cálido (crema+coral, Baloo 2/Plus Jakarta Sans, héroe-dato+cards) · B) Glow Eléctrico (violeta-noche+magenta/lima, Unbounded/Manrope, anillo+grid2x2) · C) Revista de Estilo (crema editorial+terracota, Fraunces/Karla, timeline de 3 ejes)
+- Esperando elección del usuario (elegir / combinar / otras 3 / ajustar)
 
 ## Avatar y venta (Sesión 1 — NO cambiar sin validar)
 - FICHA-AVATAR.md: existe y aprobada — 2026-09-17 (el copy de venta se DERIVA de ella)
