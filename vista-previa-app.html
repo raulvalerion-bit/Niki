@@ -198,6 +198,21 @@
   .op-b .eje.fuerte .chip-icono { background: color-mix(in oklab, var(--accent) 32%, transparent); }
   .op-b .eje.fuerte h4, .op-b .eje.fuerte .nota-eje { color: var(--accent); }
   .op-b .eje.fuerte p { color: var(--text-1); }
+
+  /* Frase de cierre según el puntaje promedio (>9 motivacional · >7 inspiracional ·
+     ~6 de superación) — vive entre los 3 ejes y el CTA de guardar */
+  .op-b .frase-cierre { margin-top: 12px; border-radius: var(--radius-card);
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(color-mix(in oklab, var(--surface) 88%, var(--accent) 12%), color-mix(in oklab, var(--surface) 88%, var(--accent) 12%)) padding-box,
+      linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, transparent), transparent 65%) border-box;
+    padding: 14px; display: flex; gap: 10px; align-items: flex-start; }
+  .op-b .frase-cierre .chip-icono { width: 34px; height: 34px; border-radius: var(--radius-btn);
+    background: color-mix(in oklab, var(--accent) 18%, transparent); }
+  .op-b .frase-cierre .etq { font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--accent); }
+  .op-b .frase-cierre p.txt { margin-top: 3px; font-size: 12.5px; font-weight: 600;
+    line-height: 1.4; color: var(--text-1); }
 </style>
 </head>
 <body>
@@ -400,6 +415,23 @@
             <p>Mirada sostenida 3 segundos antes de hablar — transmite calma.</p>
           </div>
         </div>
+        <!-- Frase de cierre según el promedio del día (aquí: 8/10 -> nivel INSPIRACIONAL, >7).
+             Las otras 2 versiones de copy (no usadas en esta captura, quedan documentadas
+             para cuando se conecte el promedio real):
+             · >9 (MOTIVACIONAL): "Hoy diste una masterclass de presencia. Grábate esta
+               sensación — así se siente estar en tu mejor versión."
+             · ~6 (SUPERACIÓN): "Este es tu punto de partida, no tu límite. Cada Scan es un
+               paso más cerca de la versión que querés ser." -->
+        <div class="frase-cierre">
+          <span class="chip-icono" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 8.5c-2 1-3 2.8-3 5a3.5 3.5 0 0 0 3.5 3.5c1.9 0 3.3-1.5 3.3-3.3 0-1.6-1.1-2.9-2.6-3.1.2-1 .9-1.9 1.8-2.6L7.5 6Z"/><path d="M16.5 8.5c-2 1-3 2.8-3 5a3.5 3.5 0 0 0 3.5 3.5c1.9 0 3.3-1.5 3.3-3.3 0-1.6-1.1-2.9-2.6-3.1.2-1 .9-1.9 1.8-2.6L16.5 6Z"/></svg>
+          </span>
+          <div>
+            <p class="etq">Tu presencia hoy</p>
+            <p class="txt">Ya no sos el mismo de la primera foto. Cada ajuste que hiciste hoy se nota — seguí así.</p>
+          </div>
+        </div>
+
         <div class="cta" style="margin-top:12px;">Guardar en mi historial</div>
         <nav class="tabbar" aria-label="Navegación">
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
