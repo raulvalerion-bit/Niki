@@ -99,8 +99,10 @@ outfit, su postura y su actitud antes de que sea tarde. El **Check de Presencia*
    muestra." (objeción de escepticismo)
 5. "¿Es seguro pagar? ¿Hay cuotas?" → "Sí, el pago se procesa por Hotmart, con métodos locales
    según tu país." (objeción #5, checkout LATAM)
-6. "¿Cuánto tardo en ver resultado?" → "Tu primer Check de Presencia sale en 30 segundos, con tu
-   primera foto."
+
+> Se recortó a 5 preguntas (de 6) tras la revisión del revisor-visual: el gate de carga cognitiva
+> pide ≤4-5 ítems por bloque visible. Se eliminó "¿Cuánto tardo en ver resultado?" por ser la
+> menos ligada a una objeción literal de FICHA-AVATAR.md.
 
 ## 9. CTA FINAL EMOCIONAL
 - H2: `Imaginate entrar y que [acento]todos lo noten[/acento]`

@@ -17,9 +17,9 @@ export default function Privacidad() {
 
       <div className="mt-8 space-y-6 text-base leading-relaxed text-[var(--text-secondary)]">
         <p>
-          Responsable del tratamiento: <strong className="text-[var(--text-primary)]">[Nombre o razón
-          social del responsable — completar antes de publicar]</strong>, operando desde{' '}
-          <strong className="text-[var(--text-primary)]">[país — completar]</strong>. Contacto:{' '}
+          Responsable del tratamiento: <strong className="text-[var(--text-primary)]">Raúl Valerio
+          Nebradt</strong>, operando desde{' '}
+          <strong className="text-[var(--text-primary)]">México</strong>. Contacto:{' '}
           <a href="mailto:hola@niki.app" className="text-[var(--accent)] underline">
             hola@niki.app
           </a>{' '}

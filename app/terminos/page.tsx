@@ -18,7 +18,7 @@ export default function Terminos() {
       <div className="mt-8 space-y-6 text-base leading-relaxed text-[var(--text-secondary)]">
         <p>
           Estos Términos regulan el uso de niki, operada por{' '}
-          <strong className="text-[var(--text-primary)]">[Nombre o razón social — completar]</strong>.
+          <strong className="text-[var(--text-primary)]">Raúl Valerio Nebradt</strong>, desde México.
           Al crear una cuenta o usar la app, aceptás estos términos.
         </p>
 
@@ -63,7 +63,7 @@ export default function Terminos() {
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Ley aplicable</h2>
           <p className="mt-2">
             Estos términos se rigen por las leyes de{' '}
-            <strong className="text-[var(--text-primary)]">[país del responsable — completar]</strong>.
+            <strong className="text-[var(--text-primary)]">México</strong>.
           </p>
         </section>
       </div>

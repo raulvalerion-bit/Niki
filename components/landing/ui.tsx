@@ -75,7 +75,7 @@ export function Hairline({
 }
 
 /* ── <CheckCustom> — círculo acento 12% + check SVG (55 repertorio #9).
-   Nunca el ✓ del sistema ni emoji. ── */
+   Nunca el caracter de check del sistema ni un emoji. ── */
 export function CheckCustom() {
   return (
     <span
@@ -130,8 +130,11 @@ export function useReveal(stagger = 0.07): { contenedor: Variants; item: Variant
       visible: { transition: { staggerChildren: reduce ? 0 : stagger } },
     },
     item: {
-      hidden: { opacity: 0, y: reduce ? 0 : 20 },
-      visible: { opacity: 1, y: 0, transition: { duration: reduce ? 0.2 : 0.45, ease: [0.16, 1, 0.3, 1] } },
+      // reduced-motion: el contenido nace visible (nunca opacity:0) — si el observer
+      // no llega a disparar a tiempo (scroll rápido, captura automatizada), el texto
+      // igual está ahí. Sin reduce, el fade+slide normal.
+      hidden: reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
+      visible: { opacity: 1, y: 0, transition: { duration: reduce ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] } },
     },
   };
 }

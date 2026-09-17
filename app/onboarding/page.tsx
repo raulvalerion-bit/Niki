@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export const metadata = { title: 'Empezá tu Check de Presencia — niki' };
+export const metadata = { title: 'Empieza tu Check de Presencia — niki' };
 
 // PENDIENTE (anotado en ESTADO.md): el onboarding real se construye en la
 // siguiente sesión de la secuencia maestra. Este stub existe solo para que el
@@ -12,10 +12,10 @@ export default function OnboardingStub() {
         Próximamente
       </p>
       <h1 className="max-w-md text-2xl font-bold [font-family:var(--font-display)]">
-        El onboarding de niki se está construyendo
+        Tu <span className="text-[var(--accent)]">Check de Presencia</span> se está construyendo
       </h1>
       <p className="max-w-sm text-base text-[var(--text-secondary)]">
-        Volvé pronto para hacer tu primer Check de Presencia.
+        Vuelve pronto para hacer el tuyo.
       </p>
       <Link href="/" className="mt-2 text-sm font-medium text-[var(--accent)] underline">
         ← Volver a niki

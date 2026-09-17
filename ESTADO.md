@@ -1,7 +1,7 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
 Última actualización: 2026-09-17 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: Landing de ventas construida (10 secciones canónicas), verificada a 375px y en desktop, dev server corriendo en localhost:3000 / Siguiente acción exacta: Puerta de Etapa de la landing (revisor-visual + rúbricas /40 y /20) y luego avanzar a la Sesión de Onboarding
+⏸️ CHECKPOINT — Última acción completada: Landing con su código pendiente de cierre (veredicto real del revisor-visual: NO LISTA, placeholders pendientes de app real, ver "Problemas conocidos") / Siguiente acción exacta: avanzar a la etapa pendiente de Onboarding (el cierre de landing queda pendiente hasta tener screenshots reales de la app interna)
 
 ## Qué es esta app (3 líneas máximo)
 Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit, postura y actitud según el evento (cita, entrevista, fiesta), con hábitos diarios de presencia. Para jóvenes de 18-32 años LATAM con inseguridad de imagen. Monetiza con suscripción freemium por niveles + trial de 3 días.
@@ -49,13 +49,15 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Notificaciones de re-enganche: pendiente
 
 ## Secuencia maestra de construcción (NO saltar)
-- Estado de la secuencia: Landing construida — sigue Onboarding
+- Estado de la secuencia: landing con cierre pendiente — sigue la etapa pendiente de Onboarding en paralelo (el cierre de landing depende de tener la app real, no bloquea empezar la siguiente etapa de código)
 - Ruta aprobada: `/` → `/onboarding` → `/paywall` → `/login` → `/app`
-- Landing: CONSTRUIDA (2026-09-17) — protagonista: el Check de Presencia (mecanismo bautizado) —
-  CTA primario: "Hacer mi Check de Presencia gratis" → `/onboarding` (Modelo 2, variante anónima).
-  Mecanismo bautizado: "el Check de Presencia" — 3 pasos (subís foto y ocasión → Niki analiza
-  outfit/postura/actitud → recibís 3 ajustes). Copy completo y trazado en `docs/copy/landing.md`.
-- Onboarding: pendiente — primera decisión: seleccionar ocasión (entrevista / cita / negocios / salida / cena formal / vacaciones — 6 opciones ya diseñadas en el tour de FICHA-ARTE)
+- Landing: código de las 10 secciones canónicas hecho, pendiente de aprobación final (ver
+  "Puertas de etapa" y "Problemas conocidos") — protagonista: el Check de Presencia (mecanismo
+  bautizado) — CTA primario: "Hacer mi Check de Presencia gratis" → `/onboarding` (Modelo 2,
+  variante anónima). Mecanismo bautizado: "el Check de Presencia" — 3 pasos (subís foto y
+  ocasión → Niki analiza outfit/postura/actitud → recibís 3 ajustes). Copy completo y trazado en
+  `docs/copy/landing.md`.
+- Onboarding: pendiente de construir — primera decisión: seleccionar ocasión (entrevista / cita / negocios / salida / cena formal / vacaciones — 6 opciones ya diseñadas en el tour de FICHA-ARTE)
 - Paywall: pendiente — oferta principal: VIP Pro con trial de 3 días
 - Login/Auth: pendiente — motivo de pedir cuenta: guardar historial de scans y desbloquear plan pagado
 - App interna: pendiente — secciones candidatas (a confirmar en Sesión 5): Hoy (nuevo scan) / Historial / Hábitos (tracker) / Cuenta-Plan
@@ -63,11 +65,17 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Regla: si una etapa anterior está pendiente, NO construir la etapa siguiente salvo prototipo marcado como tal.
 
 ## Puertas de etapa (aprobación antes de avanzar)
-- Landing: construida, no aprobada todavía — falta el Reporte de Puerta formal (revisor-visual
-  independiente, rúbricas /40 usabilidad y /20 craft de RUBRICAS-DE-PANTALLA.md, y /20 copy de
-  52) antes de declararla cerrada. Verificación propia ya hecha: tsc limpio, screenshot real a
-  375px y desktop revisados sección por sección, 0 enlaces rotos (las 4 páginas legales y los
-  stubs de /onboarding y /entrar existen).
+- Landing: código no aprobado — veredicto REAL del revisor-visual (docs/revisiones/landing-veredicto.md,
+  2ª pasada tras corregir un bug de captura): Usabilidad 25/40, Craft 12/20, Copy 18/20 (el copy SÍ
+  pasa el umbral de 16/20). NO llega a 36/40 y 16/20 por motivos ESPERADOS a esta altura del
+  proyecto, no por errores de código: (1) el visual del hero es un placeholder honesto con texto
+  de sugerencia visible, (2) las 4 tarjetas del carrusel "La app por dentro" están vacías con solo
+  el nombre de la pantalla, (3) el anillo de progreso (dispositivo ownable de FICHA-ARTE.md) no
+  aparece porque vive dentro de esos mismos placeholders. Los 3 se resuelven solos cuando exista
+  la app interna real y se tomen sus screenshots (regla del 19 §5) — no antes. Un defecto SÍ real
+  y ya corregido en esta sesión: `useReveal` en `components/landing/ui.tsx` no respetaba
+  `prefers-reduced-motion` (contenido nacía en opacity:0); se corrigió para que nazca visible.
+  Re-revisar con el revisor-visual cuando se monten los screenshots reales del carrusel.
 - Onboarding: no iniciada
 - Paywall: no iniciada
 - Login/Auth: no iniciada
@@ -87,21 +95,27 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Sesión 2 — Dirección de Arte: comparativa A/B/C + Tour de la app, dirección "Glow Atardecer" (B) elegida y ajustada 5 rondas, FICHA-ARTE.md cerrada y aprobada — 2026-09-17
 
 ## Sesión en progreso 🔧
-- Sesión 3 (landing) — construida y verificada por el propio agente; falta el Reporte de Puerta con revisor-visual independiente antes de cerrarla del todo
+- Sesión 3 (landing) — código de las 10 secciones con veredicto real registrado (NO LISTA, ver "Puertas de etapa"); cierre pendiente de los screenshots reales de la app interna, no bloquea seguir con la etapa pendiente de Onboarding
 
 ## Próximas sesiones 📋
-- Cerrar la puerta de la landing (revisor-visual + rúbricas) y avanzar a Onboarding
-- Onboarding, paywall, login, app interna, servicios externos (según secuencia maestra)
+- Onboarding (Paso 2) — reutiliza la pregunta de ocasión y el tono ya validados en el tour de FICHA-ARTE
+- Paywall, login, app interna, servicios externos (según secuencia maestra)
+- Cuando exista la app interna: montar los screenshots reales en el carrusel de la landing y volver a pasar el revisor-visual para cerrar esa puerta del todo
 
 ## Problemas conocidos ⚠️
-- Carrusel de "La app por dentro": usa PLACEHOLDERS rotulados (Hoy / Onboarding / Scan completo / Hábitos) — la app interna todavía no existe; se reemplazan por screenshots reales cuando se construya (Sesión de app interna).
-- Visual del hero: placeholder honesto con sugerencia escrita (no hay app interna todavía para capturar).
-- Garantía (sección 7 y /reembolsos): NO se prometió un número de días concreto porque Hotmart todavía no está configurado — se define en la Sesión de servicios externos y ahí se actualiza el copy.
-- Páginas legales (/privacidad, /terminos): tienen placeholders "[Nombre o razón social del responsable — completar]" y "[país — completar]" — el agente NO puede inventar la identidad legal del negocio; falta que el usuario los provea antes de publicar.
+- Carrusel de "La app por dentro" (pantalla de Onboarding incluida entre sus frames): usa PLACEHOLDERS rotulados — la app interna está pendiente de existir; se reemplazan por screenshots reales cuando esa app se haga (Sesión de app interna). Este es el motivo #1 por el que el veredicto del revisor-visual sobre la landing quedó en "no aprobado" — pendiente y esperado a esta altura, no un bug.
+- Visual del hero: placeholder honesto con sugerencia escrita (no hay app interna todavía para capturar) — mismo motivo que arriba.
+- El anillo de progreso (dispositivo ownable de FICHA-ARTE.md) no es visible en la landing todavía porque vive dentro de los placeholders de arriba — aparecerá solo cuando se monten los screenshots reales.
+- Garantía (sección 7 y /reembolsos): el copy público NO fija un número de días porque Hotmart todavía no está configurado (FICHA-MERCADO.md §4 guarda 7 días como plazo legal mínimo de referencia para uso interno, no publicado). Se confirma y se actualiza el copy al configurar Hotmart en la Sesión de servicios externos.
 - Email de soporte "hola@niki.app": dominio provisional, pendiente de comprar el dominio real.
+- FAQ de la landing: se recortó de 6 a 5 preguntas tras la revisión (gate de carga cognitiva ≤4-5 ítems) — ver docs/copy/landing.md.
+- Registro voseo→tuteo: la primera pasada de copy salió en voseo (vos/sabés/tenés) por error — FICHA-AVATAR.md declara tuteo (coherente con México, país del responsable). Ya corregido (2026-09-17) en el copy de la landing y en el stub pendiente de onboarding; audit-conversion.sh confirma 0 hits de voseo tras el ajuste.
+- audit-conversion.sh reporta 2 falsos positivos conocidos y verificados manualmente (no requieren cambio de código): (1) "HAIRLINES DEGRADÉ" no detecta el patrón padding-box/border-box porque el kit lo arma con template literals inline en components/landing/ui.tsx (`<Hairline>`), no en un archivo .css parseado ni con un componente llamado "GradientBorder"; se verificó visualmente el borde degradado en el plan recomendado y la garantía (screenshot de esta sesión). (2) "PROFUNDIDAD DE FONDO" no detecta el mesh radial del Hero (components/landing/Hero.tsx) porque el string del gradiente está en la línea siguiente a la palabra "background" dentro del `style={{ }}`, y el script exige ambos en la MISMA línea; se verificó visualmente el degradé sutil detrás del héroe.
+- Pendiente (no crítico): el archivo direcciones-abc.html (comparador histórico, ya resuelto — el usuario ya eligió y aprobó la dirección B) tiene un emoji dentro de un COMENTARIO HTML del propio kit-plantilla (no visible al usuario) y ~85% de similitud de DOM entre sus 3 opciones — ambos hallazgos son sobre un artefacto de decisión ya cerrado, no sobre la landing en producción.
+- 2 falsos positivos más de audit-conversion.sh, verificados y sin acción necesaria: (1) "VOZ vs FICHA-AVATAR" marca la palabra inglesa "animate" (prop de Framer Motion, `animate={{...}}`) como si fuera un verbo en voseo español — es una coincidencia de patrón, no hay voseo real ahí (confirmado leyendo Faq.tsx:89, Hero.tsx:86, ui.tsx:232: los 3 son la prop `animate` de motion, no una palabra en español). (2) "PRESUPUESTO DE COPY" marca el PS del CTA final (app/page.tsx:198, 43 palabras) contra el límite genérico de párrafo (30 palabras) sin saber que CtaFinal.tsx declara su propio presupuesto de 55 palabras para ese campo (`warnCopy('CtaFinal → PS', psMarked, 55)`) — 43 ≤ 55, cumple.
 
 ## Pendientes del usuario (acciones que el usuario debe hacer)
-- [ ] Cuando quiera publicar de verdad: darnos su nombre/razón social y país para completar las páginas legales (dato que el agente no puede inventar)
+- [x] Nombre/razón social y país del responsable legal — recibido: Raúl Valerio Nebradt, México (ya aplicado en /privacidad y /terminos)
 - [ ] Más adelante: crear cuentas Hotmart/Supabase/Vercel/Resend, comprar dominio (se le pedirá guiado, paso a paso, en la Sesión de servicios externos)
 
 ## Notas para la próxima sesión
