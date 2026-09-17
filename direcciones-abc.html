@@ -292,7 +292,7 @@
     --surface: #fff3de;
     --text-1: #3c2412;
     --text-2: #8a6448;
-    --accent: #ff3d7f;         /* magenta */
+    --accent: #7a3e1d;         /* marrón cálido — neutral entre hombre y mujer (ajuste del usuario) */
     --accent-2: #b7de2a;       /* verde-lima 1 paso más oscuro — 2ª nota de color, AA sobre el atardecer */
     --radius-card: 18px;
     --radius-btn: 14px;
@@ -308,6 +308,10 @@
   .op-b .statusbar { color: var(--text-1); }
   .op-b .home-indicator { background: var(--text-1); opacity: 0.55; }
   .op-b .cta, .op-b .hl-cta { color: #fff !important; }
+  .op-b .hl-cta {
+    height: auto; min-height: 46px; padding: 10px 14px; text-align: center;
+    line-height: 1.25; white-space: normal;
+  }
 
   /* LAYOUT B: héroe centrado con anillo + grid 2x2 */
   .op-b .encabezado-b { margin-top: 12px; text-align: center; }
@@ -573,18 +577,18 @@
   <section class="opcion op-b" aria-label="Opción B">
     <div class="meta">
       <h2><span class="letra">B</span> Glow Atardecer</h2>
-      <p class="direccion">Vibrante y cálida — como abrir TikTok al atardecer, no un laboratorio. Fondo degradado de naranja a amarillo (sin sol), con un anillo de progreso al centro y cuatro datos de tu presencia alrededor, en magenta y verde.</p>
+      <p class="direccion">Vibrante y cálida — como abrir TikTok al atardecer, no un laboratorio. Fondo degradado de naranja a amarillo (sin sol), con un anillo de progreso al centro y cuatro datos de tu presencia alrededor, en marrón cálido y verde — neutral, no "de niña" ni "de niño".</p>
       <p class="hipotesis"><strong>Hipótesis de conversión:</strong>
         <span class="slot">El canal #1 de Niki es TikTok/Reels — un producto que ya SE VE como ese feed, con la calidez de un atardecer, elimina la fricción entre el anuncio y la app.</span>
       </p>
       <ul class="tokens">
-        <li>--bg degradé #FF9457→#FFE9B0 · --accent #FF3D7F + #B7DE2A</li>
+        <li>--bg degradé #FF9457→#FFE9B0 · --accent #7A3E1D + #B7DE2A</li>
         <li>radius 18/14 · sombra tintada atardecer</li>
       </ul>
       <!-- Muestra de paleta: los MISMOS hex de los tokens de arriba -->
       <div class="paleta" aria-hidden="true">
         <span style="background:#ff9457"></span><span style="background:#ffd98a"></span>
-        <span style="background:#3c2412"></span><span style="background:#ff3d7f"></span>
+        <span style="background:#3c2412"></span><span style="background:#7a3e1d"></span>
         <span style="background:#b7de2a"></span>
       </div>
       <div class="especimen">
@@ -615,16 +619,16 @@
       <div class="pantalla">
         <div class="encabezado-b">
           <p class="periodo">Sáb 19:00 · Cita</p>
-          <h3 class="titulo-b">Vas a mogear hoy ✦</h3>
+          <h3 class="titulo-b">Vas a entrar seguro hoy</h3>
         </div>
 
         <!-- HÉROE: anillo de progreso central (82%) -->
         <div class="anillo-wrap">
           <svg width="132" height="132" viewBox="0 0 132 132" role="img" aria-label="Puntaje de presencia 82 por ciento">
             <circle cx="66" cy="66" r="57" fill="none" stroke-width="11"
-                    stroke="rgba(255,61,127,0.16)"/>
+                    stroke="rgba(122,62,29,0.16)"/>
             <circle cx="66" cy="66" r="57" fill="none" stroke-width="11"
-                    stroke="#ff3d7f" stroke-linecap="round"
+                    stroke="#7a3e1d" stroke-linecap="round"
                     stroke-dasharray="358.1" stroke-dashoffset="64.5"
                     transform="rotate(-90 66 66)"/>
           </svg>
@@ -685,7 +689,7 @@
       <span class="hl-badge">Modo Alto Impacto</span>
       <h4>¡Entra y que <em>todos lo noten</em>!</h4>
       <p class="hl-sub"><b>Sube tu foto antes de salir.</b> La IA te dice en 30 segundos qué ajustar en tu outfit, tu postura y tu actitud — para el evento exacto al que vas.</p>
-      <div class="hl-cta">Quiero mi Vibe Check gratis</div>
+      <div class="hl-cta">¡Quiero que me ayudes siempre a verme con un nuevo look!</div>
       <p class="hl-prueba">3 días de prueba VIP · cancela cuando quieras</p>
     </div>
   </section>
