@@ -287,25 +287,27 @@
      Placeholder demo: "Fintech de bolsillo" (54 dir. 3 — modo oscuro DERIVADO)
      ========================================================================== */
   .op-b {
-    --bg: #150f22;             /* Glow Eléctrico: violeta-noche profundo */
-    --surface: #211a35;
-    --text-1: #f3eefc;
-    --text-2: #ab9fc8;
+    --bg: #ffd39a;             /* Glow Atardecer: naranja→amarillo desvanecido (ajuste del usuario) */
+    --bg-gradient: linear-gradient(180deg, #ff9457 0%, #ffb768 42%, #ffd98a 78%, #ffe9b0 100%);
+    --surface: #fff3de;
+    --text-1: #3c2412;
+    --text-2: #8a6448;
     --accent: #ff3d7f;         /* magenta */
-    --accent-2: #c6ff3d;       /* lima eléctrica — 2ª nota de color */
+    --accent-2: #b7de2a;       /* verde-lima 1 paso más oscuro — 2ª nota de color, AA sobre el atardecer */
     --radius-card: 18px;
     --radius-btn: 14px;
     --font-display: 'Unbounded', monospace;
     --font-body: 'Manrope', monospace;
-    --shadow-tinta: 8 5 16;
+    --shadow-tinta: 140 60 20;
   }
   .op-b .especimen .esp-display { font-family: var(--font-display); }
   .op-b .especimen .esp-body { font-family: var(--font-body); }
 
-  .op-b .telefono { background: var(--bg); }
+  .op-b .telefono { background: var(--bg-gradient); }
   .op-b .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
   .op-b .statusbar { color: var(--text-1); }
-  .op-b .home-indicator { background: var(--text-1); }
+  .op-b .home-indicator { background: var(--text-1); opacity: 0.55; }
+  .op-b .cta, .op-b .hl-cta { color: #fff !important; }
 
   /* LAYOUT B: héroe centrado con anillo + grid 2x2 */
   .op-b .encabezado-b { margin-top: 12px; text-align: center; }
@@ -328,7 +330,8 @@
   .op-b .grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
   .op-b .tile {
     background: var(--surface); border-radius: var(--radius-card);
-    border: 1px solid rgb(255 255 255 / 0.07);
+    border: 1px solid rgb(60 36 18 / 0.10);
+    box-shadow: 0 6px 16px -8px rgb(var(--shadow-tinta) / 0.22);
     padding: 12px;
   }
   .op-b .tile.destacada {
@@ -345,6 +348,7 @@
     font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
   }
   .op-b .tile .t-dato small { font-size: 12px; color: var(--text-2); font-weight: 600; }
+  .op-b .hero-landing { background: var(--bg-gradient); }
   .op-b .cta {
     margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn);
     background: var(--accent); color: var(--bg);
@@ -568,20 +572,20 @@
   <!-- ═══════════════════ OPCIÓN B — héroe centrado con anillo y grid 2x2 ═══════════════════ -->
   <section class="opcion op-b" aria-label="Opción B">
     <div class="meta">
-      <h2><span class="letra">B</span> Glow Eléctrico</h2>
-      <p class="direccion">Nocturna y vibrante — como abrir TikTok, no un laboratorio. Un anillo de progreso al centro con tu puntaje y cuatro datos de tu presencia alrededor, en magenta y verde lima.</p>
+      <h2><span class="letra">B</span> Glow Atardecer</h2>
+      <p class="direccion">Vibrante y cálida — como abrir TikTok al atardecer, no un laboratorio. Fondo degradado de naranja a amarillo (sin sol), con un anillo de progreso al centro y cuatro datos de tu presencia alrededor, en magenta y verde.</p>
       <p class="hipotesis"><strong>Hipótesis de conversión:</strong>
-        <span class="slot">El canal #1 de Niki es TikTok/Reels — un producto que ya SE VE como ese feed elimina la fricción entre el anuncio y la app.</span>
+        <span class="slot">El canal #1 de Niki es TikTok/Reels — un producto que ya SE VE como ese feed, con la calidez de un atardecer, elimina la fricción entre el anuncio y la app.</span>
       </p>
       <ul class="tokens">
-        <li>--bg #150F22 · --accent #FF3D7F + #C6FF3D</li>
-        <li>radius 18/14 · sombra tintada violeta-noche</li>
+        <li>--bg degradé #FF9457→#FFE9B0 · --accent #FF3D7F + #B7DE2A</li>
+        <li>radius 18/14 · sombra tintada atardecer</li>
       </ul>
       <!-- Muestra de paleta: los MISMOS hex de los tokens de arriba -->
       <div class="paleta" aria-hidden="true">
-        <span style="background:#150f22"></span><span style="background:#211a35"></span>
-        <span style="background:#f3eefc"></span><span style="background:#ff3d7f"></span>
-        <span style="background:#c6ff3d"></span>
+        <span style="background:#ff9457"></span><span style="background:#ffd98a"></span>
+        <span style="background:#3c2412"></span><span style="background:#ff3d7f"></span>
+        <span style="background:#b7de2a"></span>
       </div>
       <div class="especimen">
         <p class="esp-display">Unbounded — AaBbÑñ 0123</p>
@@ -634,7 +638,7 @@
         <div class="grid2x2">
           <div class="tile destacada">
             <p class="t-label">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c6ff3d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a9c1e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
               Actitud
             </p>
             <p class="t-dato">9<small>/10</small></p>
@@ -662,7 +666,7 @@
           </div>
         </div>
 
-        <div class="cta">Ver mi Vibe Check completo</div>
+        <div class="cta">Ver mi imagen completa</div>
 
         <!-- Tab bar: el mockup lleno SIEMPRE muestra la nav (54 Regla #3) -->
         <nav class="tabbar" aria-label="Navegación">
@@ -679,7 +683,7 @@
     <p class="rotulo-frame">Así se vería la página que vende tu app</p>
     <div class="hero-landing">
       <span class="hl-badge">Modo Alto Impacto</span>
-      <h4>Entra y que <em>todos lo noten</em></h4>
+      <h4>¡Entra y que <em>todos lo noten</em>!</h4>
       <p class="hl-sub"><b>Sube tu foto antes de salir.</b> La IA te dice en 30 segundos qué ajustar en tu outfit, tu postura y tu actitud — para el evento exacto al que vas.</p>
       <div class="hl-cta">Quiero mi Vibe Check gratis</div>
       <p class="hl-prueba">3 días de prueba VIP · cancela cuando quieras</p>
