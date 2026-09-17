@@ -64,7 +64,8 @@
   .chip-icono { display: inline-flex; align-items: center; justify-content: center;
     width: 40px; height: 40px; flex-shrink: 0; }
   .cta { display: flex; align-items: center; justify-content: center;
-    height: 48px; font-size: 15px; font-weight: 600; letter-spacing: 0.01em; }
+    height: 48px; font-size: 15px; font-weight: 600; letter-spacing: 0.01em;
+    text-align: center; line-height: 1.25; }
   .tabbar { display: flex; align-items: stretch; justify-content: space-around;
     margin: 12px -18px 0; padding: 8px 8px 16px;
     border-top: 1px solid color-mix(in oklab, var(--text-2) 18%, transparent);
@@ -134,11 +135,13 @@
   .op-b .paso-label { margin-top: 8px; font-size: 11px; font-weight: 700; color: var(--text-2);
     text-transform: uppercase; letter-spacing: 0.06em; }
   .op-b h3.pregunta { font-family: var(--font-display); font-size: 21px; font-weight: 700;
-    line-height: 1.2; margin-top: 8px; }
-  .op-b .quiz-opciones { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
-  .op-b .quiz-opcion { display: flex; align-items: center; gap: 12px;
-    background: var(--surface); border-radius: var(--radius-card);
-    border: 1.5px solid rgb(60 36 18 / 0.12); padding: 12px 14px; }
+    line-height: 1.2; margin-top: 8px; text-align: center; }
+  .op-b .quiz-opciones { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .op-b .quiz-opcion { display: flex; align-items: center; gap: 10px;
+    background: color-mix(in oklab, var(--surface) 82%, transparent);
+    backdrop-filter: blur(2px); border-radius: var(--radius-card);
+    border: 1.5px solid rgb(60 36 18 / 0.12); padding: 9px 12px; }
+  .op-b .quiz-opcion .chip-icono { width: 32px; height: 32px; }
   .op-b .quiz-opcion.activa { border-color: var(--accent);
     box-shadow: 0 6px 16px -8px rgb(var(--shadow-tinta) / 0.3); }
   .op-b .quiz-opcion .chip-icono { border-radius: var(--radius-btn);
@@ -150,10 +153,12 @@
 
   /* Vista 3: Paywall — planes */
   .op-b .paywall-titulo { margin-top: 14px; font-family: var(--font-display); font-size: 22px;
-    font-weight: 700; line-height: 1.18; }
-  .op-b .paywall-sub { margin-top: 6px; font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
-  .op-b .planes { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
-  .op-b .plan { background: var(--surface); border-radius: var(--radius-card);
+    font-weight: 700; line-height: 1.18; text-align: center; }
+  .op-b .paywall-sub { margin-top: 6px; font-size: 12.5px; color: var(--text-2); line-height: 1.45;
+    text-align: center; }
+  .op-b .planes { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .op-b .plan { background: color-mix(in oklab, var(--surface) 82%, transparent);
+    backdrop-filter: blur(2px); border-radius: var(--radius-card);
     border: 1.5px solid rgb(60 36 18 / 0.12); padding: 12px 14px; position: relative; }
   .op-b .plan.recomendado { border-color: var(--accent);
     box-shadow: 0 8px 20px -8px rgb(var(--shadow-tinta) / 0.3); }
@@ -167,17 +172,29 @@
   .op-b .garantia { margin-top: 12px; font-size: 11px; color: var(--text-2); text-align: center; line-height: 1.5; }
 
   /* Vista 4: Scan completo — 3 ejes expandidos */
-  .op-b .scan-titulo { margin-top: 12px; font-family: var(--font-display); font-size: 20px;
-    font-weight: 700; }
-  .op-b .eje { margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
-    border: 1px solid rgb(60 36 18 / 0.10); padding: 12px 14px; display: flex; gap: 12px; }
-  .op-b .eje .chip-icono { border-radius: var(--radius-btn);
-    background: color-mix(in oklab, var(--accent) 12%, transparent); }
+  .op-b .scan-titulo { margin-top: 12px; text-align: center; font-family: var(--font-display);
+    font-size: 20px; font-weight: 700; }
+  .op-b .eje { margin-top: 12px; border-radius: var(--radius-card);
+    padding: 12px 14px; display: flex; gap: 12px;
+    background: color-mix(in oklab, var(--surface) 82%, transparent); }
+  .op-b .eje .chip-icono { border-radius: var(--radius-btn); }
   .op-b .eje .fila-eje { display: flex; align-items: center; justify-content: space-between; }
   .op-b .eje h4 { font-size: 13.5px; font-weight: 700; }
-  .op-b .eje .nota-eje { font-family: var(--font-display); font-size: 13px; font-weight: 700;
-    color: var(--accent); }
-  .op-b .eje p { margin-top: 2px; font-size: 12px; color: var(--text-2); line-height: 1.4; }
+  .op-b .eje .nota-eje { font-family: var(--font-display); font-size: 13px; font-weight: 700; }
+  .op-b .eje p { margin-top: 2px; font-size: 12px; line-height: 1.4; }
+  /* Escala de intensidad: outfit suave -> postura mediana -> actitud fuerte (pedido del usuario) */
+  .op-b .eje.suave { border: 1px solid rgb(60 36 18 / 0.08); }
+  .op-b .eje.suave .chip-icono { background: color-mix(in oklab, var(--accent) 8%, transparent); }
+  .op-b .eje.suave .nota-eje, .op-b .eje.suave p { color: var(--text-2); }
+  .op-b .eje.medio { border: 1.5px solid color-mix(in oklab, var(--accent) 35%, transparent); }
+  .op-b .eje.medio .chip-icono { background: color-mix(in oklab, var(--accent) 20%, transparent); }
+  .op-b .eje.medio .nota-eje { color: var(--accent); }
+  .op-b .eje.medio p { color: var(--text-2); }
+  .op-b .eje.fuerte { border: 1.5px solid var(--accent);
+    background: var(--accent); box-shadow: 0 10px 24px -10px rgb(var(--shadow-tinta) / 0.4); }
+  .op-b .eje.fuerte .chip-icono { background: rgb(255 255 255 / 0.18); }
+  .op-b .eje.fuerte h4, .op-b .eje.fuerte .nota-eje { color: #fff; }
+  .op-b .eje.fuerte p { color: rgb(255 255 255 / 0.85); }
 </style>
 </head>
 <body>
@@ -216,7 +233,7 @@
       <div class="pantalla">
         <div class="encabezado-b">
           <p class="periodo">Sáb 19:00 · Cita</p>
-          <h3 class="titulo-b">Vas a entrar seguro hoy</h3>
+          <h3 class="titulo-b">¡Vas a entrar seguro hoy!</h3>
         </div>
         <div class="anillo-wrap">
           <svg width="132" height="132" viewBox="0 0 132 132" role="img" aria-label="Puntaje de presencia 82 por ciento">
@@ -294,11 +311,18 @@
             <span class="txt">Salida con amigos</span>
             <span class="check"></span>
           </div>
+          <div class="quiz-opcion">
+            <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v20M21 2v20M7 6h6M7 10h10"/></svg></span>
+            <span class="txt">Cena formal</span>
+            <span class="check"></span>
+          </div>
+          <div class="quiz-opcion">
+            <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
+            <span class="txt">Vacaciones</span>
+            <span class="check"></span>
+          </div>
         </div>
         <div class="cta">Continuar</div>
-        <nav class="tabbar" aria-label="Navegación" style="visibility:hidden;">
-          <a class="activa" href="#"><span class="tab-chip"></span>·</a>
-        </nav>
       </div>
       <div class="home-indicator"></div>
     </div>
@@ -323,8 +347,8 @@
         <div class="planes">
           <div class="plan recomendado">
             <span class="badge">3 días gratis</span>
-            <div class="fila"><span class="nombre">VIP Pro · Anual</span><span class="precio">$6.67<small>/mes</small></span></div>
-            <p class="nota">$79.99/año · 2 meses gratis vs. el mensual</p>
+            <div class="fila"><span class="nombre">VIP Pro · Anual</span><span class="precio">$8.99<small>/mes</small></span></div>
+            <p class="nota">Facturado una vez al año · cancela cuando quieras</p>
           </div>
           <div class="plan">
             <div class="fila"><span class="nombre">VIP Pro · Mensual</span><span class="precio">$14.99<small>/mes</small></span></div>
@@ -351,23 +375,23 @@
         </span>
       </div>
       <div class="pantalla">
-        <h3 class="scan-titulo">Tu Scan · Cita de hoy</h3>
-        <div class="eje">
-          <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+        <h3 class="scan-titulo">¡Tus resultados para hoy!</h3>
+        <div class="eje suave">
+          <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a6448" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
           <div>
             <div class="fila-eje"><h4>Outfit</h4><span class="nota-eje">8/10</span></div>
             <p>El saco oscuro combina mejor con tu pantalón que el gris de hoy.</p>
           </div>
         </div>
-        <div class="eje">
+        <div class="eje medio">
           <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 8l5-5 5 5"/></svg></span>
           <div>
             <div class="fila-eje"><h4>Postura</h4><span class="nota-eje">7/10</span></div>
             <p>Hombros atrás, barbilla nivelada — así entras con autoridad.</p>
           </div>
         </div>
-        <div class="eje">
-          <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a9c1e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <div class="eje fuerte">
+          <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
           <div>
             <div class="fila-eje"><h4>Actitud</h4><span class="nota-eje">9/10</span></div>
             <p>Mirada sostenida 3 segundos antes de hablar — transmite calma.</p>
