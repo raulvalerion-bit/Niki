@@ -75,7 +75,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Sesión 1 — falta: confirmar longitud de onboarding y mecánicas de gamificación iniciales, luego iniciar construcción de la landing (Paso 1 de la secuencia maestra)
 
 ## Próximas sesiones 📋
-- Sesión 1 (cont.): landing de ventas completa (10 secciones canónicas) con copy trazado a FICHA-AVATAR.md
+- Sesión 1 (cont.): construir landing de ventas (10 secciones canónicas) con copy trazado a FICHA-AVATAR.md
 - Sesión 2: Dirección de Arte (FICHA-ARTE.md) — preguntar referencia visual al usuario con opciones concretas
 - Sesión 3+: onboarding, paywall, login, app interna, servicios externos (según secuencia maestra)
 
