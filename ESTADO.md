@@ -94,6 +94,15 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Sesión 1 — idea recibida y validada, FICHA-AVATAR.md y FICHA-MODELO.md completas y aprobadas, framework/modelo de monetización decididos — 2026-09-17
 - Sesión 2 — Dirección de Arte: comparativa A/B/C + Tour de la app, dirección "Glow Atardecer" (B) elegida y ajustada 5 rondas, FICHA-ARTE.md cerrada y aprobada — 2026-09-17
 
+## Ajustes de diseño/copy pedidos por el usuario tras ver la landing (2026-09-17)
+- Hero: H1 cambiado a "Revisa si tu outfit e imagen son las mejores en 30 segundos" (excede el tope de 10 palabras del componente por 2 — excepción aceptada a pedido explícito).
+- Agitación: el bloque "En 6 meses" pasó de negativo ("si nada cambia...") a positivo ("¡Asómbrate de los cambios que has hecho en tu persona!"), con fondo dorado nuevo (`--gold`). Nota de diseño: esto suaviza la lógica de "costo de esperar" del PAS clásico — se mantiene igual porque el usuario lo pidió explícitamente; si la landing no convierte, este es un punto a revisar primero (60).
+- Solución: "una devolución honesta" → "una retroalimentación honesta". Paso 1 ahora lista las 6 ocasiones completas. Antes/Después con fondo gris claro (`--gray-claro`) y dorado (`--gold`) respectivamente.
+- AppPorDentro: título con signos de exclamación.
+- CtaFinal: fondo cambiado de marrón sólido (`--text-primary`) a dorado (`--gold`) — el usuario lo describió como "muy emplastado"; se ajustaron todos los colores de texto del bloque para mantener contraste AA sobre el nuevo fondo.
+- Se agregaron 2 tokens nuevos a `components/landing/tokens.css`: `--gold` (#D4A72C) y `--gold-text` (#3C2412), y `--gray-claro` (#ECECEC) — documentados ahí con el motivo (pedido explícito del usuario, no parte de la fusión original de FICHA-ARTE).
+- Screenshot de evidencia (`docs/revisiones/landing-375.png`) re-generado tras estos cambios; el veredicto guardado en `docs/revisiones/landing-veredicto.md` es de la versión ANTERIOR a estos ajustes — falta re-correr el revisor-visual si se quiere un veredicto actualizado (no urgente: los motivos de "NO LISTA" — placeholders de la app — siguen iguales).
+
 ## Sesión en progreso 🔧
 - Sesión 3 (landing) — código de las 10 secciones con veredicto real registrado (NO LISTA, ver "Puertas de etapa"); cierre pendiente de los screenshots reales de la app interna, no bloquea seguir con la etapa pendiente de Onboarding
 

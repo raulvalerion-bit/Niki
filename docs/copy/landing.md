@@ -16,9 +16,11 @@ outfit, su postura y su actitud antes de que sea tarde. El **Check de Presencia*
 ---
 
 ## 1. HERO
-- H1: `Sabé si tu outfit funciona, en [acento]30 segundos[/acento]`
+- H1: `Revisa si tu outfit e imagen son las mejores en [acento]30 segundos[/acento]`
   (fuente: deseo #1 "Deseo ponerme cualquier outfit y saber con 100% de certeza que me veo
-  impecable" + nivel de consciencia "Consciente del Problema")
+  impecable" + nivel de consciencia "Consciente del Problema"; ajustado a pedido del usuario
+  2026-09-17 — excede el tope de 10 palabras del componente por 2, aceptado como excepción
+  explícita del usuario)
 - Subtítulo: `Niki analiza tu outfit, postura y actitud — [b]sin críticas crueles[/b].`
   (fuente: objeción #4 "No quiero que una app me destroce con un número cruel como 3/10")
 - CTA: "Hacer mi Check de Presencia gratis" → `/onboarding` (Modelo 2, variante anónima)
@@ -42,19 +44,24 @@ outfit, su postura y su actitud antes de que sea tarde. El **Check de Presencia*
 - "Los videos de TikTok no aplican a tu cuerpo real; preguntarle a tus amigos solo te da 'te ves
   bien' por compromiso: [b]ninguno de los dos te dice la verdad[/b]."
 - Contraste: Hoy = "20-30 minutos de duda frente al armario, sin saber si vas a destacar." ·
-  En 6 meses = "El mismo patrón — con 6 meses menos."
+  En 6 meses = "¡Asómbrate de los cambios que has hecho en tu persona!" (ajustado a pedido del
+  usuario 2026-09-17: pasa de "costo de no actuar" a "resultado de actuar" — fondo dorado para
+  reforzar el giro positivo; label se acortó a "En 6 meses" para que siga leyéndose coherente)
 
 ## 4. SOLUCIÓN
 - Título: `Tu presencia, resuelta [acento]antes de cruzar la puerta[/acento]`
-- Big Idea: "No es que te falte estilo — es que nadie te dio una devolución honesta a tiempo.
-  El Check de Presencia te la da en 30 segundos, con el tono de un coach que quiere verte bien."
-- 3 pasos: 1) Subís tu foto y elegís la ocasión · 2) Niki analiza outfit, postura y actitud ·
-  3) Recibís 3 ajustes concretos, listos para aplicar hoy
-- Antes/Después: Antes = "Dudás frente al espejo sin saber si vas a destacar." · Después =
-  "Sabés exactamente qué ajustar — y salís con certeza."
+- Big Idea: "No te falta estilo — te faltaba una retroalimentación honesta a tiempo. El Check
+  de Presencia te la da en 30 segundos, con tono de coach, no de juez." ("devolución" → "
+  retroalimentación" a pedido del usuario, 2026-09-17)
+- 3 pasos: 1) Subes tu foto — ocasión: entrevista de trabajo, primera cita, reunión de negocios,
+  salida con amigos, cena formal o vacaciones (lista completa a pedido del usuario) · 2) Niki
+  analiza outfit, postura y actitud · 3) Recibes 3 ajustes concretos, listos para aplicar hoy
+- Antes/Después: Antes = "Dudas frente al espejo sin saber si vas a destacar." (fondo gris claro,
+  pedido del usuario) · Después = "Sabes exactamente qué ajustar — y sales con certeza." (fondo
+  dorado, pedido del usuario)
 
 ## 5. LA APP POR DENTRO (placeholders — app interna pendiente, anotado en ESTADO.md)
-- Título: `Así se ve tu [acento]Check de Presencia[/acento]`
+- Título: `¡Así se ve tu [acento]Check de Presencia[/acento]!` (admiración agregada a pedido del usuario, 2026-09-17)
 - Frames: "Tu Check de Presencia de hoy" (Hoy) · "Elegís tu ocasión" (Onboarding) ·
   "Tus 3 ejes explicados" (Scan completo) · "Tu racha Glow-Up" (Hábitos)
 - CTA mid-page: mismo CTA del hero
@@ -105,6 +112,8 @@ outfit, su postura y su actitud antes de que sea tarde. El **Check de Presencia*
 > menos ligada a una objeción literal de FICHA-AVATAR.md.
 
 ## 9. CTA FINAL EMOCIONAL
+> Fondo cambiado de marrón sólido a dorado (`--gold`) a pedido del usuario, 2026-09-17: "se veía
+> muy emplastado". Mismo patrón de bloque invertido/máximo contraste del kit, solo cambia el color.
 - H2: `Imaginate entrar y que [acento]todos lo noten[/acento]`
 - Future pacing: "Subís tu foto antes de salir, ves tus 3 ajustes en 30 segundos, y cruzás la
   puerta sabiendo que vas a destacar." (fuente: deseo #3 "Quiero entrar a un lugar y sentir cómo

@@ -30,10 +30,15 @@
   /* ── MARCA ── */
   --accent: #7a3e1d;           /* marrón cálido — el mismo acento de FICHA-ARTE/la app */
   --accent-2: #b7de2a;         /* verde-lima — 2ª nota, igual que FICHA-ARTE (solo decorativo/mesh) */
+  --gold: #d4a72c;             /* 3ª nota — pedido explícito del usuario: reemplaza el marrón
+                                   sólido en bloques celebratorios/aspiracionales puntuales
+                                   (contraste "en 6 meses", "después", CTA final) */
+  --gold-text: #3c2412;        /* texto oscuro sobre --gold, AA garantizado */
 
   /* ── FORMA (radios del brand kit — UNO por rol, toda la página) ── */
   --radius-card: 18px;
   --radius-button: 14px;
+  --gray-claro: #ececec;       /* pedido explícito del usuario: fondo neutro para el bloque "Antes" */
 
   /* ── TIPOGRAFÍA (2 familias de la ficha — cargadas vía next/font en app/layout.tsx,
        que define --font-unbounded/--font-manrope; aquí solo se arma el fallback) ── */

@@ -58,12 +58,13 @@ export function Agitacion({ frases, contraste, id }: AgitacionProps) {
               </p>
               <p className="mt-2 text-[15px] leading-snug text-[var(--text-primary)]">{contraste.hoy}</p>
             </div>
-            {/* "si nada cambia": más apagado/frío — el peso lo pone el copy, no el rojo */}
-            <div className="rounded-[var(--radius-card)] bg-[var(--surface-2)] p-5">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--text-tertiary)]">
+            {/* "En 6 meses": fondo dorado a pedido del usuario — destaca el resultado que se
+                imagina al proyectarse hacia adelante con la app. */}
+            <div className="rounded-[var(--radius-card)] bg-[var(--gold)] p-5">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--gold-text)] opacity-70">
                 {contraste.labelFuturo}
               </p>
-              <p className="mt-2 text-[15px] leading-snug text-[var(--text-secondary)]">{contraste.futuro}</p>
+              <p className="mt-2 text-[15px] font-medium leading-snug text-[var(--gold-text)]">{contraste.futuro}</p>
             </div>
           </motion.div>
         )}

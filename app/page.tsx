@@ -29,7 +29,7 @@ export default function LandingNiki() {
       <Hero
         appName="niki"
         loginHref="/entrar"
-        h1Marked="Sabe si tu outfit funciona, en [acento]30 segundos[/acento]"
+        h1Marked="Revisa si tu outfit e imagen son las mejores en [acento]30 segundos[/acento]"
         subtitleMarked="Niki analiza tu outfit, postura y actitud — [b]sin críticas crueles[/b]."
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
@@ -72,8 +72,8 @@ export default function LandingNiki() {
         contraste={{
           labelHoy: 'Hoy',
           hoy: '20-30 minutos de duda frente al armario, sin saber si vas a destacar.',
-          labelFuturo: 'En 6 meses, si nada cambia',
-          futuro: 'El mismo patrón — con 6 meses menos.',
+          labelFuturo: 'En 6 meses',
+          futuro: '¡Asómbrate de los cambios que has hecho en tu persona!',
         }}
       />
 
@@ -81,9 +81,9 @@ export default function LandingNiki() {
       <Solucion
         tituloMarked="Tu presencia, resuelta [acento]antes de cruzar la puerta[/acento]"
         mecanismo="el Check de Presencia"
-        bigIdeaMarked="No te falta estilo — te faltaba una devolución honesta a tiempo. El Check de Presencia te la da en 30 segundos, con [b]tono de coach, no de juez[/b]."
+        bigIdeaMarked="No te falta estilo — te faltaba una retroalimentación honesta a tiempo. El Check de Presencia te la da en 30 segundos, con [b]tono de coach, no de juez[/b]."
         pasos={[
-          { titulo: 'Subes tu foto', detalle: 'Eliges la ocasión: entrevista, cita, reunión o salida.' },
+          { titulo: 'Subes tu foto', detalle: 'Entrevista de trabajo, primera cita, reunión de negocios, salida con amigos, cena formal o vacaciones.' },
           { titulo: 'Niki analiza', detalle: 'Outfit, postura y actitud — los 3 ejes de tu presencia.' },
           { titulo: 'Recibes 3 ajustes', detalle: 'Concretos, accionables, listos para aplicar hoy.' },
         ]}
@@ -97,7 +97,7 @@ export default function LandingNiki() {
 
       {/* 5. LA APP POR DENTRO — placeholders honestos (app interna aún no construida) */}
       <AppPorDentro
-        tituloMarked="Así se ve tu [acento]Check de Presencia[/acento]"
+        tituloMarked="¡Así se ve tu [acento]Check de Presencia[/acento]!"
         frames={[
           { label: 'Tu Check de Presencia de hoy', nombrePantalla: 'Hoy' },
           { label: 'Eliges tu ocasión', nombrePantalla: 'Onboarding' },

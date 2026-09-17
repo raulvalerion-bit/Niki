@@ -48,15 +48,16 @@ export function CtaFinal({
       id={id}
       aria-label="Empieza hoy"
       className="relative overflow-hidden py-20 md:py-24"
-      style={{ background: 'var(--text-primary)' }}
+      style={{ background: 'var(--gold)' }}
     >
-      {/* Profundidad también en el bloque invertido: radial sutil del acento */}
+      {/* Profundidad también en el bloque dorado: radial sutil del acento marrón,
+          pedido del usuario (el marrón sólido se veía "emplastado") */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'radial-gradient(720px 420px at 50% 0%, color-mix(in oklab, var(--accent) 16%, transparent) 0%, transparent 60%)',
+            'radial-gradient(720px 420px at 50% 0%, color-mix(in oklab, var(--accent) 14%, transparent) 0%, transparent 60%)',
         }}
       />
 
@@ -70,7 +71,7 @@ export function CtaFinal({
         <motion.h2
           variants={item}
           className="text-balance text-[30px] font-bold leading-[1.15] [font-family:var(--font-display)] md:text-[44px]"
-          style={{ color: 'var(--bg)' }}
+          style={{ color: 'var(--gold-text)' }}
         >
           <MarkedCopy text={h2Marked} />
         </motion.h2>
@@ -78,7 +79,7 @@ export function CtaFinal({
         <motion.p
           variants={item}
           className="mt-4 max-w-[520px] text-[17px] leading-relaxed"
-          style={{ color: 'color-mix(in oklab, var(--bg) 78%, transparent)' }}
+          style={{ color: 'color-mix(in oklab, var(--gold-text) 82%, transparent)' }}
         >
           <MarkedCopy text={futurePacingMarked} />
         </motion.p>
@@ -94,7 +95,7 @@ export function CtaFinal({
           <motion.p
             variants={item}
             className="mt-3 text-[13px]"
-            style={{ color: 'color-mix(in oklab, var(--bg) 65%, transparent)' }}
+            style={{ color: 'color-mix(in oklab, var(--gold-text) 70%, transparent)' }}
           >
             {recap}
           </motion.p>
@@ -106,7 +107,7 @@ export function CtaFinal({
             className="mt-10 max-w-[520px] border-l-2 pl-4 text-left text-[15px] italic leading-[1.6]"
             style={{
               borderColor: 'var(--accent)',
-              color: 'color-mix(in oklab, var(--bg) 80%, transparent)',
+              color: 'color-mix(in oklab, var(--gold-text) 85%, transparent)',
             }}
           >
             <MarkedCopy text={psMarked} />
