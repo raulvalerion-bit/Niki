@@ -1,7 +1,7 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
 Última actualización: 2026-09-17 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: FICHA-AVATAR.md creada y aprobada / Siguiente acción exacta: decidir stack + modelo de monetización + longitud de onboarding, luego construir la landing de ventas (Paso 1 de la secuencia maestra)
+⏸️ CHECKPOINT — Última acción completada: FICHA-ARTE.md cerrada y aprobada (dirección "Glow Atardecer") / Siguiente acción exacta: construir la landing de ventas (Paso 1 de la secuencia maestra) con el estilo de FICHA-ARTE.md y el copy de FICHA-AVATAR.md
 
 ## Qué es esta app (3 líneas máximo)
 Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit, postura y actitud según el evento (cita, entrevista, fiesta), con hábitos diarios de presencia. Para jóvenes de 18-32 años LATAM con inseguridad de imagen. Monetiza con suscripción freemium por niveles + trial de 3 días.
@@ -16,12 +16,14 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Brecha LATAM confirmada: no evaluada explícitamente en el documento — se asume por idioma español del documento y canal de venta Hotmart; validar con primeros usuarios
 - Precio de referencia del mercado: $4.99/semana - $19.99/mes (apps de IA visual)
 
-## Dirección de Arte (Sesión 2 — en curso)
-- FICHA-ARTE.md: NO existe todavía — se crea al cerrar esta etapa, cuando el usuario elija/combine una opción
-- ¿Hubo referencia visual del usuario?: NO — eligió Ruta 1 ("propóngamelo tú"), 2026-09-17
-- Ruta de diseño: propuesta propia (Protocolo A/B/C) — comparativa en `direcciones-abc.html` (raíz del proyecto)
-- 3 opciones presentadas: A) Coach Cálido (crema+coral, Baloo 2/Plus Jakarta Sans, héroe-dato+cards) · B) Glow Eléctrico (violeta-noche+magenta/lima, Unbounded/Manrope, anillo+grid2x2) · C) Revista de Estilo (crema editorial+terracota, Fraunces/Karla, timeline de 3 ejes)
-- Esperando elección del usuario (elegir / combinar / otras 3 / ajustar)
+## Dirección de Arte (Sesión 2 — CERRADA, cosa juzgada)
+- FICHA-ARTE.md: existe y aprobada — 2026-09-17
+- ¿Hubo referencia visual del usuario?: NO — eligió Ruta 1 ("propóngamelo tú")
+- Ruta de diseño: propuesta propia (Protocolo A/B/C) — Opción B elegida y ajustada 5 rondas por el usuario, luego confirmada con el Tour
+- Resumen: "Glow Atardecer" — degradé naranja→amarillo `#FF9457→#FFE9B0` (sin sol) · acento marrón cálido `#7A3E1D` (neutral, reemplazó al magenta original) · 2ª nota verde-lima `#B7DE2A` · display Unbounded + body Manrope · anillo de progreso central como dispositivo ownable
+- Descartadas: A "Coach Cálido" (crema+coral/Baloo2) y C "Revista de Estilo" (crema editorial/Fraunces)
+- Evidencia archivada: `docs/revisiones/direcciones-abc.html` y `docs/revisiones/vista-previa-app.html`
+- Registro anti-repetición: paleta atardecer+marrón y par Unbounded/Manrope vetados para el próximo proyecto del SO
 
 ## Avatar y venta (Sesión 1 — NO cambiar sin validar)
 - FICHA-AVATAR.md: existe y aprobada — 2026-09-17 (el copy de venta se DERIVA de ella)
@@ -70,15 +72,15 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Modelo de IA: pendiente de elegir proveedor de visión (a definir en Sesión 3, `30-INTEGRACION-IA.md`) — siempre vía variable de entorno, nunca hardcodeado
 
 ## Sesiones completadas ✅
-- Sesión 1 (parcial) — idea recibida y validada por el usuario, FICHA-AVATAR.md completa y aprobada, decisiones de framework/modelo de monetización tomadas — 2026-09-17
+- Sesión 1 — idea recibida y validada, FICHA-AVATAR.md y FICHA-MODELO.md completas y aprobadas, framework/modelo de monetización decididos — 2026-09-17
+- Sesión 2 — Dirección de Arte: comparativa A/B/C + Tour de la app, dirección "Glow Atardecer" (B) elegida y ajustada 5 rondas, FICHA-ARTE.md cerrada y aprobada — 2026-09-17
 
 ## Sesión en progreso 🔧
-- Sesión 1 — falta: confirmar longitud de onboarding y mecánicas de gamificación iniciales, luego iniciar construcción de la landing (Paso 1 de la secuencia maestra)
+- Ninguna — próximo paso es abrir la Sesión de landing (Paso 1 de la secuencia maestra)
 
 ## Próximas sesiones 📋
-- Sesión 1 (cont.): construir landing de ventas (10 secciones canónicas) con copy trazado a FICHA-AVATAR.md
-- Sesión 2: Dirección de Arte (FICHA-ARTE.md) — preguntar referencia visual al usuario con opciones concretas
-- Sesión 3+: onboarding, paywall, login, app interna, servicios externos (según secuencia maestra)
+- Landing de ventas (10 secciones canónicas de `19-PAGINA-DE-VENTAS.md`) con el estilo de FICHA-ARTE.md y copy trazado a FICHA-AVATAR.md
+- Onboarding, paywall, login, app interna, servicios externos (según secuencia maestra)
 
 ## Problemas conocidos ⚠️
 - Ninguno todavía.
