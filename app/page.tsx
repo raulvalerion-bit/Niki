@@ -73,7 +73,7 @@ export default function LandingNiki() {
           labelHoy: 'Hoy',
           hoy: '20-30 minutos de duda frente al armario, sin saber si vas a destacar.',
           labelFuturo: 'En 6 meses',
-          futuro: '¡Asómbrate de los cambios que has hecho en tu persona!',
+          futuro: '¡Seguirás siendo invisible, mientras otros brillan!',
         }}
       />
 
@@ -83,7 +83,7 @@ export default function LandingNiki() {
         mecanismo="el Check de Presencia"
         bigIdeaMarked="No te falta estilo — te faltaba una retroalimentación honesta a tiempo. El Check de Presencia te la da en 30 segundos, con [b]tono de coach, no de juez[/b]."
         pasos={[
-          { titulo: 'Subes tu foto', detalle: 'Entrevista de trabajo, primera cita, reunión de negocios, salida con amigos, cena formal o vacaciones.' },
+          { titulo: 'Subes tu foto', detalle: 'Elige la ocasión: entrevista de trabajo, primera cita, reunión de negocios, salida con amigos, cena formal o vacaciones.' },
           { titulo: 'Niki analiza', detalle: 'Outfit, postura y actitud — los 3 ejes de tu presencia.' },
           { titulo: 'Recibes 3 ajustes', detalle: 'Concretos, accionables, listos para aplicar hoy.' },
         ]}

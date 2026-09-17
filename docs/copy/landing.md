@@ -44,17 +44,21 @@ outfit, su postura y su actitud antes de que sea tarde. El **Check de Presencia*
 - "Los videos de TikTok no aplican a tu cuerpo real; preguntarle a tus amigos solo te da 'te ves
   bien' por compromiso: [b]ninguno de los dos te dice la verdad[/b]."
 - Contraste: Hoy = "20-30 minutos de duda frente al armario, sin saber si vas a destacar." ·
-  En 6 meses = "¡Asómbrate de los cambios que has hecho en tu persona!" (ajustado a pedido del
-  usuario 2026-09-17: pasa de "costo de no actuar" a "resultado de actuar" — fondo dorado para
-  reforzar el giro positivo; label se acortó a "En 6 meses" para que siga leyéndose coherente)
+  En 6 meses = "¡Seguirás siendo invisible, mientras otros brillan!" (fuente: dolor #5 identidad
+  de la ficha, "Tengo miedo de quedarme siendo 'el chico invisible' para siempre" + deseo #3
+  "Quiero entrar a un lugar y sentir cómo la gente nota mi presencia"). Historial: pasó de
+  negativo → positivo → de vuelta a negativo (el usuario probó el giro positivo con fondo dorado
+  y decidió volver a la lógica de agitación/costo de esperar, ahora con esta frase más específica
+  que la original; fondo gris claro, 2026-09-17).
 
 ## 4. SOLUCIÓN
 - Título: `Tu presencia, resuelta [acento]antes de cruzar la puerta[/acento]`
 - Big Idea: "No te falta estilo — te faltaba una retroalimentación honesta a tiempo. El Check
   de Presencia te la da en 30 segundos, con tono de coach, no de juez." ("devolución" → "
   retroalimentación" a pedido del usuario, 2026-09-17)
-- 3 pasos: 1) Subes tu foto — ocasión: entrevista de trabajo, primera cita, reunión de negocios,
-  salida con amigos, cena formal o vacaciones (lista completa a pedido del usuario) · 2) Niki
+- 3 pasos: 1) Subes tu foto, elige la ocasión: entrevista de trabajo, primera cita, reunión de
+  negocios, salida con amigos, cena formal o vacaciones (lista completa a pedido del usuario) ·
+  2) Niki
   analiza outfit, postura y actitud · 3) Recibes 3 ajustes concretos, listos para aplicar hoy
 - Antes/Después: Antes = "Dudas frente al espejo sin saber si vas a destacar." (fondo gris claro,
   pedido del usuario) · Después = "Sabes exactamente qué ajustar — y sales con certeza." (fondo

@@ -58,13 +58,13 @@ export function Agitacion({ frases, contraste, id }: AgitacionProps) {
               </p>
               <p className="mt-2 text-[15px] leading-snug text-[var(--text-primary)]">{contraste.hoy}</p>
             </div>
-            {/* "En 6 meses": fondo dorado a pedido del usuario — destaca el resultado que se
-                imagina al proyectarse hacia adelante con la app. */}
-            <div className="rounded-[var(--radius-card)] bg-[var(--gold)] p-5">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--gold-text)] opacity-70">
+            {/* "En 6 meses": vuelve a gris claro y mensaje de costo de esperar (pedido del
+                usuario) — así la sección recupera su lógica de agitación (PAS). */}
+            <div className="rounded-[var(--radius-card)] bg-[var(--gray-claro)] p-5">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--text-tertiary)]">
                 {contraste.labelFuturo}
               </p>
-              <p className="mt-2 text-[15px] font-medium leading-snug text-[var(--gold-text)]">{contraste.futuro}</p>
+              <p className="mt-2 text-[15px] font-medium leading-snug text-[var(--text-primary)]">{contraste.futuro}</p>
             </div>
           </motion.div>
         )}
