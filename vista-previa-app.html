@@ -182,19 +182,22 @@
   .op-b .eje h4 { font-size: 13.5px; font-weight: 700; }
   .op-b .eje .nota-eje { font-family: var(--font-display); font-size: 13px; font-weight: 700; }
   .op-b .eje p { margin-top: 2px; font-size: 12px; line-height: 1.4; }
-  /* Escala de intensidad: outfit suave -> postura mediana -> actitud fuerte (pedido del usuario) */
-  .op-b .eje.suave { border: 1px solid rgb(60 36 18 / 0.08); }
+  /* Escala de intensidad: outfit suave -> postura mediana -> actitud fuerte — siempre en
+     tonos de crema, nunca marrón sólido; las 3 comparten el contorno fino marrón (ajuste
+     del usuario) */
+  .op-b .eje { border: 1px solid color-mix(in oklab, var(--accent) 28%, transparent); }
+  .op-b .eje.suave { background: color-mix(in oklab, var(--surface) 78%, transparent); }
   .op-b .eje.suave .chip-icono { background: color-mix(in oklab, var(--accent) 8%, transparent); }
   .op-b .eje.suave .nota-eje, .op-b .eje.suave p { color: var(--text-2); }
-  .op-b .eje.medio { border: 1.5px solid color-mix(in oklab, var(--accent) 35%, transparent); }
+  .op-b .eje.medio { background: color-mix(in oklab, var(--surface) 92%, var(--accent) 8%); }
   .op-b .eje.medio .chip-icono { background: color-mix(in oklab, var(--accent) 20%, transparent); }
   .op-b .eje.medio .nota-eje { color: var(--accent); }
   .op-b .eje.medio p { color: var(--text-2); }
-  .op-b .eje.fuerte { border: 1.5px solid var(--accent);
-    background: var(--accent); box-shadow: 0 10px 24px -10px rgb(var(--shadow-tinta) / 0.4); }
-  .op-b .eje.fuerte .chip-icono { background: rgb(255 255 255 / 0.18); }
-  .op-b .eje.fuerte h4, .op-b .eje.fuerte .nota-eje { color: #fff; }
-  .op-b .eje.fuerte p { color: rgb(255 255 255 / 0.85); }
+  .op-b .eje.fuerte { background: color-mix(in oklab, var(--surface) 78%, var(--accent) 22%);
+    border-width: 1.5px; box-shadow: 0 8px 20px -10px rgb(var(--shadow-tinta) / 0.28); }
+  .op-b .eje.fuerte .chip-icono { background: color-mix(in oklab, var(--accent) 32%, transparent); }
+  .op-b .eje.fuerte h4, .op-b .eje.fuerte .nota-eje { color: var(--accent); }
+  .op-b .eje.fuerte p { color: var(--text-1); }
 </style>
 </head>
 <body>
@@ -243,10 +246,6 @@
           <div class="centro"><span class="pct">82%</span><span class="pct-label">presencia hoy</span></div>
         </div>
         <div class="grid2x2">
-          <div class="tile destacada">
-            <p class="t-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a9c1e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Actitud</p>
-            <p class="t-dato">9<small>/10</small></p>
-          </div>
           <div class="tile">
             <p class="t-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Outfit</p>
             <p class="t-dato">8<small>/10</small></p>
@@ -255,12 +254,16 @@
             <p class="t-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 8l5-5 5 5"/></svg>Postura</p>
             <p class="t-dato">7<small>/10</small></p>
           </div>
+          <div class="tile destacada">
+            <p class="t-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a9c1e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Actitud</p>
+            <p class="t-dato">9<small>/10</small></p>
+          </div>
           <div class="tile">
             <p class="t-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 2.6 6.9L22 9.3l-5.4 4.6 1.8 7.1L12 17l-6.4 4 1.8-7.1L2 9.3l7.4-.4Z"/></svg>Racha</p>
             <p class="t-dato">12<small> días</small></p>
           </div>
         </div>
-        <div class="cta">Ver mi imagen completa</div>
+        <div class="cta" style="margin-top:14px;">Ver mi imagen completa</div>
         <nav class="tabbar" aria-label="Navegación">
           <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>Historial</a>
@@ -391,7 +394,7 @@
           </div>
         </div>
         <div class="eje fuerte">
-          <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
           <div>
             <div class="fila-eje"><h4>Actitud</h4><span class="nota-eje">9/10</span></div>
             <p>Mirada sostenida 3 segundos antes de hablar — transmite calma.</p>
