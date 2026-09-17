@@ -19,6 +19,10 @@
 :root {
   /* ── SUPERFICIES (3 niveles: base / elevada / hundida) — FICHA-ARTE.md "Glow Atardecer" ── */
   --bg: #fdefdc;              /* paso más claro del degradé atardecer (#FF9457→#FFE9B0) */
+  --bg-gradient: linear-gradient(180deg, #ff9457 0%, #ffb768 42%, #ffd98a 78%, #ffe9b0 100%);
+  /* el degradé completo de FICHA-ARTE.md ("Glow Atardecer") — usar en pantallas de la app
+     (onboarding/paywall/app interna) donde el fondo entero es el héroe visual; la landing
+     usa --bg sólido por rendimiento y alternancia de secciones (55 T1). */
   --surface: #fff8ec;         /* superficie elevada — casi el --surface de la app (#FFF3DE) */
   --surface-2: #f7e2bd;       /* hundido: wells, frames placeholder — un paso más cálido */
 

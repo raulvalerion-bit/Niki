@@ -1,7 +1,7 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
 Última actualización: 2026-09-17 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: Landing con su código pendiente de cierre (veredicto real del revisor-visual: NO LISTA, placeholders pendientes de app real, ver "Problemas conocidos") / Siguiente acción exacta: avanzar a la etapa pendiente de Onboarding (el cierre de landing queda pendiente hasta tener screenshots reales de la app interna)
+⏸️ CHECKPOINT — Última acción completada: Onboarding con cierre pendiente (Paso 2) — flujo de 10 pasos escrito, probado a mano de punta a punta en el navegador, tsc limpio, veredicto real registrado con defectos ya corregidos (ver "Puertas de etapa") / Siguiente acción exacta: avanzar al Paywall (Paso 3 de la secuencia maestra); el stub honesto en /paywall ya existe mientras tanto
 
 ## Qué es esta app (3 líneas máximo)
 Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit, postura y actitud según el evento (cita, entrevista, fiesta), con hábitos diarios de presencia. Para jóvenes de 18-32 años LATAM con inseguridad de imagen. Monetiza con suscripción freemium por niveles + trial de 3 días.
@@ -57,7 +57,16 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   variante anónima). Mecanismo bautizado: "el Check de Presencia" — 3 pasos (subís foto y
   ocasión → Niki analiza outfit/postura/actitud → recibís 3 ajustes). Copy completo y trazado en
   `docs/copy/landing.md`.
-- Onboarding: pendiente de construir — primera decisión: seleccionar ocasión (entrevista / cita / negocios / salida / cena formal / vacaciones — 6 opciones ya diseñadas en el tour de FICHA-ARTE)
+- Onboarding: cierre pendiente (código escrito en `app/onboarding/page.tsx`, 2026-09-17) — 10 pasos: 1) ocasión
+  (6 opciones) · 2) dolor que más frena (eco de FICHA-AVATAR) · 3) reconocimiento dinámico según
+  la respuesta · 4) qué ya intentó (objeción de la ficha) · 5) momento del día (ancla contextual,
+  02B) · 6) slider de frecuencia/semana (compromiso, A6 de 50) · 7) reconocimiento final con
+  etiquetado + resumen de sus respuestas · 8) subir foto (activación real; con opción honesta
+  "ver un ejemplo" porque la IA todavía no está conectada) · 9) loading "Construyendo tu Check de
+  Presencia" con líneas personalizadas reales (labor illusion, B de 50) · 10) resultado — MOCKUP
+  HONESTO rotulado "vista previa · resultado de ejemplo" (nunca se presenta como análisis real de
+  la foto subida, ver 19/50 §C3ter) → CTA a `/paywall`. Barra de progreso con endowed progress
+  (arranca en 8%), auto-avance en preguntas de opción única, atrás disponible desde el paso 2.
 - Paywall: pendiente — oferta principal: VIP Pro con trial de 3 días
 - Login/Auth: pendiente — motivo de pedir cuenta: guardar historial de scans y desbloquear plan pagado
 - App interna: pendiente — secciones candidatas (a confirmar en Sesión 5): Hoy (nuevo scan) / Historial / Hábitos (tracker) / Cuenta-Plan
@@ -76,7 +85,15 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   y ya corregido en esta sesión: `useReveal` en `components/landing/ui.tsx` no respetaba
   `prefers-reduced-motion` (contenido nacía en opacity:0); se corrigió para que nazca visible.
   Re-revisar con el revisor-visual cuando se monten los screenshots reales del carrusel.
-- Onboarding: no iniciada
+- Onboarding: código escrito, pendiente de aprobación — veredicto REAL del revisor-visual
+  (docs/revisiones/onboarding-veredicto.md, sobre la primera pregunta del flujo): Usabilidad
+  29/40, Craft 10/20. Defectos reales que SÍ se corrigieron en esta sesión tras el veredicto:
+  (1) fondo plano → se aplicó el degradé atardecer real de FICHA-ARTE.md, (2) sin affordance de
+  salida → se agregó botón X que lleva a "/", (3) espacio muerto abajo → contenido centrado
+  verticalmente, (4) chips sin stagger de entrada → agregado con reduced-motion respetado. NO
+  se volvió a pasar el revisor-visual sobre la versión corregida (pendiente, próxima sesión) —
+  documentado aquí para que quien retome sepa que el puntaje de arriba es de ANTES de esas 4
+  correcciones, no del estado actual.
 - Paywall: no iniciada
 - Login/Auth: no iniciada
 - App interna: no iniciada
