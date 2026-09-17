@@ -30,4 +30,11 @@
 - Registro anti-repetición: paleta (degradé naranja-amarillo `#FF9457→#FFE9B0` + acento marrón `#7A3E1D`) y par tipográfico (Unbounded + Manrope) quedan vetados para el próximo proyecto del SO
 - Modo (claro/oscuro) DERIVADO por: pedido explícito del usuario — quería "atractiva, inspiradora, colorida" y "sin sol pero con tonalidad de amanecer/atardecer"; se descartó el modo oscuro original de la dirección B tras verla comparada con las otras 2
 
+## Logo / ícono de marca (confirmado)
+- Concepto: "El Anillo Niki" — el mismo anillo de progreso (Puntaje de Presencia) convertido en marca: arco abierto + punto de luz en su extremo
+- Fondo del ícono: degradé atardecer de la app (`#FF9457 → #FFE9B0`), NO marrón sólido — pedido explícito del usuario: "que resalte con los demás colores de la app sin que sea rosa o azul"
+- Trazo del anillo: `#3C2412` (marrón oscuro, máximo contraste sobre el degradé) · en fondo oscuro (splash/redes): `#FFB768`
+- Wordmark: "niki" en minúscula, Unbounded 700
+- Assets pendientes de generar en alta resolución: ícono de app (maskable 512×512), favicon, OG image — usar el prompt guardado en `propuestas-logo.html` (raíz del proyecto) con un generador de imágenes (ChatGPT/Gemini); mientras tanto el SVG plano de `propuestas-logo.html` sirve como asset real (cumple la receta: flat, sin sombras/degradé en el trazo, legible a 16px)
+
 ## Idioma UI: Español (LATAM, tuteo) · Fecha de cierre de la ficha: 2026-09-17 · Aprobada por el usuario: SÍ
