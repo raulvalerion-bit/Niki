@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="es" data-kit="abc-v2">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tour de la app — Niki (Glow Atardecer)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ============================================================================
+  vista-previa-app.html — EL TOUR DE LA APP (54, cierre del Protocolo A/B/C)
+  Nace de direcciones-abc.html: se conserva SOLO la opción elegida (B, "Glow
+  Atardecer", con los 3 ajustes del usuario ya aplicados) y se duplica el frame
+  del teléfono para 4 vistas nuevas. Marcador data-kit="abc-v2" conservado.
+============================================================================= -->
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background:
+      radial-gradient(1100px 520px at 12% -6%, #f7f7f9, transparent 62%),
+      radial-gradient(900px 460px at 92% 4%, #e2e2e9, transparent 58%),
+      linear-gradient(180deg, #ededf0, #e4e4e9);
+    color: #1c1c1f;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 32px 20px 64px;
+  }
+  .cabecera { max-width: 1180px; margin: 0 auto 12px; }
+  .cabecera h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  .cabecera p.sub { margin-top: 6px; font-size: 14px; color: #55555c; max-width: 70ch; }
+
+  .salidas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .salidas span {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid #c9c9cf; border-radius: 999px;
+    padding: 6px 12px; font-size: 12.5px; font-weight: 600; color: #3a3a40;
+    background: #f7f7f8;
+  }
+  .salidas b { color: #1c1c1f; }
+  .aviso-fuentes { max-width: 1180px; margin: 10px auto 28px; font-size: 12.5px; color: #6a6a72; }
+
+  .vistas { max-width: 1180px; margin: 0 auto; display: grid; gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .vista { display: flex; flex-direction: column; gap: 12px; }
+  .rotulo-vista { text-align: center; font-size: 13px; font-weight: 700; color: #2a2a2e; }
+  .rotulo-vista span { display: block; font-size: 11px; font-weight: 600; color: #85858e;
+                        text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+
+  /* ── Chasis de teléfono ── */
+  .telefono {
+    width: 300px; margin: 0 auto; aspect-ratio: 9 / 19.5;
+    border: 10px solid #101014; border-radius: 46px;
+    box-shadow: 0 24px 60px rgb(20 18 24 / 0.28);
+    overflow: hidden; position: relative; display: flex; flex-direction: column;
+  }
+  .statusbar { display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px 6px; font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .statusbar .der { display: flex; align-items: center; gap: 5px; }
+  .home-indicator { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
+    width: 116px; height: 5px; border-radius: 999px; opacity: 0.55; }
+  .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .chip-icono { display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; flex-shrink: 0; }
+  .cta { display: flex; align-items: center; justify-content: center;
+    height: 48px; font-size: 15px; font-weight: 600; letter-spacing: 0.01em; }
+  .tabbar { display: flex; align-items: stretch; justify-content: space-around;
+    margin: 12px -18px 0; padding: 8px 8px 16px;
+    border-top: 1px solid color-mix(in oklab, var(--text-2) 18%, transparent);
+    background: color-mix(in oklab, var(--surface) 88%, transparent); }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px;
+    font-size: 9.5px; font-weight: 600; color: var(--text-2); text-decoration: none; }
+  .tabbar .tab-chip { display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 26px; border-radius: 9px; }
+  .tabbar a.activa { color: var(--accent); }
+  .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--accent) 14%, transparent); }
+
+  .pie { max-width: 1180px; margin: 40px auto 0; font-size: 12.5px; color: #6a6a72;
+    border-top: 1px solid #d0d0d6; padding-top: 14px; line-height: 1.6; }
+
+  /* ==========================================================================
+     DIRECCIÓN ELEGIDA: B — Glow Atardecer (tokens confirmados, ya ajustados
+     3 veces por el usuario: fondo atardecer, texto/botón, acento marrón)
+     ========================================================================== */
+  .op-b {
+    --bg: #ffd39a;
+    --bg-gradient: linear-gradient(180deg, #ff9457 0%, #ffb768 42%, #ffd98a 78%, #ffe9b0 100%);
+    --surface: #fff3de;
+    --text-1: #3c2412;
+    --text-2: #8a6448;
+    --accent: #7a3e1d;
+    --accent-2: #b7de2a;
+    --radius-card: 18px;
+    --radius-btn: 14px;
+    --font-display: 'Unbounded', sans-serif;
+    --font-body: 'Manrope', sans-serif;
+    --shadow-tinta: 140 60 20;
+  }
+  .op-b .telefono { background: var(--bg-gradient); }
+  .op-b .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
+  .op-b .statusbar { color: var(--text-1); }
+  .op-b .home-indicator { background: var(--text-1); }
+  .op-b .cta { color: #fff; border-radius: var(--radius-btn);
+    background: var(--accent); box-shadow: 0 8px 24px color-mix(in oklab, var(--accent) 28%, transparent); }
+
+  .op-b .encabezado-b { margin-top: 12px; text-align: center; }
+  .op-b .encabezado-b .periodo { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
+  .op-b h3.titulo-b { font-family: var(--font-display); font-size: 21px; font-weight: 700;
+    letter-spacing: -0.02em; margin-top: 2px; }
+  .op-b .anillo-wrap { margin: 14px auto 0; position: relative; width: 132px; height: 132px; }
+  .op-b .anillo-wrap .centro { position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; }
+  .op-b .anillo-wrap .pct { font-family: var(--font-display); font-size: 30px; font-weight: 700; }
+  .op-b .anillo-wrap .pct-label { font-size: 10.5px; color: var(--text-2); font-weight: 600; }
+  .op-b .grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+  .op-b .tile { background: var(--surface); border-radius: var(--radius-card);
+    border: 1px solid rgb(60 36 18 / 0.10);
+    box-shadow: 0 6px 16px -8px rgb(var(--shadow-tinta) / 0.22); padding: 12px; }
+  .op-b .tile.destacada { border: 1.5px solid transparent;
+    background: linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(135deg, color-mix(in oklab, var(--accent) 50%, transparent), transparent 60%) border-box; }
+  .op-b .tile .t-label { display: flex; align-items: center; gap: 6px;
+    font-size: 10.5px; font-weight: 600; color: var(--text-2); }
+  .op-b .tile .t-dato { margin-top: 6px; font-family: var(--font-display); font-size: 21px;
+    font-weight: 700; letter-spacing: -0.02em; }
+  .op-b .tile .t-dato small { font-size: 12px; color: var(--text-2); font-weight: 600; }
+
+  /* Vista 2: Onboarding — barra de progreso + pregunta + opciones */
+  .op-b .barra-progreso { margin-top: 14px; height: 5px; border-radius: 999px;
+    background: rgb(60 36 18 / 0.14); overflow: hidden; }
+  .op-b .barra-progreso i { display: block; height: 100%; width: 40%; border-radius: 999px;
+    background: var(--accent); }
+  .op-b .paso-label { margin-top: 8px; font-size: 11px; font-weight: 700; color: var(--text-2);
+    text-transform: uppercase; letter-spacing: 0.06em; }
+  .op-b h3.pregunta { font-family: var(--font-display); font-size: 21px; font-weight: 700;
+    line-height: 1.2; margin-top: 8px; }
+  .op-b .quiz-opciones { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .op-b .quiz-opcion { display: flex; align-items: center; gap: 12px;
+    background: var(--surface); border-radius: var(--radius-card);
+    border: 1.5px solid rgb(60 36 18 / 0.12); padding: 12px 14px; }
+  .op-b .quiz-opcion.activa { border-color: var(--accent);
+    box-shadow: 0 6px 16px -8px rgb(var(--shadow-tinta) / 0.3); }
+  .op-b .quiz-opcion .chip-icono { border-radius: var(--radius-btn);
+    background: color-mix(in oklab, var(--accent) 12%, transparent); }
+  .op-b .quiz-opcion span.txt { font-size: 14px; font-weight: 700; }
+  .op-b .quiz-opcion .check { margin-left: auto; width: 20px; height: 20px; border-radius: 999px;
+    border: 1.5px solid rgb(60 36 18 / 0.25); display: flex; align-items: center; justify-content: center; }
+  .op-b .quiz-opcion.activa .check { background: var(--accent); border-color: var(--accent); }
+
+  /* Vista 3: Paywall — planes */
+  .op-b .paywall-titulo { margin-top: 14px; font-family: var(--font-display); font-size: 22px;
+    font-weight: 700; line-height: 1.18; }
+  .op-b .paywall-sub { margin-top: 6px; font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
+  .op-b .planes { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .op-b .plan { background: var(--surface); border-radius: var(--radius-card);
+    border: 1.5px solid rgb(60 36 18 / 0.12); padding: 12px 14px; position: relative; }
+  .op-b .plan.recomendado { border-color: var(--accent);
+    box-shadow: 0 8px 20px -8px rgb(var(--shadow-tinta) / 0.3); }
+  .op-b .plan .badge { position: absolute; top: -10px; right: 14px; background: var(--accent);
+    color: #fff; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+  .op-b .plan .fila { display: flex; align-items: baseline; justify-content: space-between; }
+  .op-b .plan .nombre { font-size: 14px; font-weight: 700; }
+  .op-b .plan .precio { font-family: var(--font-display); font-size: 17px; font-weight: 700; }
+  .op-b .plan .precio small { font-size: 11px; font-weight: 600; color: var(--text-2); }
+  .op-b .plan .nota { margin-top: 3px; font-size: 11px; color: var(--text-2); }
+  .op-b .garantia { margin-top: 12px; font-size: 11px; color: var(--text-2); text-align: center; line-height: 1.5; }
+
+  /* Vista 4: Scan completo — 3 ejes expandidos */
+  .op-b .scan-titulo { margin-top: 12px; font-family: var(--font-display); font-size: 20px;
+    font-weight: 700; }
+  .op-b .eje { margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
+    border: 1px solid rgb(60 36 18 / 0.10); padding: 12px 14px; display: flex; gap: 12px; }
+  .op-b .eje .chip-icono { border-radius: var(--radius-btn);
+    background: color-mix(in oklab, var(--accent) 12%, transparent); }
+  .op-b .eje .fila-eje { display: flex; align-items: center; justify-content: space-between; }
+  .op-b .eje h4 { font-size: 13.5px; font-weight: 700; }
+  .op-b .eje .nota-eje { font-family: var(--font-display); font-size: 13px; font-weight: 700;
+    color: var(--accent); }
+  .op-b .eje p { margin-top: 2px; font-size: 12px; color: var(--text-2); line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<header class="cabecera">
+  <h1>👀 El tour de Niki por dentro — dirección B, Glow Atardecer</h1>
+  <p class="sub">
+    Así se vería tu app completa con el estilo que elegiste (y los 3 ajustes que pediste:
+    fondo atardecer, marrón neutral, y los textos nuevos). 4 vistas clave, mismo sistema en todas.
+  </p>
+  <div class="salidas" role="list">
+    <span role="listitem"><b>1 · Me encanta</b> — sigamos con este estilo</span>
+    <span role="listitem"><b>2 · Ajusta un detalle</b> — un color, una vista, un texto</span>
+    <span role="listitem"><b>3 · Prefiero repensar</b> — volvemos a las opciones</span>
+  </div>
+</header>
+<p class="aviso-fuentes">
+  Verificación de fuentes: si el título de cada pantalla se ve en letra redondeada gruesa
+  (Unbounded), la fuente cargó bien.
+</p>
+
+<div class="vistas">
+
+  <!-- ═══════════════ VISTA 1 — Tu pantalla de cada día ═══════════════ -->
+  <div class="vista">
+    <p class="rotulo-vista">Tu pantalla de cada día<span>Lo primero que ves al abrir Niki</span></p>
+    <div class="telefono op-b">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/><rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M3.8 6.6a6.2 6.2 0 0 1 8.4 0"/><path d="M6.2 9a2.8 2.8 0 0 1 3.6 0"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/><rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </span>
+      </div>
+      <div class="pantalla">
+        <div class="encabezado-b">
+          <p class="periodo">Sáb 19:00 · Cita</p>
+          <h3 class="titulo-b">Vas a entrar seguro hoy</h3>
+        </div>
+        <div class="anillo-wrap">
+          <svg width="132" height="132" viewBox="0 0 132 132" role="img" aria-label="Puntaje de presencia 82 por ciento">
+            <circle cx="66" cy="66" r="57" fill="none" stroke-width="11" stroke="rgba(122,62,29,0.16)"/>
+            <circle cx="66" cy="66" r="57" fill="none" stroke-width="11" stroke="#7a3e1d" stroke-linecap="round" stroke-dasharray="358.1" stroke-dashoffset="64.5" transform="rotate(-90 66 66)"/>
+          </svg>
+          <div class="centro"><span class="pct">82%</span><span class="pct-label">presencia hoy</span></div>
+        </div>
+        <div class="grid2x2">
+          <div class="tile destacada">
+            <p class="t-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a9c1e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Actitud</p>
+            <p class="t-dato">9<small>/10</small></p>
+          </div>
+          <div class="tile">
+            <p class="t-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Outfit</p>
+            <p class="t-dato">8<small>/10</small></p>
+          </div>
+          <div class="tile">
+            <p class="t-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 8l5-5 5 5"/></svg>Postura</p>
+            <p class="t-dato">7<small>/10</small></p>
+          </div>
+          <div class="tile">
+            <p class="t-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 2.6 6.9L22 9.3l-5.4 4.6 1.8 7.1L12 17l-6.4 4 1.8-7.1L2 9.3l7.4-.4Z"/></svg>Racha</p>
+            <p class="t-dato">12<small> días</small></p>
+          </div>
+        </div>
+        <div class="cta">Ver mi imagen completa</div>
+        <nav class="tabbar" aria-label="Navegación">
+          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>Historial</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 9h18"/></svg></span>Hábitos</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ VISTA 2 — Así te pregunta al empezar ═══════════════ -->
+  <div class="vista">
+    <p class="rotulo-vista">Así te pregunta al empezar<span>Una pregunta del onboarding</span></p>
+    <div class="telefono op-b">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/><rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M3.8 6.6a6.2 6.2 0 0 1 8.4 0"/><path d="M6.2 9a2.8 2.8 0 0 1 3.6 0"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/><rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </span>
+      </div>
+      <div class="pantalla">
+        <div class="barra-progreso"><i></i></div>
+        <p class="paso-label">Paso 2 de 5</p>
+        <h3 class="pregunta">¿Para qué ocasión quieres tu primer Check de Presencia?</h3>
+        <div class="quiz-opciones">
+          <div class="quiz-opcion activa">
+            <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
+            <span class="txt">Entrevista de trabajo</span>
+            <span class="check">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+          </div>
+          <div class="quiz-opcion">
+            <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></span>
+            <span class="txt">Primera cita</span>
+            <span class="check"></span>
+          </div>
+          <div class="quiz-opcion">
+            <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <span class="txt">Reunión de negocios</span>
+            <span class="check"></span>
+          </div>
+          <div class="quiz-opcion">
+            <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.6 6.9L22 9.3l-5.4 4.6 1.8 7.1L12 17l-6.4 4 1.8-7.1L2 9.3l7.4-.4Z"/></svg></span>
+            <span class="txt">Salida con amigos</span>
+            <span class="check"></span>
+          </div>
+        </div>
+        <div class="cta">Continuar</div>
+        <nav class="tabbar" aria-label="Navegación" style="visibility:hidden;">
+          <a class="activa" href="#"><span class="tab-chip"></span>·</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ VISTA 3 — Aquí eliges tu plan ═══════════════ -->
+  <div class="vista">
+    <p class="rotulo-vista">Aquí eliges tu plan<span>El paywall, después de tu primer Scan</span></p>
+    <div class="telefono op-b">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/><rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M3.8 6.6a6.2 6.2 0 0 1 8.4 0"/><path d="M6.2 9a2.8 2.8 0 0 1 3.6 0"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/><rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </span>
+      </div>
+      <div class="pantalla">
+        <p class="paso-label" style="margin-top:12px;">Tu primer Scan: 82/100</p>
+        <h3 class="paywall-titulo">Desbloquea tus 3 ajustes y tu Modo Alto Impacto</h3>
+        <p class="paywall-sub">Con VIP Pro accedés a análisis ilimitados, preparación para eventos y tu racha Glow-Up completa.</p>
+        <div class="planes">
+          <div class="plan recomendado">
+            <span class="badge">3 días gratis</span>
+            <div class="fila"><span class="nombre">VIP Pro · Anual</span><span class="precio">$6.67<small>/mes</small></span></div>
+            <p class="nota">$79.99/año · 2 meses gratis vs. el mensual</p>
+          </div>
+          <div class="plan">
+            <div class="fila"><span class="nombre">VIP Pro · Mensual</span><span class="precio">$14.99<small>/mes</small></span></div>
+            <p class="nota">Se renueva cada mes · cancela cuando quieras</p>
+          </div>
+        </div>
+        <div class="cta" style="margin-top:14px;">Empezar mi prueba gratis de 3 días</div>
+        <p class="garantia">Sin cobro hoy · cancela cuando quieras · Niki nunca comparte tus fotos</p>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ VISTA 4 — Así ves tu Scan completo ═══════════════ -->
+  <div class="vista">
+    <p class="rotulo-vista">Así ves tu Scan completo<span>El mecanismo: los 3 ejes explicados</span></p>
+    <div class="telefono op-b">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/><rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M3.8 6.6a6.2 6.2 0 0 1 8.4 0"/><path d="M6.2 9a2.8 2.8 0 0 1 3.6 0"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/><rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </span>
+      </div>
+      <div class="pantalla">
+        <h3 class="scan-titulo">Tu Scan · Cita de hoy</h3>
+        <div class="eje">
+          <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+          <div>
+            <div class="fila-eje"><h4>Outfit</h4><span class="nota-eje">8/10</span></div>
+            <p>El saco oscuro combina mejor con tu pantalón que el gris de hoy.</p>
+          </div>
+        </div>
+        <div class="eje">
+          <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a3e1d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 8l5-5 5 5"/></svg></span>
+          <div>
+            <div class="fila-eje"><h4>Postura</h4><span class="nota-eje">7/10</span></div>
+            <p>Hombros atrás, barbilla nivelada — así entras con autoridad.</p>
+          </div>
+        </div>
+        <div class="eje">
+          <span class="chip-icono" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a9c1e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <div>
+            <div class="fila-eje"><h4>Actitud</h4><span class="nota-eje">9/10</span></div>
+            <p>Mirada sostenida 3 segundos antes de hablar — transmite calma.</p>
+          </div>
+        </div>
+        <div class="cta" style="margin-top:12px;">Guardar en mi historial</div>
+        <nav class="tabbar" aria-label="Navegación">
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Hoy</a>
+          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>Historial</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 9h18"/></svg></span>Hábitos</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="pie">
+  Tour construido a partir de direcciones-abc.html (misma opción B, mismos tokens ya ajustados
+  3 veces por el usuario) — marcador data-kit="abc-v2" conservado. Gates: fuentes verificadas,
+  cero emojis como íconos (SVG inline), mockups llenos con tab bar, materiales premium (hairline,
+  sombra tintada, chips). Con la aprobación del usuario, esto se vuelca en FICHA-ARTE.md y queda
+  archivado en docs/revisiones/ junto a su screenshot.
+</footer>
+
+</body>
+</html>
