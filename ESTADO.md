@@ -1,7 +1,22 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-09-17 | Sesión actual: 1
+Última actualización: 2026-09-18 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: Onboarding con cierre pendiente (Paso 2) — flujo de 10 pasos escrito, probado a mano de punta a punta en el navegador, tsc limpio, veredicto real registrado con defectos ya corregidos (ver "Puertas de etapa") / Siguiente acción exacta: avanzar al Paywall (Paso 3 de la secuencia maestra); el stub honesto en /paywall ya existe mientras tanto
+⏸️ CHECKPOINT — Última acción completada: camino completo de la app construido y APROBADO A OJO
+por el usuario de punta a punta — Onboarding (Paso 2, 8 pantallas), Paywall (Paso 3), Login (Paso
+4, sin contraseña), App interna (Paso 5: Hoy/Historial/Hábitos/Perfil). Logo Anillo Niki confirmado
+(chip con degradé atardecer) + tagline "Tus ejes de Presencia e Imagen" aplicados en el encabezado
+de las 8+4 pantallas. Todo commiteado a git (5 commits de esta sesión, terminan en el commit que
+registra este ESTADO.md). Sin backend real todavía (Supabase/Hotmart/IA no conectados) — cada
+pantalla que necesitaría datos reales avisa con honestidad en vez de inventarlos. / Siguiente
+acción exacta: al retomar, preguntar al usuario si quiere seguir ajustando detalles visuales o si
+pasa a la Sesión de Servicios externos (conectar GitHub/Supabase/IA/Vercel/Resend/dominio/Hotmart)
+para que todo funcione de verdad — es lo único que falta para tener una v1 vendible completa.
+
+⚠️ Nota para quien retome: en la sesión anterior el usuario confundió dos artefactos distintos del
+proyecto — el Tour de la app (`vista-previa-app.html`, maqueta fija de Sesión 2, ya cerrada) y el
+Onboarding real (`app/onboarding/page.tsx`, funcional). Ya se resolvió (el logo y la barra de
+pestañas del Tour ya están aplicados donde correspondía de verdad), pero si vuelve a pedir algo que
+suene a esa maqueta, verificar primero A CUÁL pantalla real se refiere.
 
 ## Qué es esta app (3 líneas máximo)
 Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit, postura y actitud según el evento (cita, entrevista, fiesta), con hábitos diarios de presencia. Para jóvenes de 18-32 años LATAM con inseguridad de imagen. Monetiza con suscripción freemium por niveles + trial de 3 días.
@@ -34,13 +49,20 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Modelo: Onboarding-first con preview→paywall (el usuario sube su primera foto en el onboarding, ve un resultado personalizado parcial, y ahí se le presenta el paywall con trial)
 - Justificación: app de uso diario/hábito (4-7 veces/semana, no un resultado de una sola vez) con resultado altamente personalizable que vale la pena mostrar antes de pedir pago — patrón validado por Cal AI/Noom para nichos de bienestar personal con onboarding emocional
 - Diseño del paywall: resultado personalizado visible (primer "Scan de Presencia"), 2 planes (Básico y VIP Pro), precio con ancla anual, garantía, CTA con beneficio concreto
-- Trial: 3 días de acceso completo al plan VIP Pro (definido por el usuario en su investigación) — permite vivir el "aha" de un Scan completo + Modo Alto Impacto antes del primer cobro
+- Trial: 3 días de acceso completo al plan VIP Pro — permite vivir el "aha" de un Scan completo +
+  Modo Alto Impacto antes del primer cobro. ACTUALIZADO 2026-09-18 (a pedido explícito del
+  usuario, tras revisar un benchmark de paywalls de alta conversión): el trial va SOLO en el plan
+  Anual — el Mensual cobra desde el primer día, sin prueba. Implementado en `app/paywall/page.tsx`.
 - Puente del trial D1-D7: pendiente de diseñar en Sesión 5 (momentos de valor por día)
-- Pricing (ACTUALIZADO en la landing, 2026-09-17): se simplificó a UN plan "VIP Pro" con 2
-  frecuencias de pago (se elimina la separación Básico/VIP para reducir fricción de elección
-  mientras el producto es nuevo — decisión informada, no re-abierta sin avisar): Anual $8.99/mes
-  (se cobra $107.88/año, ~5 meses gratis vs. mensual) · Mensual $14.99/mes · trial de 3 días en
-  ambos. Puede reintroducirse un tier Básico más adelante con datos reales de uso.
+- Pricing (NO TOCAR sin nueva investigación de mercado — 2026-09-18 se evaluó y se descartó a
+  propósito bajarlo a $49.99/año por sugerencia externa sin respaldo de FICHA-MERCADO.md): UN plan
+  "VIP Pro" con 2 frecuencias de pago (se elimina la separación Básico/VIP para reducir fricción
+  de elección mientras el producto es nuevo): Anual $8.99/mes (se cobra $107.88/año, ~5 meses
+  gratis vs. mensual, ≈$0.30/día) · Mensual $14.99/mes. Puede reintroducirse un tier Básico más
+  adelante con datos reales de uso.
+- Prueba social (estrellas/testimonios): PROHIBIDO agregarla hasta tener compradores reales —
+  Niki no tiene usuarios todavía; se evaluó y se descartó a propósito por sugerencia externa
+  (2026-09-18). Ver nota igual en `app/onboarding/page.tsx` y `app/paywall/page.tsx`.
 
 ## Gamificación y retención (Sesión 4-5 — pendiente)
 - Loop del hábito: pendiente de documentar en Sesión 4
@@ -49,7 +71,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Notificaciones de re-enganche: pendiente
 
 ## Secuencia maestra de construcción (NO saltar)
-- Estado de la secuencia: landing con cierre pendiente — sigue la etapa pendiente de Onboarding en paralelo (el cierre de landing depende de tener la app real, no bloquea empezar la siguiente etapa de código)
+- Estado de la secuencia: landing con cierre pendiente (no bloquea) — Onboarding y Paywall con UI aprobada a ojo por el usuario — sigue Login (Paso 4)
 - Ruta aprobada: `/` → `/onboarding` → `/paywall` → `/login` → `/app`
 - Landing: código de las 10 secciones canónicas hecho, pendiente de aprobación final (ver
   "Puertas de etapa" y "Problemas conocidos") — protagonista: el Check de Presencia (mecanismo
@@ -57,19 +79,40 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   variante anónima). Mecanismo bautizado: "el Check de Presencia" — 3 pasos (subís foto y
   ocasión → Niki analiza outfit/postura/actitud → recibís 3 ajustes). Copy completo y trazado en
   `docs/copy/landing.md`.
-- Onboarding: cierre pendiente (código escrito en `app/onboarding/page.tsx`, 2026-09-17) — 10 pasos: 1) ocasión
-  (6 opciones) · 2) dolor que más frena (eco de FICHA-AVATAR) · 3) reconocimiento dinámico según
-  la respuesta · 4) qué ya intentó (objeción de la ficha) · 5) momento del día (ancla contextual,
-  02B) · 6) slider de frecuencia/semana (compromiso, A6 de 50) · 7) reconocimiento final con
-  etiquetado + resumen de sus respuestas · 8) subir foto (activación real; con opción honesta
-  "ver un ejemplo" porque la IA todavía no está conectada) · 9) loading "Construyendo tu Check de
-  Presencia" con líneas personalizadas reales (labor illusion, B de 50) · 10) resultado — MOCKUP
-  HONESTO rotulado "vista previa · resultado de ejemplo" (nunca se presenta como análisis real de
-  la foto subida, ver 19/50 §C3ter) → CTA a `/paywall`. Barra de progreso con endowed progress
-  (arranca en 8%), auto-avance en preguntas de opción única, atrás disponible desde el paso 2.
-- Paywall: pendiente — oferta principal: VIP Pro con trial de 3 días
-- Login/Auth: pendiente — motivo de pedir cuenta: guardar historial de scans y desbloquear plan pagado
-- App interna: pendiente — secciones candidatas (a confirmar en Sesión 5): Hoy (nuevo scan) / Historial / Hábitos (tracker) / Cuenta-Plan
+- Onboarding: v2 (2026-09-18), 8 pantallas — 1) apertura/hook · 2) objetivo (4 opciones, incluye
+  "Mejorar mi imagen personal día con día") · 3) dolor que más frena · 4) reconocimiento "Tiene
+  sentido" (ícono dinámico según el dolor) · 5) ocasión (6 opciones, grid 2 columnas) · 6) tiempo
+  a dedicar (2 opciones + nota de ayuda) · 7) reconocimiento "¡Vamos avanzando!" (ícono cohete) ·
+  8) resultado "¡Tu plan de Presencia está listo!" con 4 tarjetas bloqueadas (Outfit/Postura/
+  Actitud/Racha, sin números inventados — decisión a propósito, ver comentario al inicio de
+  `app/onboarding/page.tsx`) → CTA a `/paywall`. Logo "niki" (Anillo Niki) visible arriba a la
+  izquierda en todas las pantallas. Aprobado a ojo por el usuario (no pasó el gate automático
+  ≥36/40+16/20 del revisor-visual tras 5 rondas — quedó en ~28/40+13/20 con defectos residuales
+  de gusto/espacio; el usuario revisó las capturas él mismo y dio el visto bueno, así que se
+  prioriza su aprobación directa sobre el puntaje automático).
+- Paywall: construido (2026-09-18) en `app/paywall/page.tsx` — 1 plan "VIP Pro" con selector
+  Anual ($8.99/mes, facturado anual, badge "3 días gratis", preseleccionado) / Mensual
+  ($14.99/mes) + 3 bullets de beneficios + CTA "¡Comienzo mi prueba de tres días gratis!" → lleva
+  a `/login`. Sin conexión a Hotmart todavía (Servicios externos sigue bloqueado) — el botón no
+  cobra nada. Aprobado a ojo por el usuario.
+- Login/Auth: construido (2026-09-18) en `app/login/page.tsx` — sin contraseña, correo + código
+  de 6 dígitos (decisión Hotmart-first de `26-AUTH-MODERNO.md`), con la ruta de rescate "compré y
+  no me llega" que `18-VENTA-HOTMART.md` exige desde el día 1. Sin backend real todavía (Supabase/
+  Resend no conectados) — el flujo está simulado (cualquier código de 6 dígitos completo avanza)
+  para que se vea y se sienta terminado; se conecta de verdad en Servicios externos. Lleva a `/app`
+  (nuevo stub honesto). Motivo de pedir cuenta: guardar historial de scans y desbloquear plan pagado.
+- App interna: construida (2026-09-18) — 4 pantallas con barra de pestañas compartida
+  (`app/app/layout.tsx`): Hoy (`app/app/page.tsx`, ritual M0 con foto+ocasión funcional, la IA
+  responde con aviso honesto porque todavía no está conectada — nunca inventa un resultado),
+  Historial (`historial/page.tsx`, empty state real de día 1), Hábitos (`habitos/page.tsx`,
+  tracker semanal con fechas reales), Perfil (`perfil/page.tsx`, cuenta/plan/legales). Sin
+  persistencia real (no hay Supabase): racha, hábito y plan mostrados son el estado de un usuario
+  recién registrado, no datos guardados de verdad todavía. ACTUALIZADO 2026-09-18 a pedido del
+  usuario: el contador de "Hoy" es de GEMAS, no de racha de días — se gana 1 gema por cada Check
+  con calificación obtenida (mecánica de gamificación nueva, pendiente de: definir si las gemas
+  desbloquean algo o son solo progreso visible — se decide cuando se diseñe el loop completo de
+  `24-GAMIFICACION.md`). Ocasiones del Check: mismas 6 de la landing/onboarding (Entrevista, Cita,
+  Negocios, Amigos, Cena formal, Vacaciones).
 - Servicios externos: pendiente — GitHub/Supabase/IA/Vercel/Resend/dominio/Hotmart
 - Regla: si una etapa anterior está pendiente, NO construir la etapa siguiente salvo prototipo marcado como tal.
 
@@ -85,17 +128,15 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   y ya corregido en esta sesión: `useReveal` en `components/landing/ui.tsx` no respetaba
   `prefers-reduced-motion` (contenido nacía en opacity:0); se corrigió para que nazca visible.
   Re-revisar con el revisor-visual cuando se monten los screenshots reales del carrusel.
-- Onboarding: código escrito, pendiente de aprobación — veredicto REAL del revisor-visual
-  (docs/revisiones/onboarding-veredicto.md, sobre la primera pregunta del flujo): Usabilidad
-  29/40, Craft 10/20. Defectos reales que SÍ se corrigieron en esta sesión tras el veredicto:
-  (1) fondo plano → se aplicó el degradé atardecer real de FICHA-ARTE.md, (2) sin affordance de
-  salida → se agregó botón X que lleva a "/", (3) espacio muerto abajo → contenido centrado
-  verticalmente, (4) chips sin stagger de entrada → agregado con reduced-motion respetado. NO
-  se volvió a pasar el revisor-visual sobre la versión corregida (pendiente, próxima sesión) —
-  documentado aquí para que quien retome sepa que el puntaje de arriba es de ANTES de esas 4
-  correcciones, no del estado actual.
-- Paywall: no iniciada
-- Login/Auth: no iniciada
+- Onboarding: v2 aprobada A OJO por el usuario (2026-09-18) tras varias rondas de ajuste de
+  contenido y estilo — el gate automático del revisor-visual NO se alcanzó (última medición:
+  Usabilidad 28/40, Craft 13/20, bajo el umbral 36/40+16/20) por defectos menores de espacio y
+  gusto donde el propio revisor se contradecía entre rondas; el usuario vio las 8 capturas y
+  aprobó directamente. Pendiente si se quiere cerrar del todo: una pasada más del revisor-visual
+  sobre la versión final (con logo, títulos centrados y copy actuales) — no bloqueante.
+- Paywall: construida y aprobada a ojo por el usuario (2026-09-18) — sin pasar por revisor-visual
+  todavía (pendiente si se quiere el veredicto formal antes de conectar Hotmart).
+- Login/Auth: no iniciada (stub honesto en su lugar)
 - App interna: no iniciada
 - Servicios externos: bloqueados
 - Certificado /100: pendiente
