@@ -1,16 +1,17 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-09-18 | Sesión actual: 1
+Última actualización: 2026-09-19 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: camino completo de la app construido y APROBADO A OJO
-por el usuario de punta a punta — Onboarding (Paso 2, 8 pantallas), Paywall (Paso 3), Login (Paso
-4, sin contraseña), App interna (Paso 5: Hoy/Historial/Hábitos/Perfil). Logo Anillo Niki confirmado
-(chip con degradé atardecer) + tagline "Tus ejes de Presencia e Imagen" aplicados en el encabezado
-de las 8+4 pantallas. Todo commiteado a git (5 commits de esta sesión, terminan en el commit que
-registra este ESTADO.md). Sin backend real todavía (Supabase/Hotmart/IA no conectados) — cada
-pantalla que necesitaría datos reales avisa con honestidad en vez de inventarlos. / Siguiente
-acción exacta: al retomar, preguntar al usuario si quiere seguir ajustando detalles visuales o si
-pasa a la Sesión de Servicios externos (conectar GitHub/Supabase/IA/Vercel/Resend/dominio/Hotmart)
-para que todo funcione de verdad — es lo único que falta para tener una v1 vendible completa.
+⏸️ CHECKPOINT — PAUSA A PEDIDO DEL USUARIO (2026-09-19): quedó bloqueado 48h de su cuenta de
+Google/GitHub/Supabase por intentos fallidos de contraseña — no puede seguir hasta que se libere
+(aprox. 2026-09-21). Todo el trabajo está guardado: working tree limpio, todo commiteado Y
+subido a GitHub (`raulvalerion-bit/Niki`, rama `main`). Camino completo de la app construido y
+aprobado a ojo por el usuario (Onboarding→Paywall→Login→App interna), y "Servicios externos" ya
+arrancó: GitHub conectado, Supabase con esquema y auth real conectados (ver detalle más abajo en
+"Servicios externos"). / Siguiente acción exacta al retomar: (1) preguntar si ya se liberó su
+cuenta, (2) si sí, retomar exactamente en el pendiente (a) de "Servicios externos" — revisar/
+editar la plantilla de correo "Magic Link" en Supabase para que muestre `{{ .Token }}`, y recién
+ahí se puede probar el login real de punta a punta por primera vez. Antes de tocar código nuevo,
+re-leer esta sección completa de "Servicios externos" — quedaron 3 pendientes anotados ahí.
 
 ⚠️ Nota para quien retome: en la sesión anterior el usuario confundió dos artefactos distintos del
 proyecto — el Tour de la app (`vista-previa-app.html`, maqueta fija de Sesión 2, ya cerrada) y el
