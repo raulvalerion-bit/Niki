@@ -134,7 +134,31 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   para la próxima sesión: si un GIF que manda el usuario se ve como un glifo pequeño y oscuro
   sobre el degradé de la app, verificar SIEMPRE en el navegador en 2 momentos distintos de su
   animación antes de darlo por bueno — puede ser texto revelándose, no un ícono.
-- Servicios externos: pendiente — GitHub/Supabase/IA/Vercel/Resend/dominio/Hotmart
+- Servicios externos (2026-09-19, en progreso — orden de `SECUENCIA-MAESTRA-CONSTRUCCION.md` §Paso 6):
+  1. GitHub: ✅ conectado — repo privado `raulvalerion-bit/Niki`, rama `main`, todo commiteado.
+  2. Supabase: ✅ proyecto creado (`yniyllfhoydkdqowiunr`, región Oregon US) + esquema aplicado
+     (`supabase/migrations/20260919000000_esquema_inicial.sql`: profiles/checks/habito_registros,
+     RLS con el patrón `(select auth.uid())`, trigger que crea el profile al registrarse). Auth
+     real conectado: `/login` usa `signInWithOtp`/`verifyOtp` de verdad (antes estaba simulado).
+     Las 4 pantallas de la App interna ya leen/escriben datos reales (gemas, historial de checks,
+     hábito semanal, correo/plan en Perfil — antes eran placeholders). `middleware.ts` protege
+     `/app/*` (redirige a `/login` sin sesión) y saca de `/login` a quien ya está adentro.
+     PENDIENTE dentro de este paso: (a) la plantilla de correo "Magic Link" en el dashboard de
+     Supabase necesita mostrar `{{ .Token }}` para que el código de 6 dígitos sea visible — el
+     usuario se quedó bloqueado 48h de su cuenta de Google antes de poder revisarlo, retomar ahí;
+     (b) las fotos de los Checks NO suben a Supabase Storage todavía (el registro se guarda sin
+     `foto_url`) — falta crear el bucket y conectar la subida; (c) las respuestas del onboarding
+     (objetivo/dolor/ocasión/tiempo) no se están guardando en el profile todavía porque el
+     onboarding es anónimo y ocurre ANTES del login — falta decidir cómo pasarlas (localStorage +
+     escribirlas al profile justo después del primer login es la opción más simple).
+  3. IA real (BFF): pendiente.
+  4. Vercel: pendiente.
+  5. Resend: pendiente.
+  6. Dominio: pendiente.
+  7. Hotmart: pendiente.
+  Variables de entorno: `.env.example` (commiteado, plantilla) y `.env.local` (real, en
+  `.gitignore` — NUNCA se sube). La clave secreta de Supabase que el usuario compartió sin querer
+  en el chat el 2026-09-19 se le pidió rotar — no quedó guardada en ningún archivo del proyecto.
 - Regla: si una etapa anterior está pendiente, NO construir la etapa siguiente salvo prototipo marcado como tal.
 
 ## Puertas de etapa (aprobación antes de avanzar)

@@ -4,18 +4,17 @@
 // pantalla más vista de la app. Blueprint de las 4 piezas: (1) el dato de
 // hoy, (2) la acción de 1 tap, (3) el estado de la racha, (4) el insight.
 //
-// Este es un usuario RECIÉN registrado (día 1): sin scans, sin racha, sin
-// insight todavía — es el estado real, no una falla. NO se inventa historial
-// para que "se vea llena" (esa regla es para pantallas de DEMO/marketing, no
-// para el dato personal de un usuario real). El botón principal abre el
-// selector de foto/ocasión (funciona de verdad) pero el análisis por IA
-// todavía no está conectado (ESTADO.md: "Servicios externos: bloqueados") —
-// se avisa con honestidad en vez de inventar un resultado.
+// CONECTADO a Supabase (2026-09-19): las gemas se leen de verdad del profile
+// del usuario. El botón principal guarda un registro real en `checks` (foto
+// todavía sin subir a Storage — pendiente, ver ESTADO.md) pero el análisis
+// por IA todavía no está conectado — se avisa con honestidad en vez de
+// inventar un resultado (misma regla que en onboarding/page.tsx).
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Camera, Briefcase, Heart, Handshake, Users, UtensilsCrossed, Palmtree } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { crearClienteSupabase } from '@/lib/supabase/client';
 
 type Paso = 'inicio' | 'foto' | 'procesando';
 
@@ -29,16 +28,50 @@ const OCASIONES: { valor: string; label: string; icon: LucideIcon }[] = [
 ];
 
 export default function Hoy() {
+  const supabase = crearClienteSupabase();
   const [paso, setPaso] = useState<Paso>('inicio');
   const [ocasion, setOcasion] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [gemas, setGemas] = useState<number | null>(null);
+  const [guardando, setGuardando] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const reduce = useReducedMotion();
+
+  useEffect(() => {
+    let activo = true;
+    (async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase.from('profiles').select('gemas').eq('id', user.id).single();
+      if (activo && data) setGemas(data.gemas);
+    })();
+    return () => {
+      activo = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function onArchivo(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setPreview(URL.createObjectURL(file));
+  }
+
+  async function analizarPresencia() {
+    if (!ocasion) return;
+    setGuardando(true);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (user) {
+      // La foto todavía no sube a Supabase Storage (pendiente, ver ESTADO.md)
+      // — se guarda el registro para que Historial ya muestre algo real.
+      await supabase.from('checks').insert({ user_id: user.id, ocasion, estado: 'pendiente' });
+    }
+    setGuardando(false);
+    setPaso('procesando');
   }
 
   if (paso === 'procesando') {
@@ -57,7 +90,7 @@ export default function Hoy() {
           Ya casi está tu Check de Presencia
         </h1>
         <p className="mt-3 max-w-[300px] text-[15px] leading-[1.5] text-[var(--text-primary)]">
-          Estamos conectando el análisis por IA — es lo próximo que construimos. Tu foto quedó lista, te avisamos apenas puedas ver tu resultado.
+          Estamos conectando el análisis por IA — es lo próximo que construimos. Tu Check quedó guardado, te avisamos apenas puedas ver tu resultado.
         </p>
         <button
           type="button"
@@ -124,11 +157,11 @@ export default function Hoy() {
         <motion.button
           type="button"
           whileTap={{ scale: 0.97 }}
-          disabled={!preview || !ocasion}
-          onClick={() => setPaso('procesando')}
+          disabled={!preview || !ocasion || guardando}
+          onClick={() => void analizarPresencia()}
           className="mt-6 flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)] disabled:opacity-40"
         >
-          Analizar mi presencia
+          {guardando ? 'Guardando…' : 'Analizar mi presencia'}
         </motion.button>
       </div>
     );
@@ -157,7 +190,7 @@ export default function Hoy() {
           <img src="/iconos/icono-3-gema.gif" alt="" aria-hidden="true" className="size-6" />
         </span>
         <div>
-          <p className="text-[14px] font-semibold text-[var(--text-primary)]">Tus gemas: 0</p>
+          <p className="text-[14px] font-semibold text-[var(--text-primary)]">Tus gemas: {gemas ?? 0}</p>
           <p className="text-[13px] text-[var(--text-secondary)]">Ganas una gema cada vez que obtienes tu calificación.</p>
         </div>
       </div>

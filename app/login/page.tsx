@@ -7,18 +7,17 @@
 // con el correo de la compra). Incluye la RUTA DE RESCATE "compré y no me
 // llega" que 18-VENTA-HOTMART.md exige desde el día 1.
 //
-// SIN BACKEND todavía (ESTADO.md: "Servicios externos: bloqueados") — no hay
-// Supabase ni Resend conectados. Esta pantalla simula el flujo real (paso
-// correo → paso código) para que el camino completo se vea y se sienta
-// terminado; el envío real de correo y la verificación del código se
-// conectan en la Sesión de servicios externos. El botón final lleva a /app
-// (stub honesto, mismo patrón que /paywall y /login tenían antes).
+// CONECTADO a Supabase Auth (2026-09-19, Sesión de servicios externos):
+// signInWithOtp manda el correo con el código; verifyOtp lo valida. El
+// trigger on_auth_user_created (ver supabase/migrations) crea el profile
+// automáticamente la primera vez que alguien entra con un correo nuevo.
 
 import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import { Mail, ArrowLeft, X, LifeBuoy } from 'lucide-react';
+import { crearClienteSupabase } from '@/lib/supabase/client';
 
 type Paso = 'correo' | 'codigo' | 'rescate';
 
@@ -81,9 +80,9 @@ function Encabezado({ onAtras, mostrarAtras }: { onAtras: () => void; mostrarAtr
   );
 }
 
-/** Casillas de código de 6 dígitos con auto-avance — sin backend real todavía,
-    cualquier código completo (6 dígitos) continúa (ESTADO.md lo documenta). */
-function CasillasCodigo({ onCompleto }: { onCompleto: () => void }) {
+/** Casillas de código de 6 dígitos con auto-avance — verifica contra Supabase
+    al completarse; si el código está mal, limpia y deja escribir de nuevo. */
+function CasillasCodigo({ onCompleto, deshabilitado }: { onCompleto: (codigo: string) => void; deshabilitado: boolean }) {
   const [digitos, setDigitos] = useState<string[]>(Array(6).fill(''));
   const refs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -94,7 +93,7 @@ function CasillasCodigo({ onCompleto }: { onCompleto: () => void }) {
     setDigitos(siguientes);
     if (limpio && i < 5) refs.current[i + 1]?.focus();
     if (siguientes.every((d) => d !== '')) {
-      setTimeout(onCompleto, 250);
+      onCompleto(siguientes.join(''));
     }
   }
 
@@ -116,10 +115,11 @@ function CasillasCodigo({ onCompleto }: { onCompleto: () => void }) {
           inputMode="numeric"
           maxLength={1}
           value={d}
+          disabled={deshabilitado}
           onChange={(e) => cambiar(i, e.target.value)}
           onKeyDown={(e) => onKeyDown(i, e)}
           aria-label={`Dígito ${i + 1} del código`}
-          className={`h-14 w-11 rounded-[var(--radius-button)] border-2 bg-[var(--surface)] text-center text-[22px] font-bold text-[var(--text-primary)] shadow-[var(--shadow-1)] [font-family:var(--font-display)] ${
+          className={`h-14 w-11 rounded-[var(--radius-button)] border-2 bg-[var(--surface)] text-center text-[22px] font-bold text-[var(--text-primary)] shadow-[var(--shadow-1)] [font-family:var(--font-display)] disabled:opacity-60 ${
             d ? 'border-[var(--accent)]' : 'border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)]'
           }`}
         />
@@ -130,18 +130,49 @@ function CasillasCodigo({ onCompleto }: { onCompleto: () => void }) {
 
 export default function Login() {
   const router = useRouter();
+  const supabase = crearClienteSupabase();
   const [paso, setPaso] = useState<Paso>('correo');
   const [correo, setCorreo] = useState('');
   const [enviando, setEnviando] = useState(false);
+  const [verificando, setVerificando] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function enviarCodigo() {
+    if (!correo.includes('@')) return;
+    setEnviando(true);
+    setError(null);
+    const { error: errorEnvio } = await supabase.auth.signInWithOtp({
+      email: correo,
+      options: { shouldCreateUser: true },
+    });
+    setEnviando(false);
+    if (errorEnvio) {
+      setError('No pudimos enviar el acceso — revisa el correo e intenta de nuevo.');
+      return;
+    }
+    setPaso('codigo');
+  }
 
   function enviarAcceso(e: React.FormEvent) {
     e.preventDefault();
-    if (!correo.includes('@')) return;
-    setEnviando(true);
-    setTimeout(() => {
-      setEnviando(false);
-      setPaso('codigo');
-    }, 600);
+    void enviarCodigo();
+  }
+
+  async function verificarCodigo(codigo: string) {
+    setVerificando(true);
+    setError(null);
+    const { error: errorVerificacion } = await supabase.auth.verifyOtp({
+      email: correo,
+      token: codigo,
+      type: 'email',
+    });
+    setVerificando(false);
+    if (errorVerificacion) {
+      setError('Ese código no es válido o venció — pide uno nuevo.');
+      return;
+    }
+    router.push('/app');
+    router.refresh();
   }
 
   return (
@@ -217,15 +248,17 @@ export default function Login() {
             Si <span className="font-semibold">{correo}</span> tiene una cuenta, le llegó un enlace y un código de 6 dígitos. Escribe el código aquí:
           </p>
 
-          <CasillasCodigo onCompleto={() => router.push('/app')} />
+          <CasillasCodigo onCompleto={verificarCodigo} deshabilitado={verificando} />
+          {error && <p className="mt-4 text-[13px] font-medium text-[#b3261e]">{error}</p>}
 
           <div className="mt-8 flex flex-col items-center gap-3">
             <button
               type="button"
-              onClick={() => setPaso('codigo')}
-              className="text-[13px] font-medium text-[var(--text-secondary)]"
+              onClick={() => void enviarCodigo()}
+              disabled={enviando}
+              className="text-[13px] font-medium text-[var(--text-secondary)] disabled:opacity-60"
             >
-              Reenviar código
+              {enviando ? 'Reenviando…' : 'Reenviar código'}
             </button>
             <button
               type="button"
@@ -244,13 +277,7 @@ export default function Login() {
             ¿Compraste y no te llega el acceso?
           </h1>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setPaso('codigo');
-            }}
-            className="mt-6"
-          >
+          <form onSubmit={enviarAcceso} className="mt-6">
             <input
               type="email"
               inputMode="email"
@@ -265,9 +292,10 @@ export default function Login() {
             <motion.button
               type="submit"
               whileTap={{ scale: 0.97 }}
-              className="mt-4 flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)]"
+              disabled={enviando}
+              className="mt-4 flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)] disabled:opacity-70"
             >
-              Reenviar mi acceso
+              {enviando ? 'Enviando…' : 'Reenviar mi acceso'}
             </motion.button>
           </form>
 
