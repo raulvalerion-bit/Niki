@@ -281,7 +281,13 @@ function ChipOpcion({
 function PantallaApertura({ onIniciar }: { onIniciar: () => void }) {
   return (
     <div className="flex min-h-[85vh] flex-col items-center justify-center pt-8 text-center">
-      <span className="flex size-16 items-center justify-center rounded-full bg-[var(--chip-bg)]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/iconos/banner-bienvenidos.png"
+        alt="¡Bienvenidos!"
+        className="w-full max-w-[280px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
+      />
+      <span className="mt-5 flex size-16 items-center justify-center rounded-full bg-[var(--chip-bg)]">
         <Sparkles size={30} color="var(--accent)" aria-hidden="true" />
       </span>
       <h1 className="mt-6 text-balance text-[30px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] [font-family:var(--font-display)]">
@@ -410,12 +416,15 @@ function PantallaPregunta({
 /** Pantalla de reconocimiento (A5 de 50): un solo CTA, recompensa, no decisión. */
 function PantallaReconocimiento({
   icon: Icono,
+  iconoSrc,
   titulo,
   texto,
   ctaLabel = 'Continuar',
   onContinuar,
 }: {
   icon: LucideIcon;
+  /** Ícono propio del usuario (gif/png) — si se pasa, reemplaza al ícono de librería. */
+  iconoSrc?: string;
   titulo: string;
   texto: string;
   ctaLabel?: string;
@@ -429,9 +438,14 @@ function PantallaReconocimiento({
           initial={reduce ? false : { scale: 0.4, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 300, damping: 18 }}
-          className="flex size-16 items-center justify-center rounded-full bg-[var(--chip-bg)]"
+          className="flex size-16 items-center justify-center overflow-hidden rounded-full bg-[var(--chip-bg)]"
         >
-          <Icono size={30} color="var(--accent)" aria-hidden="true" />
+          {iconoSrc ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={iconoSrc} alt="" aria-hidden="true" className="size-9" />
+          ) : (
+            <Icono size={30} color="var(--accent)" aria-hidden="true" />
+          )}
         </motion.span>
         <h1 className="mt-6 text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
           {titulo}
@@ -538,12 +552,6 @@ function PantallaResultado({
       </h1>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/iconos/carita-resultado.png" alt="" aria-hidden="true" className="mx-auto mt-3 size-20" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/iconos/banner-despedida.png"
-        alt="¡Me complace haberte ayudado hoy, te espero pronto!"
-        className="mx-auto mt-3 w-full max-w-[320px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
-      />
 
       <motion.div
         initial={reduce ? false : { scale: 0.92, opacity: 0 }}
@@ -748,6 +756,7 @@ export default function Onboarding() {
           {paso === 'reconocimiento2' && (
             <PantallaReconocimiento
               icon={Rocket}
+              iconoSrc="/iconos/icono-4-esperando.gif"
               titulo="¡Vamos avanzando!"
               texto="Ya que has identificado lo que te frena, tu Check de Presencia e Imagen quedará armado para la ocasión que elijas."
               ctaLabel="Ver mi Plan de Presencia e Imagen"

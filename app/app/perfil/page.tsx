@@ -69,6 +69,15 @@ export default function Perfil() {
         <LogOut size={16} aria-hidden="true" />
         Cerrar sesión
       </Link>
+
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/iconos/banner-despedida.png"
+        alt="¡Me complace haberte ayudado hoy, te espero pronto!"
+        className="mx-auto mt-6 w-full max-w-[320px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
+      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/iconos/carita-resultado.png" alt="" aria-hidden="true" className="mx-auto mt-3 size-20" />
     </div>
   );
 }

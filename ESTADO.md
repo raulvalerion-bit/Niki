@@ -114,16 +114,26 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   `24-GAMIFICACION.md`). Ocasiones del Check: mismas 6 de la landing/onboarding (Entrevista, Cita,
   Negocios, Amigos, Cena formal, Vacaciones).
 - Íconos de marca (2026-09-19): el usuario mandó assets propios (GIF/PNG) para reemplazar
-  íconos de librería en momentos clave — se guardan en `public/iconos/`. Aplicados: gema
-  (`icono-3-gema.gif`, tarjeta de gemas en Hoy), ícono de espera (`icono-4-esperando.gif`,
-  pantalla "procesando" de Hoy), carita en apertura del onboarding (`icono-7-carita-apertura.gif`),
-  carita + banner de despedida en el resultado del onboarding (`carita-resultado.png` +
-  `banner-despedida.png`, con el mensaje "¡Me complace haberte ayudado hoy, te espero pronto!").
-  Pendientes sin resolver: estrella y corazón que el usuario quería agregar junto a los anteriores
-  — nunca llegaron como archivo (solo se vieron en el chat), quedan pendientes si el usuario los
-  vuelve a mandar. Varios GIFs que mandó primero (`icono-1/5/6/8.gif`, `icono-9-carita-resultado.gif`)
-  resultaron ser un texto animado con marca de agua, no íconos — se descartaron, quedan en
-  `public/iconos/` sin usar por si hace falta revisar el motivo.
+  íconos de librería en momentos clave — se guardan en `public/iconos/`. Aplicados:
+  - Onboarding apertura: banner "¡Bienvenidos!" (`banner-bienvenidos.png`) arriba de todo,
+    carita (`icono-7-carita-apertura.gif`) bajo el título.
+  - Onboarding reconocimiento2 ("¡Vamos avanzando!"): ícono de espera (`icono-4-esperando.gif`,
+    el mismo que en Hoy) — reemplazó al ícono Rocket de librería.
+  - Onboarding resultado: solo la carita (`carita-resultado.png`) bajo el título — el banner de
+    despedida que estaba aquí se movió a Perfil (ver abajo).
+  - Hoy (app interna): gema (`icono-3-gema.gif`, tarjeta de gemas) e ícono de espera
+    (`icono-4-esperando.gif`, pantalla "procesando").
+  - Perfil (app interna): banner de despedida (`banner-despedida.png`, "¡Me complace haberte
+    ayudado hoy, te espero pronto!") + carita (`carita-resultado.png`), debajo del enlace
+    "Cerrar sesión", sin título.
+  Pendientes sin resolver: estrella y corazón que el usuario quería agregar — nunca llegaron
+  como archivo (solo se vieron en el chat), quedan pendientes si el usuario los vuelve a mandar.
+  Varios GIFs que mandó primero (`icono-1/5/6/8.gif`, `icono-9-carita-resultado.gif`) resultaron
+  ser texto animado con marca de agua/frases reveladas letra por letra, no íconos — se
+  descartaron (quedan sin usar en `public/iconos/` por si hace falta revisar el motivo). Lección
+  para la próxima sesión: si un GIF que manda el usuario se ve como un glifo pequeño y oscuro
+  sobre el degradé de la app, verificar SIEMPRE en el navegador en 2 momentos distintos de su
+  animación antes de darlo por bueno — puede ser texto revelándose, no un ícono.
 - Servicios externos: pendiente — GitHub/Supabase/IA/Vercel/Resend/dominio/Hotmart
 - Regla: si una etapa anterior está pendiente, NO construir la etapa siguiente salvo prototipo marcado como tal.
 
