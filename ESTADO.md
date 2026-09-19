@@ -113,6 +113,17 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   desbloquean algo o son solo progreso visible — se decide cuando se diseñe el loop completo de
   `24-GAMIFICACION.md`). Ocasiones del Check: mismas 6 de la landing/onboarding (Entrevista, Cita,
   Negocios, Amigos, Cena formal, Vacaciones).
+- Íconos de marca (2026-09-19): el usuario mandó assets propios (GIF/PNG) para reemplazar
+  íconos de librería en momentos clave — se guardan en `public/iconos/`. Aplicados: gema
+  (`icono-3-gema.gif`, tarjeta de gemas en Hoy), ícono de espera (`icono-4-esperando.gif`,
+  pantalla "procesando" de Hoy), carita en apertura del onboarding (`icono-7-carita-apertura.gif`),
+  carita + banner de despedida en el resultado del onboarding (`carita-resultado.png` +
+  `banner-despedida.png`, con el mensaje "¡Me complace haberte ayudado hoy, te espero pronto!").
+  Pendientes sin resolver: estrella y corazón que el usuario quería agregar junto a los anteriores
+  — nunca llegaron como archivo (solo se vieron en el chat), quedan pendientes si el usuario los
+  vuelve a mandar. Varios GIFs que mandó primero (`icono-1/5/6/8.gif`, `icono-9-carita-resultado.gif`)
+  resultaron ser un texto animado con marca de agua, no íconos — se descartaron, quedan en
+  `public/iconos/` sin usar por si hace falta revisar el motivo.
 - Servicios externos: pendiente — GitHub/Supabase/IA/Vercel/Resend/dominio/Hotmart
 - Regla: si una etapa anterior está pendiente, NO construir la etapa siguiente salvo prototipo marcado como tal.
 

@@ -14,7 +14,7 @@
 
 import { useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
-import { Camera, Gem, Sparkles, Briefcase, Heart, Handshake, Users, UtensilsCrossed, Palmtree } from 'lucide-react';
+import { Camera, Briefcase, Heart, Handshake, Users, UtensilsCrossed, Palmtree } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 type Paso = 'inicio' | 'foto' | 'procesando';
@@ -50,7 +50,8 @@ export default function Hoy() {
           transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 260, damping: 20 }}
           className="flex size-16 items-center justify-center rounded-full bg-[var(--chip-bg)]"
         >
-          <Sparkles size={30} color="var(--accent)" aria-hidden="true" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/iconos/icono-4-esperando.gif" alt="" aria-hidden="true" className="size-10" />
         </motion.span>
         <h1 className="mt-6 text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]">
           Ya casi está tu Check de Presencia
@@ -152,7 +153,8 @@ export default function Hoy() {
 
       <div className="mt-6 flex w-full items-center gap-3 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">
         <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[var(--surface-2)] shadow-[inset_0_1px_3px_rgb(140_60_20_/_0.15)]">
-          <Gem size={20} color="var(--text-tertiary)" aria-hidden="true" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/iconos/icono-3-gema.gif" alt="" aria-hidden="true" className="size-6" />
         </span>
         <div>
           <p className="text-[14px] font-semibold text-[var(--text-primary)]">Tus gemas: 0</p>

@@ -287,6 +287,8 @@ function PantallaApertura({ onIniciar }: { onIniciar: () => void }) {
       <h1 className="mt-6 text-balance text-[30px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] [font-family:var(--font-display)]">
 ¡Tu <span className="text-[var(--accent)]">Check de Presencia e Imagen</span> antes de salir!
       </h1>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/iconos/icono-7-carita-apertura.gif" alt="" aria-hidden="true" className="mt-4 size-20" />
       <p className="mt-4 max-w-[320px] text-[16px] leading-[1.5] text-[var(--text-primary)]">
         Analizamos tu outfit, tu postura y tu actitud en 30 segundos — con tono de coach, nunca de juez.
       </p>
@@ -534,6 +536,14 @@ function PantallaResultado({
       <h1 className="mt-4 text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
         ¡Tu plan de <span className="text-[var(--accent)]">Presencia</span> está listo!
       </h1>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/iconos/carita-resultado.png" alt="" aria-hidden="true" className="mx-auto mt-3 size-20" />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/iconos/banner-despedida.png"
+        alt="¡Me complace haberte ayudado hoy, te espero pronto!"
+        className="mx-auto mt-3 w-full max-w-[320px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
+      />
 
       <motion.div
         initial={reduce ? false : { scale: 0.92, opacity: 0 }}
