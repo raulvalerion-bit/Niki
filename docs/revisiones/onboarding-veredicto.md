@@ -1,14 +1,14 @@
 # VEREDICTO revisor-visual — onboarding
-Fecha: 2026-09-17 00:00
-Screenshot: docs/revisiones/onboarding-375.png
-Usabilidad: 29/40
-Craft: 10/20
+Fecha: 2026-09-18 00:00
+Screenshot: docs/revisiones/onboarding-02-objetivo-375.png
+Usabilidad: 28/40
+Craft: 13/20
 Copy (si vende): N-A
 Fidelidad (si hubo referencia): N-A
 Veredicto: NO LISTA
 Top defectos:
-1. [fondo de toda la pantalla] FICHA-ARTE exige degradé `#FF9457→#FFB768→#FFD98A→#FFE9B0` ("atardecer sin sol"); el screenshot muestra un fill plano beige/crema sin degradé visible → aplicar el gradiente real en el body/contenedor raíz.
-2. [zona inferior, debajo del último chip "Vacaciones" hasta el ícono flotante] ~200px de espacio muerto sin balance visual, layout se siente incompleto/descentrado → centrar verticalmente el bloque de pregunta+chips o recortar el alto del contenedor al contenido.
-3. [Encabezado, todo el flujo] no existe ningún control para cerrar o saltar el onboarding completo, solo "volver" entre pasos (y en esta primera pantalla ni eso, queda invisible) → agregar affordance de salida (X o "saltar por ahora") en el componente Encabezado.
-4. [chips de opción + barra de progreso superior] sin ningún rasgo del dispositivo ownable de la ficha (anillo de progreso / textura); barra fina genérica + chips estándar son intercambiables con cualquier app de quiz (Duolingo, Cal AI) → introducir un guiño del "Anillo Niki" o textura de fondo también en pantallas de pregunta, no reservarlo solo a la pantalla de resultado.
-5. [lista de 6 chips, componente ChipOpcion en PantallaPregunta] en código, los 6 chips entran todos juntos dentro del mismo motion.div (sin stagger por ítem) → envolver cada ChipOpcion con delay incremental (i*0.04s), respetando useReducedMotion.
+1. [Toda pantalla: apertura, reconocimiento1/2, objetivo, dolor, ocasión, resultado] El contenido queda anclado arriba y deja la mitad inferior de la pantalla vacía (solo dos círculos decorativos tenues) → centrar verticalmente el bloque completo en pantallas cortas o llenar el tercio inferior con contenido real.
+2. [Título de apertura, opción "Glow-Up" en objetivo, titular de resultado] Anglicismo crudo "Glow-Up" repetido en 3 pantallas clave viola la regla de "0 inglés crudo en UI" → traducir o limitar su uso a una sola mención justificada.
+3. [FICHA-ARTE §Brand kit vs código onboarding/page.tsx] El acento secundario #B7DE2A reservado para el ícono de "Actitud" nunca se usa: ChipOpcion y las tarjetas del eje "Actitud" siempre pintan el ícono en var(--accent) marrón → aplicar el lima donde la ficha lo especifica o retirarlo de la ficha.
+4. [Pantalla "ocasión", grid de tarjetas] La decisión ofrece 5 opciones (4 en grid + "Otra ocasión importante" a ancho completo), supera el límite de ≤4 opciones por decisión del propio gate de carga cognitiva → fusionar dos ocasiones o convertir "Otra" en enlace de texto.
+5. [Títulos "¿Cuál es tu mayor frustración al vestirte antes de salir?" y "¿Para qué momentos necesitas a Niki con más urgencia?"] Ambos superan las 8 palabras del límite del sistema y ocupan 3 líneas completas en 28px bold, empujando las opciones hacia abajo → recortar a ≤8 palabras.
