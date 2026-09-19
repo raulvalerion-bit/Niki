@@ -287,9 +287,6 @@ function PantallaApertura({ onIniciar }: { onIniciar: () => void }) {
         alt="¡Bienvenidos!"
         className="w-full max-w-[280px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
       />
-      <span className="mt-5 flex size-16 items-center justify-center rounded-full bg-[var(--chip-bg)]">
-        <Sparkles size={30} color="var(--accent)" aria-hidden="true" />
-      </span>
       <h1 className="mt-6 text-balance text-[30px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] [font-family:var(--font-display)]">
 ¡Tu <span className="text-[var(--accent)]">Check de Presencia e Imagen</span> antes de salir!
       </h1>
