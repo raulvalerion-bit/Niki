@@ -1,17 +1,12 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-09-19 | Sesión actual: 1
+Última actualización: 2026-09-21 | Sesión actual: 1
 
-⏸️ CHECKPOINT — PAUSA A PEDIDO DEL USUARIO (2026-09-19): quedó bloqueado 48h de su cuenta de
-Google/GitHub/Supabase por intentos fallidos de contraseña — no puede seguir hasta que se libere
-(aprox. 2026-09-21). Todo el trabajo está guardado: working tree limpio, todo commiteado Y
-subido a GitHub (`raulvalerion-bit/Niki`, rama `main`). Camino completo de la app construido y
-aprobado a ojo por el usuario (Onboarding→Paywall→Login→App interna), y "Servicios externos" ya
-arrancó: GitHub conectado, Supabase con esquema y auth real conectados (ver detalle más abajo en
-"Servicios externos"). / Siguiente acción exacta al retomar: (1) preguntar si ya se liberó su
-cuenta, (2) si sí, retomar exactamente en el pendiente (a) de "Servicios externos" — revisar/
-editar la plantilla de correo "Magic Link" en Supabase para que muestre `{{ .Token }}`, y recién
-ahí se puede probar el login real de punta a punta por primera vez. Antes de tocar código nuevo,
-re-leer esta sección completa de "Servicios externos" — quedaron 3 pendientes anotados ahí.
+▶️ RETOMADO 2026-09-21: se liberó el bloqueo de 48h de la cuenta de Google/GitHub/Supabase. Se
+resolvió el pendiente (a) de "Servicios externos" (correo con código de acceso funcionando de
+verdad — ver detalle abajo) y se probó el login real de punta a punta por primera vez: funciona.
+Siguiente acción al retomar: seguir con los pendientes (b) y (c) de "Servicios externos" (fotos
+de los Checks a Storage, guardar respuestas del onboarding en el profile), o continuar con IA
+real (BFF), Vercel, dominio y Hotmart según la secuencia.
 
 ⚠️ Nota para quien retome: en la sesión anterior el usuario confundió dos artefactos distintos del
 proyecto — el Tour de la app (`vista-previa-app.html`, maqueta fija de Sesión 2, ya cerrada) y el
@@ -144,17 +139,22 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      Las 4 pantallas de la App interna ya leen/escriben datos reales (gemas, historial de checks,
      hábito semanal, correo/plan en Perfil — antes eran placeholders). `middleware.ts` protege
      `/app/*` (redirige a `/login` sin sesión) y saca de `/login` a quien ya está adentro.
-     PENDIENTE dentro de este paso: (a) la plantilla de correo "Magic Link" en el dashboard de
-     Supabase necesita mostrar `{{ .Token }}` para que el código de 6 dígitos sea visible — el
-     usuario se quedó bloqueado 48h de su cuenta de Google antes de poder revisarlo, retomar ahí;
-     (b) las fotos de los Checks NO suben a Supabase Storage todavía (el registro se guarda sin
+     (a) RESUELTO 2026-09-21: se activó SMTP propio con Resend (necesario porque Supabase no deja
+     editar el contenido de los correos sin un proveedor de correo propio conectado) y se agregó
+     `{{ .Token }}` a las plantillas "Confirm signup" y "Magic Link OTP". Login real probado de
+     punta a punta por primera vez: funciona. Hallazgo importante: el código que genera Supabase
+     para este proyecto es de **8 dígitos**, no 6 — se ajustó `app/login/page.tsx` (8 casillas,
+     copy actualizado) para que coincida; no se puede cambiar la longitud desde el dashboard.
+     PENDIENTE dentro de este paso: (b) las fotos de los Checks NO suben a Supabase Storage todavía (el registro se guarda sin
      `foto_url`) — falta crear el bucket y conectar la subida; (c) las respuestas del onboarding
      (objetivo/dolor/ocasión/tiempo) no se están guardando en el profile todavía porque el
      onboarding es anónimo y ocurre ANTES del login — falta decidir cómo pasarlas (localStorage +
      escribirlas al profile justo después del primer login es la opción más simple).
   3. IA real (BFF): pendiente.
   4. Vercel: pendiente.
-  5. Resend: pendiente.
+  5. Resend: ✅ conectado (2026-09-21) — SMTP propio activo en Supabase para el correo de acceso
+     (usa el remitente de prueba `onboarding@resend.dev`; pendiente cambiar a un correo con
+     dominio propio cuando exista el dominio real de Niki).
   6. Dominio: pendiente.
   7. Hotmart: pendiente.
   Variables de entorno: `.env.example` (commiteado, plantilla) y `.env.local` (real, en
@@ -182,7 +182,8 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   sobre la versión final (con logo, títulos centrados y copy actuales) — no bloqueante.
 - Paywall: construida y aprobada a ojo por el usuario (2026-09-18) — sin pasar por revisor-visual
   todavía (pendiente si se quiere el veredicto formal antes de conectar Hotmart).
-- Login/Auth: no iniciada (stub honesto en su lugar)
+- Login/Auth: construida y probada de punta a punta con datos reales (2026-09-21) — sin pasar
+  por revisor-visual todavía (pendiente si se quiere el veredicto formal)
 - App interna: no iniciada
 - Servicios externos: bloqueados
 - Certificado /100: pendiente

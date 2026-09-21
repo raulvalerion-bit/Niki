@@ -1,7 +1,7 @@
 'use client';
 
 // LOGIN DE NIKI — Paso 4 de la secuencia maestra (ESTADO.md).
-// Método: magic link + código de 6 dígitos por correo, SIN contraseña — es la
+// Método: magic link + código de 8 dígitos por correo, SIN contraseña — es la
 // "DECISIÓN HOTMART-FIRST" de docs/sistema/26-AUTH-MODERNO.md (la app se vende
 // por Hotmart, el webhook crea la cuenta sin contraseña, el comprador entra
 // con el correo de la compra). Incluye la RUTA DE RESCATE "compré y no me
@@ -80,10 +80,12 @@ function Encabezado({ onAtras, mostrarAtras }: { onAtras: () => void; mostrarAtr
   );
 }
 
-/** Casillas de código de 6 dígitos con auto-avance — verifica contra Supabase
-    al completarse; si el código está mal, limpia y deja escribir de nuevo. */
+/** Casillas de código de 8 dígitos con auto-avance — verifica contra Supabase
+    al completarse; si el código está mal, limpia y deja escribir de nuevo.
+    8 dígitos (no 6) porque así los genera el código real de Supabase para
+    este proyecto — confirmado en pruebas de la Sesión de servicios externos. */
 function CasillasCodigo({ onCompleto, deshabilitado }: { onCompleto: (codigo: string) => void; deshabilitado: boolean }) {
-  const [digitos, setDigitos] = useState<string[]>(Array(6).fill(''));
+  const [digitos, setDigitos] = useState<string[]>(Array(8).fill(''));
   const refs = useRef<(HTMLInputElement | null)[]>([]);
 
   function cambiar(i: number, valor: string) {
@@ -91,7 +93,7 @@ function CasillasCodigo({ onCompleto, deshabilitado }: { onCompleto: (codigo: st
     const siguientes = [...digitos];
     siguientes[i] = limpio;
     setDigitos(siguientes);
-    if (limpio && i < 5) refs.current[i + 1]?.focus();
+    if (limpio && i < 7) refs.current[i + 1]?.focus();
     if (siguientes.every((d) => d !== '')) {
       onCompleto(siguientes.join(''));
     }
@@ -104,7 +106,7 @@ function CasillasCodigo({ onCompleto, deshabilitado }: { onCompleto: (codigo: st
   }
 
   return (
-    <div className="mt-8 flex justify-center gap-2.5">
+    <div className="mt-8 flex justify-center gap-1.5">
       {digitos.map((d, i) => (
         <input
           key={i}
@@ -119,7 +121,7 @@ function CasillasCodigo({ onCompleto, deshabilitado }: { onCompleto: (codigo: st
           onChange={(e) => cambiar(i, e.target.value)}
           onKeyDown={(e) => onKeyDown(i, e)}
           aria-label={`Dígito ${i + 1} del código`}
-          className={`h-14 w-11 rounded-[var(--radius-button)] border-2 bg-[var(--surface)] text-center text-[22px] font-bold text-[var(--text-primary)] shadow-[var(--shadow-1)] [font-family:var(--font-display)] disabled:opacity-60 ${
+          className={`h-12 w-9 rounded-[var(--radius-button)] border-2 bg-[var(--surface)] text-center text-[17px] font-bold text-[var(--text-primary)] shadow-[var(--shadow-1)] [font-family:var(--font-display)] disabled:opacity-60 ${
             d ? 'border-[var(--accent)]' : 'border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)]'
           }`}
         />
@@ -245,7 +247,7 @@ export default function Login() {
             Revisa tu correo
           </h1>
           <p className="mt-3 max-w-[300px] text-[15px] leading-[1.5] text-[var(--text-primary)]">
-            Si <span className="font-semibold">{correo}</span> tiene una cuenta, le llegó un enlace y un código de 6 dígitos. Escribe el código aquí:
+            Si <span className="font-semibold">{correo}</span> tiene una cuenta, le llegó un enlace y un código de 8 dígitos. Escribe el código aquí:
           </p>
 
           <CasillasCodigo onCompleto={verificarCodigo} deshabilitado={verificando} />
