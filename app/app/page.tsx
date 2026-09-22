@@ -5,10 +5,11 @@
 // hoy, (2) la acción de 1 tap, (3) el estado de la racha, (4) el insight.
 //
 // CONECTADO a Supabase (2026-09-19): las gemas se leen de verdad del profile
-// del usuario. El botón principal guarda un registro real en `checks` (foto
-// todavía sin subir a Storage — pendiente, ver ESTADO.md) pero el análisis
-// por IA todavía no está conectado — se avisa con honestidad en vez de
-// inventar un resultado (misma regla que en onboarding/page.tsx).
+// del usuario. El botón principal sube la foto al bucket privado
+// `checks-fotos` (carpeta = user_id, ver migración de Storage) y guarda un
+// registro real en `checks` — pero el análisis por IA todavía no está
+// conectado — se avisa con honestidad en vez de inventar un resultado
+// (misma regla que en onboarding/page.tsx).
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
@@ -61,17 +62,36 @@ export default function Hoy() {
 
   async function analizarPresencia() {
     if (!ocasion) return;
+    const archivo = inputRef.current?.files?.[0];
     setGuardando(true);
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (user) {
-      // La foto todavía no sube a Supabase Storage (pendiente, ver ESTADO.md)
-      // — se guarda el registro para que Historial ya muestre algo real.
-      await supabase.from('checks').insert({ user_id: user.id, ocasion, estado: 'pendiente' });
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        let fotoUrl: string | null = null;
+        if (archivo) {
+          const extension = archivo.name.split('.').pop() ?? 'jpg';
+          const ruta = `${user.id}/${crypto.randomUUID()}.${extension}`;
+          const { error: errorSubida } = await supabase.storage.from('checks-fotos').upload(ruta, archivo);
+          if (errorSubida) {
+            console.error('No se pudo subir la foto del Check:', errorSubida.message);
+          } else {
+            fotoUrl = ruta;
+          }
+        }
+        const { error: errorInsert } = await supabase
+          .from('checks')
+          .insert({ user_id: user.id, ocasion, foto_url: fotoUrl, estado: 'pendiente' });
+        if (errorInsert) console.error('No se pudo guardar el Check:', errorInsert.message);
+      }
+    } finally {
+      // La foto/registro son "mejor esfuerzo": si algo falla igual avanzamos
+      // a la pantalla honesta de "todavía sin IA conectada" — nunca se deja
+      // al usuario con el botón trabado (regla de oro de UX del SO).
+      setGuardando(false);
+      setPaso('procesando');
     }
-    setGuardando(false);
-    setPaso('procesando');
   }
 
   if (paso === 'procesando') {

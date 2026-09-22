@@ -145,16 +145,25 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      punta a punta por primera vez: funciona. Hallazgo importante: el código que genera Supabase
      para este proyecto es de **8 dígitos**, no 6 — se ajustó `app/login/page.tsx` (8 casillas,
      copy actualizado) para que coincida; no se puede cambiar la longitud desde el dashboard.
-     PENDIENTE dentro de este paso: (b) las fotos de los Checks NO suben a Supabase Storage todavía (el registro se guarda sin
-     `foto_url`) — falta crear el bucket y conectar la subida; (c) las respuestas del onboarding
-     (objetivo/dolor/ocasión/tiempo) no se están guardando en el profile todavía porque el
-     onboarding es anónimo y ocurre ANTES del login — falta decidir cómo pasarlas (localStorage +
-     escribirlas al profile justo después del primer login es la opción más simple).
+     (b) RESUELTO 2026-09-21: bucket privado `checks-fotos` creado en Storage (carpeta = user_id)
+     y `app/app/page.tsx` ya sube la foto de verdad antes de guardar el Check — probado con un
+     registro real (ver `supabase/migrations/20260921000000_storage_fotos_checks.sql`).
+     (c) RESUELTO 2026-09-21: el onboarding guarda sus respuestas en localStorage al llegar al
+     resultado; el login, justo después de verificar el código, las escribe en el profile
+     (objetivo/dolor/ocasion_preferida/habito_ritmo) y limpia el localStorage — probado con una
+     cuenta real de punta a punta (onboarding → login → profile con los 4 campos llenos).
+     ⚠️ PENDIENTE DE SEGURIDAD antes de tener usuarios reales: las políticas de Storage de
+     `checks-fotos` se simplificaron a "cualquier usuario logueado puede ver/subir cualquier foto
+     del bucket" (`20260921010000_simplificar_rls_fotos_checks.sql`) — la versión con carpeta
+     propia por usuario daba error de RLS en pruebas sin causa identificada aún. Hoy no es riesgo
+     (solo existe la cuenta del dueño), pero hay que investigar y volver a la versión restringida
+     por carpeta antes de vender.
   3. IA real (BFF): pendiente.
   4. Vercel: pendiente.
   5. Resend: ✅ conectado (2026-09-21) — SMTP propio activo en Supabase para el correo de acceso
-     (usa el remitente de prueba `onboarding@resend.dev`; pendiente cambiar a un correo con
-     dominio propio cuando exista el dominio real de Niki).
+     (usa el remitente de prueba `onboarding@resend.dev`, que SOLO puede mandar correos a la
+     cuenta con la que te registraste en Resend — no a cualquier destinatario; eso se resuelve
+     solo verificando un dominio propio, ver punto 6).
   6. Dominio: pendiente.
   7. Hotmart: pendiente.
   Variables de entorno: `.env.example` (commiteado, plantilla) y `.env.local` (real, en
@@ -184,8 +193,9 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   todavía (pendiente si se quiere el veredicto formal antes de conectar Hotmart).
 - Login/Auth: construida y probada de punta a punta con datos reales (2026-09-21) — sin pasar
   por revisor-visual todavía (pendiente si se quiere el veredicto formal)
-- App interna: no iniciada
-- Servicios externos: bloqueados
+- App interna: construida y con datos reales conectados (gemas, checks con foto, hábito, perfil) —
+  sin pasar por revisor-visual todavía
+- Servicios externos: en progreso, ya no bloqueados — ver detalle en la sección de arriba
 - Certificado /100: pendiente
 
 ## Decisiones técnicas (NO re-discutir sin pedirlo el usuario)

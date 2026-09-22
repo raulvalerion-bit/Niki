@@ -639,6 +639,18 @@ export default function Onboarding() {
     window.scrollTo({ top: 0 });
   }, [pasoIdx]);
 
+  // El onboarding es anónimo (ocurre ANTES del login) — se guardan las
+  // respuestas en localStorage para que el login las escriba en el profile
+  // justo después del primer inicio de sesión (ver app/login/page.tsx).
+  useEffect(() => {
+    if (paso !== 'resultado') return;
+    try {
+      localStorage.setItem('niki_onboarding_respuestas', JSON.stringify(respuestas));
+    } catch {
+      // localStorage puede fallar en navegación privada — no bloquea el onboarding.
+    }
+  }, [paso, respuestas]);
+
   function avanzar() {
     setPasoIdx((i) => Math.min(i + 1, ORDEN.length - 1));
   }

@@ -168,13 +168,52 @@ export default function Login() {
       token: codigo,
       type: 'email',
     });
-    setVerificando(false);
     if (errorVerificacion) {
+      setVerificando(false);
       setError('Ese código no es válido o venció — pide uno nuevo.');
       return;
     }
+    await guardarRespuestasOnboarding();
+    setVerificando(false);
     router.push('/app');
     router.refresh();
+  }
+
+  // El onboarding guarda sus respuestas en localStorage (es anónimo, ocurre
+  // ANTES del login). Aquí, ya con sesión real, se pasan al profile una sola
+  // vez y se limpia — así el primer login "recuerda" lo que el usuario contó.
+  async function guardarRespuestasOnboarding() {
+    let guardado: string | null = null;
+    try {
+      guardado = localStorage.getItem('niki_onboarding_respuestas');
+    } catch {
+      return;
+    }
+    if (!guardado) return;
+    try {
+      const respuestas = JSON.parse(guardado) as {
+        objetivo?: string;
+        dolor?: string;
+        ocasion?: string;
+        tiempo?: string;
+      };
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        await supabase
+          .from('profiles')
+          .update({
+            objetivo: respuestas.objetivo ?? null,
+            dolor: respuestas.dolor ?? null,
+            ocasion_preferida: respuestas.ocasion ?? null,
+            habito_ritmo: respuestas.tiempo ?? null,
+          })
+          .eq('id', user.id);
+      }
+    } finally {
+      localStorage.removeItem('niki_onboarding_respuestas');
+    }
   }
 
   return (
