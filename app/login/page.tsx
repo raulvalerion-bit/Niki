@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import { Mail, ArrowLeft, X, LifeBuoy } from 'lucide-react';
 import { crearClienteSupabase } from '@/lib/supabase/client';
+import { registrarEvento, registrarSesionDiaria } from '@/lib/eventos';
 
 type Paso = 'correo' | 'codigo' | 'rescate';
 
@@ -28,21 +29,21 @@ function MarcaNiki() {
     <div className="flex items-center gap-2 pt-[max(16px,env(safe-area-inset-top))]">
       <span
         className="flex size-8 shrink-0 items-center justify-center rounded-[9px]"
-        style={{ background: 'linear-gradient(160deg, #FF9457 0%, #FFD98A 100%)' }}
+        style={{ background: 'linear-gradient(160deg, var(--sunset-1) 0%, var(--sunset-2) 100%)' }}
       >
         <svg width="16" height="16" viewBox="0 0 52 52" fill="none" aria-hidden="true">
           <circle
             cx="26"
             cy="26"
             r="19"
-            stroke="#3C2412"
+            stroke="var(--text-primary)"
             strokeWidth="7"
             strokeLinecap="round"
             strokeDasharray="119.4"
             strokeDashoffset="28"
             transform="rotate(-90 26 26)"
           />
-          <circle cx="26" cy="7.2" r="5" fill="#3C2412" />
+          <circle cx="26" cy="7.2" r="5" fill="var(--text-primary)" />
         </svg>
       </span>
       <div className="flex flex-col leading-tight">
@@ -174,6 +175,7 @@ export default function Login() {
       return;
     }
     await guardarRespuestasOnboarding();
+    await registrarAperturaYSesion();
     setVerificando(false);
     router.push('/app');
     router.refresh();
@@ -210,10 +212,28 @@ export default function Login() {
             habito_ritmo: respuestas.tiempo ?? null,
           })
           .eq('id', user.id);
+        // Se registra AQUÍ (login), no en el momento real del onboarding: el
+        // onboarding ocurre sin sesión (anónimo) y event_log exige un usuario
+        // autenticado para insertar (RLS) — ver lib/eventos.ts.
+        await registrarEvento(supabase, 'onboarding_completado', user.id);
       }
     } finally {
       localStorage.removeItem('niki_onboarding_respuestas');
     }
+  }
+
+  /** `app_abierta` (una vez en la vida, primera sesión) + `sesion_iniciada`
+      (una vez por día activo) — base de activación/retención (36-ANALITICA). */
+  async function registrarAperturaYSesion() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return;
+    const cuentaRecienCreada = Date.now() - new Date(user.created_at).getTime() < 2 * 60 * 1000;
+    if (cuentaRecienCreada) {
+      await registrarEvento(supabase, 'app_abierta', user.id);
+    }
+    await registrarSesionDiaria(supabase, user.id);
   }
 
   return (
@@ -290,7 +310,7 @@ export default function Login() {
           </p>
 
           <CasillasCodigo onCompleto={verificarCodigo} deshabilitado={verificando} />
-          {error && <p className="mt-4 text-[13px] font-medium text-[#b3261e]">{error}</p>}
+          {error && <p className="mt-4 text-sm font-medium text-[var(--error)]">{error}</p>}
 
           <div className="mt-8 flex flex-col items-center gap-3">
             <button

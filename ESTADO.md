@@ -1,12 +1,23 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-09-21 | Sesión actual: 1
+Última actualización: 2026-09-22 | Sesión actual: 1
 
-▶️ RETOMADO 2026-09-21: se liberó el bloqueo de 48h de la cuenta de Google/GitHub/Supabase. Se
-resolvió el pendiente (a) de "Servicios externos" (correo con código de acceso funcionando de
-verdad — ver detalle abajo) y se probó el login real de punta a punta por primera vez: funciona.
-Siguiente acción al retomar: seguir con los pendientes (b) y (c) de "Servicios externos" (fotos
-de los Checks a Storage, guardar respuestas del onboarding en el profile), o continuar con IA
-real (BFF), Vercel, dominio y Hotmart según la secuencia.
+▶️ RETOMADO 2026-09-22: se cerró el pendiente de seguridad de las fotos de los Checks (Storage
+restringido de nuevo a "cada usuario solo ve/sube las suyas") y se corrigió un permiso de más en
+la función que crea el profile al registrarse — ver detalle en "Servicios externos" punto 2(d).
+El usuario pidió construir el backoffice (panel del dueño) ANTES de seguir con la conexión de la
+IA real — desvío a propósito de la secuencia, documentado y aprobado por él.
+
+✅ BACKOFFICE construido, verificado Y APROBADO POR EL USUARIO EN VIVO (2026-09-22, ver sección
+propia abajo): probó las 6 pantallas en el navegador real, encontró y confirmó un bug real (React
+"same key" en el gráfico de Uso — corregido), pidió un retoque visual (más profundidad/premium —
+aplicado: chips de ícono, Hairline en cards clave, sección activa en el menú, animación de entrada,
+gráficas en Ventas/Negocio) y confirmó que ya se ve bien. Se encontró de paso un bug real de React
+Server Components (íconos de Lucide pasados sin renderizar de servidor a cliente) — corregido en
+`components/admin/ui.tsx` y `components/admin/nav.tsx` (patrón: el ícono se renderiza en el
+servidor ANTES de cruzar hacia una pieza de cliente, nunca se pasa el componente crudo). Panel
+100% funcional, sin bugs conocidos. Siguiente acción al retomar: seguir con IA real (BFF), Vercel,
+dominio y Hotmart — o continuar la conexión de Vercel↔GitHub que quedó a medias (ver "Servicios
+externos" punto 4, bloqueada esperando que el usuario autorice la app de GitHub en Vercel).
 
 ⚠️ Nota para quien retome: en la sesión anterior el usuario confundió dos artefactos distintos del
 proyecto — el Tour de la app (`vista-previa-app.html`, maqueta fija de Sesión 2, ya cerrada) y el
@@ -152,14 +163,25 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      resultado; el login, justo después de verificar el código, las escribe en el profile
      (objetivo/dolor/ocasion_preferida/habito_ritmo) y limpia el localStorage — probado con una
      cuenta real de punta a punta (onboarding → login → profile con los 4 campos llenos).
-     ⚠️ PENDIENTE DE SEGURIDAD antes de tener usuarios reales: las políticas de Storage de
-     `checks-fotos` se simplificaron a "cualquier usuario logueado puede ver/subir cualquier foto
-     del bucket" (`20260921010000_simplificar_rls_fotos_checks.sql`) — la versión con carpeta
-     propia por usuario daba error de RLS en pruebas sin causa identificada aún. Hoy no es riesgo
-     (solo existe la cuenta del dueño), pero hay que investigar y volver a la versión restringida
-     por carpeta antes de vender.
+     (d) RESUELTO 2026-09-22: se volvió a restringir el candado de Storage de `checks-fotos` a
+     "cada usuario solo ve/sube las suyas" (`20260922000000_restringir_rls_fotos_checks_por_usuario.sql`).
+     Se verificó con una simulación de `auth.uid()` en SQL que la condición carpeta=usuario
+     coincide exactamente con la ruta que arma `app/app/page.tsx` — el error de RLS que se vio el
+     2026-09-21 no volvió a reproducirse; probablemente fue una sesión no propagada a tiempo, no un
+     bug de la política. También se corrigió un hallazgo de la auditoría de seguridad de Supabase:
+     la función que crea el profile al registrarse (`handle_new_user`) tenía permiso de ejecución
+     público que no hacía falta — se le quitó (`20260922000001_restringir_execute_handle_new_user.sql`),
+     el registro de usuarios nuevos sigue funcionando igual. Queda 1 aviso menor sin acción: Supabase
+     sugiere activar "protección contra contraseñas filtradas", pero Niki no usa contraseñas (el
+     login es con código por correo), así que no aplica.
   3. IA real (BFF): pendiente.
-  4. Vercel: pendiente.
+  4. Vercel: EN PROGRESO (2026-09-22) — cuenta de Vercel ya existe y está alineada con la cuenta de
+     GitHub (`raulvalerion-bit`), pero el repo `Niki` todavía no tenía permiso para que Vercel lo
+     vea. Se le pidió al usuario autorizar la app de GitHub de Vercel para ese repo
+     (vercel.com/new → "Adjust GitHub App Permissions") — esperando su confirmación de "ya
+     aparece" para crear el proyecto Vercel conectado de forma persistente (no `vercel --prod`
+     suelto — 62-PUBLICACION-SEGURA-Y-CONTINUA.md exige `Settings → Git → Connected Git
+     Repository`) y configurar las variables de entorno públicas de Supabase en Vercel.
   5. Resend: ✅ conectado (2026-09-21) — SMTP propio activo en Supabase para el correo de acceso
      (usa el remitente de prueba `onboarding@resend.dev`, que SOLO puede mandar correos a la
      cuenta con la que te registraste en Resend — no a cualquier destinatario; eso se resuelve
@@ -170,6 +192,93 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   `.gitignore` — NUNCA se sube). La clave secreta de Supabase que el usuario compartió sin querer
   en el chat el 2026-09-19 se le pidió rotar — no quedó guardada en ningún archivo del proyecto.
 - Regla: si una etapa anterior está pendiente, NO construir la etapa siguiente salvo prototipo marcado como tal.
+
+## Backoffice — panel de administración del dueño (2026-09-22, en construcción)
+- Alcance acordado con el usuario (plan aprobado antes de construir): 6 pantallas en `/admin` —
+  Resumen (avisos automáticos), Ventas (ingresos/ganancia real/costo IA), Usuarios (lista + alta
+  manual + cambio de plan), Uso (activación/retención/función principal), Negocio (LTV/CAC/gasto
+  por canal) y Salud (errores + estado del webhook). Decisión de alcance explícita: SIN PostHog
+  (analítica externa, se evalúa en una sesión futura de `36-ANALITICA-Y-EVENTOS.md`) y SIN inventar
+  todavía la tabla de ventas/webhook de Hotmart (`18-VENTA-HOTMART.md` define su esquema propio —
+  se construye junto con la conexión real de Hotmart, no antes, para no tener que rehacerla).
+- Acceso: columna `profiles.role` ('user'/'admin', default 'user') + función `private.es_admin()`
+  (SECURITY DEFINER) usada en las políticas RLS de todas las tablas nuevas. El middleware
+  (`lib/supabase/middleware.ts`) exige sesión en `/admin/*`; el layout (`app/admin/layout.tsx`)
+  verifica el ROL en el servidor y redirige a `/app` si no es admin — dos capas, ninguna es "ocultar
+  el botón" (09-SEGURIDAD). La única cuenta que existe hoy (`raulvalerion@gmail.com`) quedó como
+  admin en la migración.
+- Tablas nuevas (`supabase/migrations/20260922020000_backoffice_esquema.sql`): `event_log`
+  (activación/retención/uso, RLS: inserta el propio usuario, lee solo el admin), `error_log`
+  (solo el servidor escribe vía `/api/log-error`, solo el admin lee), `ai_calls` (esquema canónico
+  de `31`, vacía hasta que la Sesión de IA empiece a escribir ahí — el backoffice ya sabe leerla),
+  `acquisition_spend` (el dueño anota a mano el gasto por canal, 100% admin).
+- ⚠️ HALLAZGO DE SEGURIDAD corregido de paso: la política `profiles_update_own` original no tenía
+  `with check` (forma "ingenua" que `09-SEGURIDAD.md` prohíbe expresamente) — cualquier usuario
+  logueado podía, desde la consola del navegador, escribir CUALQUIER columna de su propia fila,
+  incluyendo `plan` (regalarse un plan pagado gratis) y, tras agregar `role` en esta sesión, incluso
+  auto-nombrarse admin. Se corrigió con `with check` + GRANT por columna: el navegador (rol
+  `authenticated`) ahora SOLO puede escribir `objetivo/dolor/ocasion_preferida/habito_ritmo` (las
+  mismas 4 que ya usaba `app/login/page.tsx`); `role`/`plan`/`nombre`/etc. quedan fuera de su
+  alcance — solo se tocan desde rutas de servidor con la clave de servicio.
+- Alta manual de usuarios: `POST /api/admin/usuarios/crear` (email + nombre + plan opcional) usa
+  `supabase.auth.admin.createUser` SIN contraseña (mismo patrón passwordless que Hotmart) — el
+  usuario entra después con el código de 8 dígitos por correo, igual que un comprador real. Cambiar
+  el plan de alguien ya existente: `PATCH /api/admin/usuarios/[id]/plan`. Ambas rutas verifican
+  `private.es_admin()` en el servidor antes de tocar nada.
+- Instrumentación mínima de `event_log` (decisión de alcance: sin tocar las 8 pantallas del
+  onboarding paso a paso, eso es una sesión de analítica aparte): `app_abierta` y `sesion_iniciada`
+  en el primer login exitoso (`app/login/page.tsx`), `onboarding_completado` en ese mismo momento
+  (el onboarding es anónimo — sin sesión no se puede escribir en `event_log`, así que se registra
+  al login, no en el paso real), y `check_creado` al guardar un Check (`app/app/page.tsx`).
+- Error Boundaries nuevos (cerraban un hueco real de la regla de UX #18, "la app nunca muestra
+  pantalla blanca" — no existían antes de esta sesión): `app/error.tsx`, `app/app/error.tsx` y
+  `app/admin/error.tsx`, todos usando `components/ErrorFallback.tsx` → `POST /api/log-error` →
+  tabla `error_log`. Alimentan la sección Salud del backoffice.
+- Tokens de diseño agregados a `components/landing/tokens.css` (mismo archivo que tematiza toda la
+  app): `--chart-1/-2`, `--chart-positivo/-negativo`, `--border-default`, `--surface-elevated`
+  (para los gráficos Recharts del panel, instalado en esta sesión) y `--sunset-1/-2` + `--error`
+  (para reemplazar 4 hex sueltos que tenía `app/login/page.tsx` y que el linter de diseño marcó al
+  tocar ese archivo — cero cambio visual, mismos colores, ahora como token).
+- ⚠️ Pendiente de deuda de diseño (NO de esta sesión, preexistente): el linter de diseño
+  (`.claude/hooks/post-edit-diseno.sh`) marca en `app/login/page.tsx` varios tamaños de texto y el
+  ancho `max-w-[480px]` como "fuera de la escala 4·8·12·16·24·32·48·64" — son el MISMO patrón ya
+  usado (y ya aprobado por el usuario) en onboarding/paywall/app-interna/perfil; no se tocó para no
+  arriesgar una regresión visual en una pantalla ya probada de punta a punta. Si se quiere cerrar
+  del todo, es una pasada de pulido (`07-PULIDO.md`/`43`) sobre TODA la app a la vez, no archivo por
+  archivo.
+- Instalado: `recharts` (gráficos del panel, único uso hasta ahora).
+- Verificado en esta sesión (2026-09-22): `SUPABASE_SECRET_KEY` configurada por el usuario (paso a
+  paso guiado, sin pedir el valor — Protocolo Cero Secretos) · `npx tsc --noEmit` ✓ limpio ·
+  `npm run build` ✓ limpio, las 6 rutas de /admin + las 2 rutas de API compilan · `npm run dev`
+  arranca sin errores en consola · probado con curl (sin sesión): `GET /admin` y
+  `GET /admin/usuarios` → 307 a `/login` (el middleware bloquea) · `POST /api/admin/usuarios/crear`
+  → 403 (la ruta rechaza sin admin) · `GET /` sigue en 200 (no se rompió nada existente).
+  ✅ VERIFICADO EN VIVO por el usuario (2026-09-22): entró con su cuenta, probó las 6 pantallas,
+  reportó un bug real (ver abajo) y pidió un retoque visual — ambos resueltos en la misma sesión.
+  El veredicto del revisor-visual NO aplica aquí (el backoffice es una pantalla interna/de
+  administración, no una de las 4 pantallas del dinero — Regla de Oro 7); la aprobación directa del
+  dueño en vivo es la evidencia de cierre.
+- Bug real encontrado y corregido (2026-09-22): dos hallazgos durante la prueba en vivo —
+  (a) `React key` duplicada en el gráfico de la sección Uso (el arreglo de 7 días usaba la
+  inicial del día — martes y miércoles comparten "M" en español — y la tabla accesible del gráfico
+  usaba esa letra como key); se corrigió usando el índice como parte de la key en
+  `components/admin/chart.tsx`. (b) Al pulir el diseño se introdujo un bug de React Server
+  Components: los íconos de Lucide se pasaban SIN RENDERIZAR (`icon={Users}`) desde páginas
+  servidor hacia piezas de cliente (`NavAdmin`, el chip de ícono de `StatCard`) — Next.js lo
+  prohíbe (no se pueden pasar funciones/componentes crudos a través de esa frontera). Se corrigió
+  renderizando el ícono EN EL SERVIDOR antes de pasarlo (`icon={<Users size={20} />}` en vez de
+  `icon={Users}`) en `components/admin/ui.tsx`, `components/admin/nav.tsx` y las 4 páginas que
+  usan `StatCard` con ícono — patrón a seguir si se agregan más íconos dinámicos al panel. De
+  paso quedaron 2 filas de prueba en `error_log` (mensaje "Link is not defined", de un instante de
+  la propia corrección) — se borraron por no tener valor real.
+- Retoque visual pedido por el usuario ("se ve plano, dale algo premium") y aplicado: chips de
+  ícono con fondo de acento en cada StatCard, borde degradado (`Hairline`, reutilizado del kit de
+  landing) en la tarjeta más importante de cada sección, barra de acento junto a cada título de
+  sección, fondo del panel con una textura radial sutil, sección activa resaltada en el menú
+  lateral (antes no existía), entrada con animación escalonada (`components/admin/reveal.tsx`,
+  Motion) en las tarjetas de cada pantalla, y gráficas reales: "Evolución de ingresos" en Ventas
+  (vacía hasta Hotmart, ya lista) y "Gasto por canal" en Negocio (con datos reales de
+  `acquisition_spend` en cuanto el dueño anota un gasto).
 
 ## Puertas de etapa (aprobación antes de avanzar)
 - Landing: código no aprobado — veredicto REAL del revisor-visual (docs/revisiones/landing-veredicto.md,
@@ -238,9 +347,26 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Pendiente (no crítico): el archivo direcciones-abc.html (comparador histórico, ya resuelto — el usuario ya eligió y aprobó la dirección B) tiene un emoji dentro de un COMENTARIO HTML del propio kit-plantilla (no visible al usuario) y ~85% de similitud de DOM entre sus 3 opciones — ambos hallazgos son sobre un artefacto de decisión ya cerrado, no sobre la landing en producción.
 - 2 falsos positivos más de audit-conversion.sh, verificados y sin acción necesaria: (1) "VOZ vs FICHA-AVATAR" marca la palabra inglesa "animate" (prop de Framer Motion, `animate={{...}}`) como si fuera un verbo en voseo español — es una coincidencia de patrón, no hay voseo real ahí (confirmado leyendo Faq.tsx:89, Hero.tsx:86, ui.tsx:232: los 3 son la prop `animate` de motion, no una palabra en español). (2) "PRESUPUESTO DE COPY" marca el PS del CTA final (app/page.tsx:198, 43 palabras) contra el límite genérico de párrafo (30 palabras) sin saber que CtaFinal.tsx declara su propio presupuesto de 55 palabras para ese campo (`warnCopy('CtaFinal → PS', psMarked, 55)`) — 43 ≤ 55, cumple.
 
+- Veredicto del paywall: pendiente. El paywall fue aprobado a ojo por el usuario (2026-09-18) pero
+  todavía no pasó por el subagente revisor-visual (no existe docs/revisiones/paywall-veredicto.md
+  ni docs/revisiones/paywall-375.png). Se pospone a propósito: es una de las 4 pantallas del dinero,
+  así que el veredicto formal se corre antes de conectar Hotmart, no antes de continuar con IA real/
+  Vercel/dominio.
+- Veredicto del onboarding: existe (docs/revisiones/onboarding-veredicto.md) pero dice NO LISTA
+  (última medición: Usabilidad 28/40, Craft 13/20, bajo el umbral 36/40+16/20 — detalle completo en
+  "Puertas de etapa" arriba). Se pospone a propósito: el usuario ya vio las 8 capturas y aprobó
+  directamente por su cuenta (2026-09-18); re-lanzar el revisor-visual sobre la versión final queda
+  como pulido no bloqueante, no antes de Hotmart/IA real.
+
 ## Pendientes del usuario (acciones que el usuario debe hacer)
 - [x] Nombre/razón social y país del responsable legal — recibido: Raúl Valerio Nebradt, México (ya aplicado en /privacidad y /terminos)
-- [ ] Más adelante: crear cuentas Hotmart/Supabase/Vercel/Resend, comprar dominio (se le pedirá guiado, paso a paso, en la Sesión de servicios externos)
+- [x] Configurar `SUPABASE_SECRET_KEY` en `.env.local` — hecho 2026-09-22
+- [x] Probar el panel en vivo — hecho 2026-09-22, aprobado por el usuario tras el retoque visual
+- [ ] EN PROGRESO: autorizar la app de GitHub de Vercel para el repo `Niki` — se le explicó la ruta
+  exacta (vercel.com/new → "Adjust GitHub App Permissions" → dar acceso al repo `Niki`), esperando
+  que confirme "ya aparece" para continuar la conexión GitHub→Vercel (ver "Servicios externos"
+  punto 4 y la nota de Vercel más abajo)
+- [ ] Más adelante: crear cuentas Hotmart/Resend, comprar dominio (se le pedirá guiado, paso a paso, en la Sesión de servicios externos)
 
 ## Notas para la próxima sesión
 - El usuario no es técnico. Explicar todo en simple. Decidir por él salvo gustos visuales/identidad y gastos.

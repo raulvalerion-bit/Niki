@@ -16,6 +16,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Camera, Briefcase, Heart, Handshake, Users, UtensilsCrossed, Palmtree } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { crearClienteSupabase } from '@/lib/supabase/client';
+import { registrarEvento } from '@/lib/eventos';
 
 type Paso = 'inicio' | 'foto' | 'procesando';
 
@@ -83,7 +84,13 @@ export default function Hoy() {
         const { error: errorInsert } = await supabase
           .from('checks')
           .insert({ user_id: user.id, ocasion, foto_url: fotoUrl, estado: 'pendiente' });
-        if (errorInsert) console.error('No se pudo guardar el Check:', errorInsert.message);
+        if (errorInsert) {
+          console.error('No se pudo guardar el Check:', errorInsert.message);
+        } else {
+          // Acción principal de la app (21-BACKOFFICE, sección Uso) — cuántas
+          // veces se ejecutó la función core.
+          await registrarEvento(supabase, 'check_creado', user.id, { ocasion });
+        }
       }
     } finally {
       // La foto/registro son "mejor esfuerzo": si algo falla igual avanzamos

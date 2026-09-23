@@ -19,7 +19,10 @@
 :root {
   /* ── SUPERFICIES (3 niveles: base / elevada / hundida) — FICHA-ARTE.md "Glow Atardecer" ── */
   --bg: #fdefdc;              /* paso más claro del degradé atardecer (#FF9457→#FFE9B0) */
-  --bg-gradient: linear-gradient(180deg, #ff9457 0%, #ffb768 42%, #ffd98a 78%, #ffe9b0 100%);
+  --sunset-1: #ff9457;         /* stop 0% del degradé — para piezas pequeñas (logo/ícono) que
+                                   necesitan los dos extremos sin pintar el degradé completo */
+  --sunset-2: #ffd98a;         /* stop 78% del mismo degradé */
+  --bg-gradient: linear-gradient(180deg, var(--sunset-1) 0%, #ffb768 42%, var(--sunset-2) 78%, #ffe9b0 100%);
   /* el degradé completo de FICHA-ARTE.md ("Glow Atardecer") — usar en pantallas de la app
      (onboarding/paywall/app interna) donde el fondo entero es el héroe visual; la landing
      usa --bg sólido por rendimiento y alternancia de secciones (55 T1). */
@@ -38,6 +41,9 @@
                                    sólido en bloques celebratorios/aspiracionales puntuales
                                    (contraste "en 6 meses", "después", CTA final) */
   --gold-text: #3c2412;        /* texto oscuro sobre --gold, AA garantizado */
+  --error: #b3261e;            /* semántico de error (FICHA-ARTE no lo fijó al cerrar — "se
+                                   definen en Sesión 3 con estados reales"; primer uso real:
+                                   mensaje de código inválido en /login) */
 
   /* ── FORMA (radios del brand kit — UNO por rol, toda la página) ── */
   --radius-card: 18px;
@@ -55,6 +61,16 @@
 
   /* ── DERIVADOS (no se tocan: se recalculan solos desde --accent) ── */
   --chip-bg: color-mix(in oklab, var(--accent) 10%, transparent);
+
+  /* ── GRÁFICOS del backoffice (17-VISUALIZACION-DATOS) — mismos tokens de marca,
+       nunca el azul default de Recharts. Semánticos: verde/rojo con SEGUNDA señal
+       (ícono/label), nunca solo color, ver 17 "accesibilidad". ── */
+  --chart-1: var(--accent);
+  --chart-2: var(--accent-2);
+  --chart-positivo: #3f7d3a;
+  --chart-negativo: #b3432b;
+  --border-default: color-mix(in oklab, var(--text-tertiary) 18%, transparent);
+  --surface-elevated: var(--surface);
 }
 
 /* ============================================================================

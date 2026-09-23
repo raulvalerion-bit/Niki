@@ -26,9 +26,10 @@ export async function actualizarSesion(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const enAppInterna = request.nextUrl.pathname.startsWith('/app');
+  const enAdmin = request.nextUrl.pathname.startsWith('/admin');
   const enLogin = request.nextUrl.pathname.startsWith('/login');
 
-  if (!user && enAppInterna) {
+  if (!user && (enAppInterna || enAdmin)) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
   if (user && enLogin) {
