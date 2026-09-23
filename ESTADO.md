@@ -1,41 +1,36 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
 Última actualización: 2026-09-22 | Sesión actual: 1
 
-▶️ RETOMADO 2026-09-22: se cerró el pendiente de seguridad de las fotos de los Checks (Storage
-restringido de nuevo a "cada usuario solo ve/sube las suyas") y se corrigió un permiso de más en
-la función que crea el profile al registrarse — ver detalle en "Servicios externos" punto 2(d).
-El usuario pidió construir el backoffice (panel del dueño) ANTES de seguir con la conexión de la
-IA real — desvío a propósito de la secuencia, documentado y aprobado por él.
+▶️ CIERRE DE SESIÓN 2026-09-22 — TODO GUARDADO Y SUBIDO (working tree limpio, `git push` al día,
+último commit `1abcc6d`). Resumen de lo que se hizo hoy:
+1. Cerrado el pendiente de seguridad de las fotos de los Checks (Storage) y un permiso de más en
+   `handle_new_user` — ver "Servicios externos" punto 2(d).
+2. Construido, probado EN VIVO por el usuario y aprobado el BACKOFFICE completo (6 pantallas en
+   `/admin`) — ver sección propia abajo. Incluyó un hallazgo de seguridad real (RLS de `profiles`
+   sin `with check`, corregido) y 2 bugs de código (React key duplicada, ícono de Lucide cruzando
+   la frontera servidor→cliente sin renderizar) — todo corregido.
+3. Conectado y publicado en Vercel — proyecto `niki` con deploy automático confirmado (push → build
+   solo). App en línea en https://niki-ad3k.vercel.app. Ver "Servicios externos" punto 4 para los
+   tropiezos de esta sesión (variables de entorno, proyecto duplicado) y sus lecciones.
+4. Corregidos 2 bugs reportados por el usuario probando en el celular: el link "Entrar" de la
+   landing apuntaba a un stub viejo (`/entrar`, ya borrado) en vez de `/login`; y el botón
+   "Analizar mi presencia" se deshabilitaba en silencio sin explicar qué faltaba (ahora siempre
+   responde y avisa). Lección: ningún botón debe quedar deshabilitado sin explicar por qué (Regla
+   de UX #11).
+5. Retoque de estilo: efecto 3D (borde inferior tipo "labio", se adelgaza al elegir) en los botones
+   de ocasión, en las 2 pantallas donde aparecen (onboarding y Check de Presencia).
 
-🐛 2 bugs reales encontrados por el usuario probando en su celular (2026-09-22, ya corregidos y
-subidos — commit `3f08167`): (1) el link "Entrar" de la landing apuntaba a `/entrar`, un stub de
-"en construcción" que quedó huérfano desde antes de que existiera `/login` real — se corrigió el
-link y se borró el stub. (2) En el Check de Presencia (`app/app/page.tsx`), el botón "Analizar mi
-presencia" se deshabilitaba EN SILENCIO si faltaba elegir ocasión o subir foto — sin ningún aviso,
-se sentía como que "no hacía nada". Ahora el botón siempre responde y dice exactamente qué falta.
-Lección para revisar en otras pantallas: ningún botón debe quedar deshabilitado sin explicar por
-qué (Regla de UX #11 del SO).
+Siguiente acción al retomar: IA real (BFF) — es la pieza que falta para que el Check de Presencia
+dé un resultado de verdad en vez del aviso honesto de "todavía sin conectar". Alcance esperado (ya
+conversado con el usuario): elegir/conectar el proveedor de visión, construir el endpoint seguro,
+diseñar la pantalla de RESULTADO (no existe todavía) con el anillo de progreso de FICHA-ARTE, y
+conectarla al historial. Requiere que el usuario cree una cuenta con el proveedor de IA (costo
+pequeño por análisis) — explicárselo simple antes de arrancar.
 
-✅ BACKOFFICE construido, verificado Y APROBADO POR EL USUARIO EN VIVO (2026-09-22, ver sección
-propia abajo): probó las 6 pantallas en el navegador real, encontró y confirmó un bug real (React
-"same key" en el gráfico de Uso — corregido), pidió un retoque visual (más profundidad/premium —
-aplicado: chips de ícono, Hairline en cards clave, sección activa en el menú, animación de entrada,
-gráficas en Ventas/Negocio) y confirmó que ya se ve bien. Se encontró de paso un bug real de React
-Server Components (íconos de Lucide pasados sin renderizar de servidor a cliente) — corregido en
-`components/admin/ui.tsx` y `components/admin/nav.tsx` (patrón: el ícono se renderiza en el
-servidor ANTES de cruzar hacia una pieza de cliente, nunca se pasa el componente crudo). Panel
-100% funcional, sin bugs conocidos. Todo el trabajo de hoy quedó COMMITEADO Y SUBIDO a GitHub
-(commit `7f35831`), y Vercel ya lo publicó solo en cuanto detectó el push (ver "Servicios
-externos" punto 4 para el detalle completo, incluidos los tropiezos con las variables de entorno
-y su solución). App en línea de verdad en https://niki-ad3k.vercel.app. Siguiente acción al
-retomar: IA real (BFF) es el siguiente paso de la secuencia — o, si el usuario prefiere, terminar
-primero el dominio propio ya que Vercel quedó listo.
-
-⚠️ Nota para quien retome: en la sesión anterior el usuario confundió dos artefactos distintos del
-proyecto — el Tour de la app (`vista-previa-app.html`, maqueta fija de Sesión 2, ya cerrada) y el
-Onboarding real (`app/onboarding/page.tsx`, funcional). Ya se resolvió (el logo y la barra de
-pestañas del Tour ya están aplicados donde correspondía de verdad), pero si vuelve a pedir algo que
-suene a esa maqueta, verificar primero A CUÁL pantalla real se refiere.
+⚠️ Nota para quien retome: en una sesión anterior el usuario confundió el Tour de la app
+(`vista-previa-app.html`, maqueta fija de Sesión 2, ya cerrada) con el Onboarding real
+(`app/onboarding/page.tsx`, funcional). Ya resuelto, pero si algo suena a esa maqueta, verificar
+primero A CUÁL pantalla real se refiere.
 
 ## Qué es esta app (3 líneas máximo)
 Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit, postura y actitud según el evento (cita, entrevista, fiesta), con hábitos diarios de presencia. Para jóvenes de 18-32 años LATAM con inseguridad de imagen. Monetiza con suscripción freemium por niveles + trial de 3 días.
@@ -392,10 +387,9 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - [x] Nombre/razón social y país del responsable legal — recibido: Raúl Valerio Nebradt, México (ya aplicado en /privacidad y /terminos)
 - [x] Configurar `SUPABASE_SECRET_KEY` en `.env.local` — hecho 2026-09-22
 - [x] Probar el panel en vivo — hecho 2026-09-22, aprobado por el usuario tras el retoque visual
-- [ ] EN PROGRESO: autorizar la app de GitHub de Vercel para el repo `Niki` — se le explicó la ruta
-  exacta (vercel.com/new → "Adjust GitHub App Permissions" → dar acceso al repo `Niki`), esperando
-  que confirme "ya aparece" para continuar la conexión GitHub→Vercel (ver "Servicios externos"
-  punto 4 y la nota de Vercel más abajo)
+- [x] Autorizar y conectar Vercel↔GitHub — hecho 2026-09-22, app publicada en https://niki-ad3k.vercel.app
+- [ ] Próxima sesión: crear una cuenta con el proveedor de IA elegido (tiene un costo pequeño por
+  análisis) — se le pedirá guiado, paso a paso, al empezar la conexión de la IA real
 - [ ] Más adelante: crear cuentas Hotmart/Resend, comprar dominio (se le pedirá guiado, paso a paso, en la Sesión de servicios externos)
 
 ## Notas para la próxima sesión
