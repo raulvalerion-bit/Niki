@@ -7,6 +7,15 @@ la función que crea el profile al registrarse — ver detalle en "Servicios ext
 El usuario pidió construir el backoffice (panel del dueño) ANTES de seguir con la conexión de la
 IA real — desvío a propósito de la secuencia, documentado y aprobado por él.
 
+🐛 2 bugs reales encontrados por el usuario probando en su celular (2026-09-22, ya corregidos y
+subidos — commit `3f08167`): (1) el link "Entrar" de la landing apuntaba a `/entrar`, un stub de
+"en construcción" que quedó huérfano desde antes de que existiera `/login` real — se corrigió el
+link y se borró el stub. (2) En el Check de Presencia (`app/app/page.tsx`), el botón "Analizar mi
+presencia" se deshabilitaba EN SILENCIO si faltaba elegir ocasión o subir foto — sin ningún aviso,
+se sentía como que "no hacía nada". Ahora el botón siempre responde y dice exactamente qué falta.
+Lección para revisar en otras pantallas: ningún botón debe quedar deshabilitado sin explicar por
+qué (Regla de UX #11 del SO).
+
 ✅ BACKOFFICE construido, verificado Y APROBADO POR EL USUARIO EN VIVO (2026-09-22, ver sección
 propia abajo): probó las 6 pantallas en el navegador real, encontró y confirmó un bug real (React
 "same key" en el gráfico de Uso — corregido), pidió un retoque visual (más profundidad/premium —
