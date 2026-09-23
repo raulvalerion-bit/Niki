@@ -36,6 +36,7 @@ export default function Hoy() {
   const [preview, setPreview] = useState<string | null>(null);
   const [gemas, setGemas] = useState<number | null>(null);
   const [guardando, setGuardando] = useState(false);
+  const [avisoValidacion, setAvisoValidacion] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const reduce = useReducedMotion();
 
@@ -59,6 +60,7 @@ export default function Hoy() {
     const file = e.target.files?.[0];
     if (!file) return;
     setPreview(URL.createObjectURL(file));
+    setAvisoValidacion(null);
   }
 
   async function analizarPresencia() {
@@ -125,6 +127,7 @@ export default function Hoy() {
             setPaso('inicio');
             setPreview(null);
             setOcasion(null);
+            setAvisoValidacion(null);
           }}
           className="mt-8 flex h-14 w-full max-w-[300px] items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)]"
         >
@@ -149,7 +152,10 @@ export default function Hoy() {
               <button
                 key={op.valor}
                 type="button"
-                onClick={() => setOcasion(op.valor)}
+                onClick={() => {
+                  setOcasion(op.valor);
+                  setAvisoValidacion(null);
+                }}
                 className={`flex h-14 items-center gap-2 rounded-[var(--radius-button)] border px-3 text-left shadow-[var(--shadow-1)] ${
                   seleccionado ? 'border-[var(--accent)] bg-[var(--chip-bg)]' : 'border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] bg-[var(--surface)]'
                 }`}
@@ -184,12 +190,24 @@ export default function Hoy() {
         <motion.button
           type="button"
           whileTap={{ scale: 0.97 }}
-          disabled={!preview || !ocasion || guardando}
-          onClick={() => void analizarPresencia()}
+          disabled={guardando}
+          onClick={() => {
+            if (!ocasion) {
+              setAvisoValidacion('Elige para qué ocasión es tu Check (arriba) antes de continuar.');
+              return;
+            }
+            if (!preview) {
+              setAvisoValidacion('Sube tu foto de cuerpo entero antes de continuar.');
+              return;
+            }
+            setAvisoValidacion(null);
+            void analizarPresencia();
+          }}
           className="mt-6 flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)] disabled:opacity-40"
         >
           {guardando ? 'Guardando…' : 'Analizar mi presencia'}
         </motion.button>
+        {avisoValidacion && <p className="mt-3 text-center text-sm font-medium text-[var(--error)]">{avisoValidacion}</p>}
       </div>
     );
   }

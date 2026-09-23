@@ -28,7 +28,7 @@ export default function LandingNiki() {
       {/* 1. HERO */}
       <Hero
         appName="niki"
-        loginHref="/entrar"
+        loginHref="/login"
         h1Marked="Revisa si tu outfit e imagen son las mejores en [acento]30 segundos[/acento]"
         subtitleMarked="Niki analiza tu outfit, postura y actitud — [b]sin críticas crueles[/b]."
         ctaLabel={CTA_LABEL}
