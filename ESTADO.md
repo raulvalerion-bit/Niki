@@ -15,9 +15,12 @@ gráficas en Ventas/Negocio) y confirmó que ya se ve bien. Se encontró de paso
 Server Components (íconos de Lucide pasados sin renderizar de servidor a cliente) — corregido en
 `components/admin/ui.tsx` y `components/admin/nav.tsx` (patrón: el ícono se renderiza en el
 servidor ANTES de cruzar hacia una pieza de cliente, nunca se pasa el componente crudo). Panel
-100% funcional, sin bugs conocidos. Siguiente acción al retomar: seguir con IA real (BFF), Vercel,
-dominio y Hotmart — o continuar la conexión de Vercel↔GitHub que quedó a medias (ver "Servicios
-externos" punto 4, bloqueada esperando que el usuario autorice la app de GitHub en Vercel).
+100% funcional, sin bugs conocidos. Todo el trabajo de hoy quedó COMMITEADO Y SUBIDO a GitHub
+(commit `7f35831`), y Vercel ya lo publicó solo en cuanto detectó el push (ver "Servicios
+externos" punto 4 para el detalle completo, incluidos los tropiezos con las variables de entorno
+y su solución). App en línea de verdad en https://niki-ad3k.vercel.app. Siguiente acción al
+retomar: IA real (BFF) es el siguiente paso de la secuencia — o, si el usuario prefiere, terminar
+primero el dominio propio ya que Vercel quedó listo.
 
 ⚠️ Nota para quien retome: en la sesión anterior el usuario confundió dos artefactos distintos del
 proyecto — el Tour de la app (`vista-previa-app.html`, maqueta fija de Sesión 2, ya cerrada) y el
@@ -175,13 +178,31 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      sugiere activar "protección contra contraseñas filtradas", pero Niki no usa contraseñas (el
      login es con código por correo), así que no aplica.
   3. IA real (BFF): pendiente.
-  4. Vercel: EN PROGRESO (2026-09-22) — cuenta de Vercel ya existe y está alineada con la cuenta de
-     GitHub (`raulvalerion-bit`), pero el repo `Niki` todavía no tenía permiso para que Vercel lo
-     vea. Se le pidió al usuario autorizar la app de GitHub de Vercel para ese repo
-     (vercel.com/new → "Adjust GitHub App Permissions") — esperando su confirmación de "ya
-     aparece" para crear el proyecto Vercel conectado de forma persistente (no `vercel --prod`
-     suelto — 62-PUBLICACION-SEGURA-Y-CONTINUA.md exige `Settings → Git → Connected Git
-     Repository`) y configurar las variables de entorno públicas de Supabase en Vercel.
+  4. Vercel: ✅ conectado y publicado (2026-09-22) — proyecto `niki` (id
+     `prj_4sginvELVjRwcqKRKACly36blcrh`, cuenta `raulvalerion-bit`, sin team) con
+     `Connected Git Repository = raulvalerion-bit/Niki`, rama `main`. Deploy automático
+     confirmado: un `git push` a `main` disparó un build solo, sin `vercel --prod` manual
+     (62-PUBLICACION-SEGURA-Y-CONTINUA.md, gate cumplido). URL en línea (temporal, sin dominio
+     propio todavía): https://niki-ad3k.vercel.app — el nombre "ad3k" quedó de un tropiezo al
+     crear el proyecto por duplicado (ver abajo), se corrige solo al conectar el dominio real.
+     Variables de entorno puestas: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`,
+     `SUPABASE_URL` (las 3 las creó el agente por API, valores públicos verificados) y
+     `SUPABASE_SECRET_KEY` (la puso el usuario a mano, marcada Sensitive). Quedaron además 6
+     variables VACÍAS que Vercel creó solo al importar (léidas de `.env.example`): `AI_MODEL`,
+     `ANTHROPIC_API_KEY`, `AI_DAILY_BUDGET_USD`, `RESEND_API_KEY`, `EMAIL_FROM`,
+     `HOTMART_HOTTOK` — no rompen nada hoy (ese código no existe todavía); se llenan en las
+     sesiones de IA real/Resend real en Vercel/Hotmart.
+     ⚠️ Tropiezos de esta sesión (documentados para no repetirlos): (a) al fallar el primer
+     intento de importar por un valor mal copiado en `NEXT_PUBLIC_SUPABASE_URL`, el usuario creó
+     un SEGUNDO proyecto en vez de corregir el primero → quedaron 2 proyectos duplicados
+     (`niki` roto + `niki-ad3k` funcionando); se resolvió borrando el roto y renombrando el bueno
+     a `niki` (el nombre corto `niki.vercel.app` no se pudo usar: ya es de otra cuenta, ver
+     dominio arriba). (b) el usuario marcó las 4 variables como "Sensitive" (el candado), lo que
+     impide releerlas después — cuando `SUPABASE_URL` también quedó mal, hubo que BORRAR Y
+     RECREAR las 4 a ciegas porque no se podían inspeccionar; la 2ª vez se dejaron las 3 públicas
+     SIN marcar Sensitive a propósito (solo la secreta) para poder depurar si vuelve a fallar.
+     Regla para la próxima vez que se toquen variables de Vercel: NUNCA marcar Sensitive las que
+     no son secretas.
   5. Resend: ✅ conectado (2026-09-21) — SMTP propio activo en Supabase para el correo de acceso
      (usa el remitente de prueba `onboarding@resend.dev`, que SOLO puede mandar correos a la
      cuenta con la que te registraste en Resend — no a cualquier destinatario; eso se resuelve
