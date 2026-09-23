@@ -149,20 +149,23 @@ export default function Hoy() {
             const Icono = op.icon;
             const seleccionado = ocasion === op.valor;
             return (
-              <button
+              <motion.button
                 key={op.valor}
                 type="button"
+                whileTap={{ scale: 0.97, y: 2 }}
                 onClick={() => {
                   setOcasion(op.valor);
                   setAvisoValidacion(null);
                 }}
-                className={`flex h-14 items-center gap-2 rounded-[var(--radius-button)] border px-3 text-left shadow-[var(--shadow-1)] ${
-                  seleccionado ? 'border-[var(--accent)] bg-[var(--chip-bg)]' : 'border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] bg-[var(--surface)]'
+                className={`flex h-14 items-center gap-2 rounded-[var(--radius-button)] border border-b-4 px-3 text-left shadow-[var(--shadow-1)] transition-[border-bottom-width,background-color,border-color] duration-150 ${
+                  seleccionado
+                    ? 'border-b-2 border-[var(--accent)] bg-[var(--chip-bg)]'
+                    : 'border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] border-b-[color-mix(in_oklab,var(--text-tertiary)_45%,transparent)] bg-[var(--surface)]'
                 }`}
               >
                 <Icono size={18} color="var(--accent)" aria-hidden="true" />
                 <span className="text-[14px] font-medium text-[var(--text-primary)]">{op.label}</span>
-              </button>
+              </motion.button>
             );
           })}
         </div>

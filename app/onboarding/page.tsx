@@ -225,12 +225,12 @@ function ChipOpcion({
         type="button"
         role="radio"
         aria-checked={seleccionado}
-        whileTap={{ scale: 0.97 }}
+        whileTap={{ scale: 0.97, y: 2 }}
         onClick={onSeleccionar}
-        className={`relative flex h-24 w-full flex-col items-center justify-center gap-2 rounded-[var(--radius-button)] border px-2 text-center shadow-[var(--shadow-1)] transition-colors ${
+        className={`relative flex h-24 w-full flex-col items-center justify-center gap-2 rounded-[var(--radius-button)] border border-b-4 px-2 text-center shadow-[var(--shadow-1)] transition-[border-bottom-width,background-color,border-color] duration-150 ${
           seleccionado
-            ? 'border-[var(--accent)] bg-[var(--chip-bg)]'
-            : 'border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] bg-[var(--surface)]'
+            ? 'border-b-2 border-[var(--accent)] bg-[var(--chip-bg)]'
+            : 'border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] border-b-[color-mix(in_oklab,var(--text-tertiary)_45%,transparent)] bg-[var(--surface)]'
         }`}
       >
         <Icono size={22} strokeWidth={2} color="var(--accent)" aria-hidden="true" />
