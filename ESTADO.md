@@ -10,7 +10,7 @@
    sin `with check`, corregido) y 2 bugs de código (React key duplicada, ícono de Lucide cruzando
    la frontera servidor→cliente sin renderizar) — todo corregido.
 3. Conectado y publicado en Vercel — proyecto `niki` con deploy automático confirmado (push → build
-   solo). App en línea en https://niki-ad3k.vercel.app. Ver "Servicios externos" punto 4 para los
+   solo). App en línea en https://holaniki.com (antes niki-ad3k.vercel.app, sigue funcionando). Ver "Servicios externos" punto 4 para los
    tropiezos de esta sesión (variables de entorno, proyecto duplicado) y sus lecciones.
 4. Corregidos 2 bugs reportados por el usuario probando en el celular: el link "Entrar" de la
    landing apuntaba a un stub viejo (`/entrar`, ya borrado) en vez de `/login`; y el botón
@@ -211,7 +211,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      (usa el remitente de prueba `onboarding@resend.dev`, que SOLO puede mandar correos a la
      cuenta con la que te registraste en Resend — no a cualquier destinatario; eso se resuelve
      solo verificando un dominio propio, ver punto 6).
-  6. Dominio: `holaniki.com` COMPRADO en Namecheap (2026-09-25, US$11.48, privacidad WHOIS gratis activa, auto-renew). Agregado al proyecto Vercel `niki`: apex principal + `www.holaniki.com` redirige 308 al apex. DNS en Namecheap (Advanced DNS): A `@` → 76.76.21.21 · CNAME `www` → cname.vercel-dns.com — pendiente de que el usuario los guarde y de verificar propagación + SSL. Después: actualizar URLs de la app (metadata/sitemap/Supabase Auth redirect URLs), veredictos paywall/onboarding, y webhook Hotmart en `https://holaniki.com/api/hotmart/webhook`.
+  6. Dominio: `holaniki.com` COMPRADO en Namecheap (2026-09-25, US$11.48, privacidad WHOIS gratis activa, auto-renew). Agregado al proyecto Vercel `niki`: apex principal + `www.holaniki.com` redirige 308 al apex. DNS en Namecheap (Advanced DNS): A `@` → 76.76.21.21 · CNAME `www` → cname.vercel-dns.com — ✅ VERIFICADO 2026-09-25: https://holaniki.com responde 200 con SSL, www redirige 308 al apex, deploy con el correo nuevo en línea. Después: actualizar URLs de la app (metadata/sitemap/Supabase Auth redirect URLs), veredictos paywall/onboarding, y webhook Hotmart en `https://holaniki.com/api/hotmart/webhook`.
   7. Hotmart: pendiente.
   Variables de entorno: `.env.example` (commiteado, plantilla) y `.env.local` (real, en
   `.gitignore` — NUNCA se sube). La clave secreta de Supabase que el usuario compartió sin querer
