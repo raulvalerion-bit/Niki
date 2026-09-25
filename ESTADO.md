@@ -211,7 +211,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      (usa el remitente de prueba `onboarding@resend.dev`, que SOLO puede mandar correos a la
      cuenta con la que te registraste en Resend — no a cualquier destinatario; eso se resuelve
      solo verificando un dominio propio, ver punto 6).
-  6. Dominio: elegido `holaniki.com` (2026-09-25, libre, US$11.25/año, renovación igual) — compra en Vercel falló (bloqueo del navegador/VPN y autocorrector en celular; nada cobrado); se compra en NAMECHEAP y se conecta por registros DNS (A @ + CNAME www, valores exactos los da Vercel al agregarlo al proyecto), apex como principal + www redirige. Al confirmar: verificar SSL, actualizar URLs de la app y luego veredictos de paywall/onboarding antes del webhook de Hotmart (`/api/hotmart/webhook`).
+  6. Dominio: `holaniki.com` COMPRADO en Namecheap (2026-09-25, US$11.48, privacidad WHOIS gratis activa, auto-renew). Agregado al proyecto Vercel `niki`: apex principal + `www.holaniki.com` redirige 308 al apex. DNS en Namecheap (Advanced DNS): A `@` → 76.76.21.21 · CNAME `www` → cname.vercel-dns.com — pendiente de que el usuario los guarde y de verificar propagación + SSL. Después: actualizar URLs de la app (metadata/sitemap/Supabase Auth redirect URLs), veredictos paywall/onboarding, y webhook Hotmart en `https://holaniki.com/api/hotmart/webhook`.
   7. Hotmart: pendiente.
   Variables de entorno: `.env.example` (commiteado, plantilla) y `.env.local` (real, en
   `.gitignore` — NUNCA se sube). La clave secreta de Supabase que el usuario compartió sin querer
