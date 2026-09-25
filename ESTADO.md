@@ -211,7 +211,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      (usa el remitente de prueba `onboarding@resend.dev`, que SOLO puede mandar correos a la
      cuenta con la que te registraste en Resend — no a cualquier destinatario; eso se resuelve
      solo verificando un dominio propio, ver punto 6).
-  6. Dominio: pendiente.
+  6. Dominio: elegido `holaniki.com` (2026-09-25, libre, US$11.25/año, renovación igual) — el usuario lo compra en Vercel (proyecto niki → Settings → Domains), apex como principal + www redirige. Al confirmar: verificar SSL, actualizar URLs de la app y luego veredictos de paywall/onboarding antes del webhook de Hotmart (`/api/hotmart/webhook`).
   7. Hotmart: pendiente.
   Variables de entorno: `.env.example` (commiteado, plantilla) y `.env.local` (real, en
   `.gitignore` — NUNCA se sube). La clave secreta de Supabase que el usuario compartió sin querer
