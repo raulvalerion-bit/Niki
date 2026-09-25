@@ -20,8 +20,8 @@ export default function Privacidad() {
           Responsable del tratamiento: <strong className="text-[var(--text-primary)]">Raúl Valerio
           Nebradt</strong>, operando desde{' '}
           <strong className="text-[var(--text-primary)]">México</strong>. Contacto:{' '}
-          <a href="mailto:hola@niki.app" className="text-[var(--accent)] underline">
-            hola@niki.app
+          <a href="mailto:hola@holaniki.com" className="text-[var(--accent)] underline">
+            hola@holaniki.com
           </a>{' '}
           (dominio provisional hasta comprar el definitivo).
         </p>
@@ -60,7 +60,7 @@ export default function Privacidad() {
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Tus derechos</h2>
           <p className="mt-2">
             Podés pedir acceso, corrección o eliminación de tus datos (incluidas tus fotos) escribiendo
-            a <a href="mailto:hola@niki.app" className="text-[var(--accent)] underline">hola@niki.app</a>.
+            a <a href="mailto:hola@holaniki.com" className="text-[var(--accent)] underline">hola@holaniki.com</a>.
             Respondemos en un plazo razonable según la ley de tu país.
           </p>
         </section>

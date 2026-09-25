@@ -201,7 +201,7 @@ export default function LandingNiki() {
       {/* 10. FOOTER LEGAL */}
       <FooterLegal
         appName="niki"
-        soporteEmail="hola@niki.app"
+        soporteEmail="hola@holaniki.com"
         enlaces={[
           { label: 'Privacidad', href: '/privacidad' },
           { label: 'Términos y Condiciones', href: '/terminos' },

@@ -366,7 +366,7 @@ export default function Login() {
 
           <div className="mt-6 flex flex-col gap-3 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
             <p className="text-[13px] text-[var(--text-primary)]">
-              Revisa spam y promociones — llega como <span className="font-semibold">hola@niki.app</span>.
+              Revisa spam y promociones — llega como <span className="font-semibold">hola@holaniki.com</span>.
             </p>
             <p className="text-[13px] text-[var(--text-primary)]">
               Verifica que sea el mismo correo con el que compraste en Hotmart (está en tu comprobante).
@@ -374,7 +374,7 @@ export default function Login() {
           </div>
 
           <a
-            href="mailto:hola@niki.app?subject=No me llega el acceso"
+            href="mailto:hola@holaniki.com?subject=No me llega el acceso"
             className="mt-6 text-center text-[14px] font-semibold text-[var(--accent)]"
           >
             Escribir a soporte

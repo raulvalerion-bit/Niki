@@ -27,7 +27,7 @@ export default function Reembolsos() {
           <p className="mt-2">
             Si tu primer Check de Presencia no te da al menos un ajuste concreto que puedas aplicar
             hoy, escribinos a{' '}
-            <a href="mailto:hola@niki.app" className="text-[var(--accent)] underline">hola@niki.app</a>{' '}
+            <a href="mailto:hola@holaniki.com" className="text-[var(--accent)] underline">hola@holaniki.com</a>{' '}
             y te devolvemos todo. Sin preguntas, dentro de la ventana de reembolso vigente de Hotmart
             para tu compra (verificable en tu comprobante de compra).
           </p>
@@ -36,7 +36,7 @@ export default function Reembolsos() {
         <section>
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Cómo pedirlo</h2>
           <ol className="mt-2 list-decimal space-y-1 pl-5">
-            <li>Escribinos a hola@niki.app con el email con el que compraste.</li>
+            <li>Escríbenos a hola@holaniki.com con el email con el que compraste.</li>
             <li>
               O pedilo directo desde el portal del comprador de Hotmart:{' '}
               <a
