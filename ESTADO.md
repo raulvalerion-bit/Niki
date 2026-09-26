@@ -1,5 +1,5 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-09-22 | Sesión actual: 1
+Última actualización: 2026-09-25 | Siguiente sesión: HOTMART (webhook en https://holaniki.com/api/hotmart/webhook + hottok en Vercel, garantía 7 días en el panel) — acordado con el usuario
 
 ▶️ CIERRE DE SESIÓN 2026-09-22 — TODO GUARDADO Y SUBIDO (working tree limpio, `git push` al día,
 último commit `1abcc6d`). Resumen de lo que se hizo hoy:
