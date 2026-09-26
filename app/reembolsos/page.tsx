@@ -38,7 +38,7 @@ export default function Reembolsos() {
           <ol className="mt-2 list-decimal space-y-1 pl-5">
             <li>Escríbenos a hola@holaniki.com con el email con el que compraste.</li>
             <li>
-              O pedilo directo desde el portal del comprador de Hotmart:{' '}
+              O pídelo directo desde el portal del comprador de Hotmart:{' '}
               <a
                 href="https://app.hotmart.com/comprador"
                 className="text-[var(--accent)] underline"

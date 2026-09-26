@@ -108,10 +108,11 @@ export default function LandingNiki() {
         ctaHref={CTA_HREF}
       />
 
-      {/* 6. OFERTA — un plan (VIP Pro), anual y mensual, ambos con trial de 3 días */}
+      {/* 6. OFERTA — un plan (VIP Pro), anual y mensual; trial de 3 días SOLO en el Anual (igual que el paywall) */}
       <Oferta
         tituloMarked="Empieza gratis. Sigue por [acento]menos de $0.30 al día[/acento]"
         trialDias={3}
+        trialEnMensual={false}
         stack={{
           lineas: [
             { resultado: 'Check de Presencia ilimitado (12 meses)', valor: '$120' },
@@ -141,6 +142,7 @@ export default function LandingNiki() {
           nombre: 'Mensual',
           precioMes: '$14.99',
           ctaLabel: 'Elegir mensual',
+          descomposicionDia: 'Se cobra hoy, sin prueba gratis',
           ctaHref: CTA_HREF,
           features: [
             'Check de Presencia ilimitado',

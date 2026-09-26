@@ -377,7 +377,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   ni docs/revisiones/paywall-375.png). Se pospone a propósito: es una de las 4 pantallas del dinero,
   así que el veredicto formal se corre antes de conectar Hotmart, no antes de continuar con IA real/
   Vercel/dominio.
-- Veredicto del onboarding: existe (docs/revisiones/onboarding-veredicto.md) pero dice NO LISTA
+- Veredicto del onboarding (2026-09-25): a 1 punto de LISTA (35/40·16/20·17/20), pospuesto por presupuesto del usuario. Antes decía NO LISTA
   (última medición: Usabilidad 28/40, Craft 13/20, bajo el umbral 36/40+16/20 — detalle completo en
   "Puertas de etapa" arriba). Se pospone a propósito: el usuario ya vio las 8 capturas y aprobó
   directamente por su cuenta (2026-09-18); re-lanzar el revisor-visual sobre la versión final queda
@@ -395,3 +395,10 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 ## Notas para la próxima sesión
 - El usuario no es técnico. Explicar todo en simple. Decidir por él salvo gustos visuales/identidad y gastos.
 - El documento fuente de la idea está en: C:\Users\Raul Valerio\Documents\Z Rentas Inteligentes\Resumen de mi idea para la App Niki.pdf — ya fue leído e incorporado a FICHA-AVATAR.md, no hace falta releerlo salvo para citar textual.
+
+## Sesión 2026-09-25 (dominio + revisión formal de planes/onboarding)
+- Dominio `holaniki.com` comprado (Namecheap) y en línea con SSL — ver "Servicios externos" punto 6.
+- Paywall: veredicto revisor-visual LISTA (36/40 · 16/20 · copy 17/20) tras 9 pasadas — docs/revisiones/paywall-veredicto.md.
+- Onboarding: 8 pasadas, última medida 35/40 · 16/20 · copy 17/20 (a 1 punto de LISTA); la 9ª pasada quedó corriendo al cerrar.
+- Corregido: promesa FALSA "tus fotos nunca se guardan" (landing, FAQ, onboarding, privacidad) → "son privadas, solo tú las ves"; landing mostraba trial en el Mensual (la prueba es solo Anual); voseo en páginas legales.
+- Pendiente para Hotmart: configurar garantía de 7 días en el panel y recién ahí publicar el plazo; webhook en https://holaniki.com/api/hotmart/webhook (por construir).

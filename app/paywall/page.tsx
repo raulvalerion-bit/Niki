@@ -16,7 +16,8 @@
 // certeza que me veo impecable"); beneficios = deseos #1, #3 y #5; nota bajo
 // el CTA = objeciones #5 (garantía) y #6 (pago seguro). El monto anual real
 // ($107.88) se muestra SIEMPRE — nunca solo el precio mensualizado.
-// Garantía de 7 días: FICHA-MERCADO.md §4 (7 > 3 días de prueba, regla del 18).
+// Garantía: mismo nombre y condición que la landing, SIN número de días hasta
+// confirmar el plazo en el panel de Hotmart (FICHA-MERCADO.md §4).
 //
 // El botón principal lleva a /login (siguiente paso de la secuencia: Paywall
 // → Login/Auth → App interna). El cobro real vía Hotmart se conecta en la
@@ -86,7 +87,7 @@ function MarcaNiki() {
       </span>
       <div className="flex flex-col leading-tight">
         <span className="text-[16px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">niki</span>
-        <span className="text-[13px] font-medium text-[var(--text-primary)]">Tus ejes de Presencia e Imagen</span>
+        <span className="text-[13px] font-medium text-[var(--text-primary)]">Tu Check de Presencia antes de salir</span>
       </div>
     </div>
   );
@@ -132,7 +133,7 @@ function TarjetaPlan({
       className={`relative flex w-full flex-col rounded-[var(--radius-card)] p-4 text-left transition-colors duration-200 ${
         seleccionado
           ? ''
-          : 'border-2 border-[color-mix(in_oklab,var(--text-tertiary)_22%,transparent)] bg-[var(--surface)]'
+          : 'border-2 border-[color-mix(in_oklab,var(--text-tertiary)_22%,transparent)] bg-[var(--surface)] shadow-[var(--shadow-1)]'
       }`}
     >
       {plan.badge && (
@@ -220,14 +221,14 @@ export default function Paywall() {
 
       <motion.ul
         {...entrada(1)}
-        className="mt-6 flex flex-col gap-2 rounded-[var(--radius-card)] bg-[color-mix(in_oklab,var(--surface)_55%,transparent)] px-4 py-3"
+        className="mt-6 flex flex-col gap-2 rounded-[var(--radius-card)] bg-[color-mix(in_oklab,var(--text-primary)_6%,transparent)] px-4 py-3 shadow-[inset_0_1px_3px_color-mix(in_oklab,var(--text-primary)_12%,transparent)]"
       >
         {BENEFICIOS.map(({ texto, icon: Icono }) => (
           <li key={texto} className="flex items-center gap-3">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--surface)]">
               <Icono size={18} color="var(--accent)" aria-hidden="true" />
             </span>
-            <span className="text-[13px] font-medium leading-[1.4] text-[var(--text-primary)]">{texto}</span>
+            <span className="text-[16px] font-medium leading-[1.4] text-[var(--text-primary)]">{texto}</span>
           </li>
         ))}
       </motion.ul>
@@ -262,11 +263,11 @@ export default function Paywall() {
             transition={{ duration: reduce ? 0 : 0.22, ease: [0.16, 1, 0.3, 1] }}
             className="mt-6 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]"
           >
-            <p className="mb-3 text-[13px] font-semibold text-[var(--text-primary)]">Cómo funciona tu prueba</p>
+            <p className="mb-3 text-[16px] font-semibold text-[var(--text-primary)]">Cómo funciona tu prueba</p>
             {PASOS_TRIAL.map(({ dia, texto, icon: Icono }, i) => (
               <div key={dia} className={`flex items-start gap-3 ${i === 0 ? '' : 'mt-3'}`}>
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
-                  <Icono size={15} color="var(--text-primary)" aria-hidden="true" />
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
+                  <Icono size={18} color="var(--accent)" aria-hidden="true" />
                 </span>
                 <div>
                   <p className="text-[13px] font-semibold text-[var(--text-primary)]">{dia}</p>
@@ -289,7 +290,17 @@ export default function Paywall() {
         )}
       </AnimatePresence>
 
-      <nav aria-label="Enlaces legales y de cuenta" className="mt-8 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[13px] text-[var(--text-primary)]">
+      <div className="mt-6 flex items-start gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
+          <ShieldCheck size={18} color="var(--accent)" aria-hidden="true" />
+        </span>
+        <p className="text-[13px] leading-[1.5] text-[var(--text-primary)]">
+          <span className="font-semibold">Garantía del Primer Ajuste Honesto:</span> si tu primer Check no te da 1 ajuste
+          concreto que puedas aplicar hoy, te devolvemos todo.
+        </p>
+      </div>
+
+      <nav aria-label="Enlaces legales y de cuenta" className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[13px] text-[var(--text-primary)]">
         <Link href="/terminos" className="flex min-h-11 items-center underline underline-offset-2">Términos</Link>
         <Link href="/privacidad" className="flex min-h-11 items-center underline underline-offset-2">Privacidad</Link>
         <Link href="/login" className="flex min-h-11 items-center font-semibold text-[var(--text-primary)] underline underline-offset-2">Ya tengo cuenta</Link>
@@ -318,7 +329,7 @@ export default function Paywall() {
         </motion.div>
         <p className="mt-3 text-center text-[13px] leading-[1.4] text-[var(--text-primary)]">
           <ShieldCheck size={14} color="var(--text-primary)" aria-hidden="true" className="mr-1 inline-block align-[-2px]" />
-          <span className="font-semibold">Garantía del Primer Ajuste Honesto:</span> 7 días, si no te sirve te devolvemos todo · pago seguro con Hotmart
+          <span className="font-semibold">Garantía del Primer Ajuste Honesto</span> · Pago seguro
         </p>
       </div>
     </main>

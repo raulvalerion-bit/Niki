@@ -34,7 +34,7 @@
 //
 // Modelo 2 (onboarding-first, variante anónima — ESTADO.md): sin registro aquí.
 
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { Hairline } from '@/components/landing/ui';
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react';
@@ -49,6 +49,7 @@ import {
   Shirt,
   Move,
   Eye,
+  Search,
   HelpCircle,
   Sunrise,
   CalendarClock,
@@ -74,7 +75,7 @@ const OBJETIVOS: Opcion[] = [
   { valor: 'social', label: 'Causar buena impresión en citas y vida social', icon: Heart },
   { valor: 'autoridad', label: 'Proyectar autoridad y confianza en el trabajo', icon: Briefcase },
   { valor: 'glowup', label: 'Un Glow-Up general: estilo, mirada y postura', icon: Sparkles },
-  { valor: 'habito', label: 'Mejorar mi imagen personal día con día', icon: Flame },
+  { valor: 'habito', label: 'Mejorar mi imagen personal día con día', icon: Flame },
 ];
 
 // Q2 — dolor #1, #2 y #4 de FICHA-AVATAR.md, en sus palabras literales.
@@ -133,6 +134,33 @@ const EJEMPLO_AJUSTE: Record<string, string> = {
 
 const CLAVE_BORRADOR = 'niki_onboarding_borrador';
 
+// Lee el borrador sin romper la hidratación: en el servidor no hay borrador.
+function suscribirStorage(avisar: () => void) {
+  window.addEventListener('storage', avisar);
+  return () => window.removeEventListener('storage', avisar);
+}
+function leerBorradorCrudo(): string | null {
+  try {
+    return localStorage.getItem(CLAVE_BORRADOR);
+  } catch {
+    return null;
+  }
+}
+
+// Versiones cortas para la pantalla de carga (la respuesta completa no cabe en una línea).
+const OBJETIVO_CORTO: Record<string, string> = {
+  social: 'citas y vida social',
+  autoridad: 'autoridad en el trabajo',
+  glowup: 'Glow-Up general',
+  habito: 'mejorar día a día',
+};
+const DOLOR_CORTO: Record<string, string> = {
+  outfit: 'combinar tu outfit',
+  postura: 'la postura',
+  actitud: 'nadie te dice la verdad',
+  todo: 'no saber por dónde empezar',
+};
+
 const TIEMPO_LABEL_CORTO: Record<string, string> = {
   express: '2 minutos cada mañana',
   eventos: '5 minutos antes de tus eventos',
@@ -147,7 +175,7 @@ const TIEMPO_LABEL_CORTO: Record<string, string> = {
     todo el recorrido para dar identidad de marca (antes solo aparecía en el Tour). */
 /** Logo confirmado en FICHA-ARTE.md: el Anillo Niki sobre su chip con degradé
     atardecer (no el trazo suelto que se usaba antes) + la línea de qué es Niki. */
-function MarcaNiki() {
+function MarcaNiki({ conLema = true }: { conLema?: boolean }) {
   return (
     <div className="flex items-center gap-2 pt-[max(16px,env(safe-area-inset-top))]">
       <span
@@ -171,7 +199,7 @@ function MarcaNiki() {
       </span>
       <div className="flex flex-col leading-tight">
         <span className="text-[16px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">niki</span>
-        <span className="text-[12px] font-medium text-[var(--text-primary)]">Tus ejes de Presencia e Imagen</span>
+        {conLema && <span className="text-[12px] font-medium text-[var(--text-primary)]">Tu Check de Presencia antes de salir</span>}
       </div>
     </div>
   );
@@ -233,6 +261,24 @@ function HojaSalida({ onSeguir }: { onSeguir: () => void }) {
         exit={{ y: reduce ? 0 : 40 }}
         transition={{ duration: reduce ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }}
         onClick={(e) => e.stopPropagation()}
+        onKeyDown={(e) => {
+          // Escape cierra; Tab queda atrapado entre los controles de la hoja.
+          if (e.key === 'Escape') {
+            onSeguir();
+            return;
+          }
+          if (e.key !== 'Tab') return;
+          const focos = Array.from(e.currentTarget.querySelectorAll<HTMLElement>('button, a[href]'));
+          const primero = focos[0];
+          const ultimo = focos[focos.length - 1];
+          if (e.shiftKey && document.activeElement === primero) {
+            e.preventDefault();
+            ultimo?.focus();
+          } else if (!e.shiftKey && document.activeElement === ultimo) {
+            e.preventDefault();
+            primero?.focus();
+          }
+        }}
       >
         <h2 id="titulo-salida" className="text-[20px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
           ¿Salir de tu Check de Presencia?
@@ -320,7 +366,7 @@ function ChipOpcion({
         }`}
       >
         <Icono size={22} strokeWidth={2} color="var(--accent)" aria-hidden="true" />
-        <span className="text-[13px] font-medium leading-[1.25] text-[var(--text-primary)]">{opcion.label}</span>
+        <span className="text-[13px] font-medium leading-[1.25] text-pretty text-[var(--text-primary)]">{opcion.label}</span>
         {seleccionado && (
           <motion.span
             initial={{ scale: 0.5, opacity: 0 }}
@@ -364,7 +410,16 @@ function ChipOpcion({
 
 /** Pantalla de apertura (hook, peldaño 1 de LA ESCALERA — 02B): demuestra la
     promesa antes de pedir nada, mismo patrón que Cal AI. */
-function PantallaApertura({ onIniciar }: { onIniciar: () => void }) {
+function PantallaApertura({
+  onIniciar,
+  textoRetomar,
+  onEmpezarDeNuevo,
+}: {
+  onIniciar: () => void;
+  /** Texto del botón cuando hay un recorrido a medias; null si no hay. */
+  textoRetomar: string | null;
+  onEmpezarDeNuevo: () => void;
+}) {
   return (
     <div className="flex min-h-[85vh] flex-col items-center justify-center pt-8 text-center">
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -373,7 +428,7 @@ function PantallaApertura({ onIniciar }: { onIniciar: () => void }) {
         alt="¡Bienvenidos!"
         className="w-full max-w-[280px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
       />
-      <h1 className="mt-6 text-balance text-[30px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] [font-family:var(--font-display)]">
+      <h1 className="mt-6 text-balance text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] [font-family:var(--font-display)]">
 ¡Tu <span className="text-[var(--accent)]">Check de Presencia</span> antes de salir!
       </h1>
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -387,8 +442,17 @@ function PantallaApertura({ onIniciar }: { onIniciar: () => void }) {
         onClick={onIniciar}
         className="mt-10 flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)]"
       >
-        Iniciar mi Check de Presencia
+        {textoRetomar ?? 'Iniciar mi Check de Presencia'}
       </motion.button>
+      {textoRetomar && (
+        <button
+          type="button"
+          onClick={onEmpezarDeNuevo}
+          className="mt-2 flex min-h-11 items-center text-[14px] font-semibold text-[var(--text-primary)] underline underline-offset-2"
+        >
+          Empezar de nuevo
+        </button>
+      )}
       <p className="mt-3 text-[12px] text-[var(--text-primary)]">Tus fotos son privadas: solo tú las ves.</p>
     </div>
   );
@@ -456,7 +520,7 @@ function PantallaPregunta({
             <Icono size={22} color="var(--accent)" aria-hidden="true" />
           </span>
         )}
-        <h1 className="text-balance text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] [font-family:var(--font-display)]">
+        <h1 className={`text-balance text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] [font-family:var(--font-display)]`}>
           {pregunta}
         </h1>
         {microCopy && <p className="mt-2 text-[14px] text-[var(--text-primary)]">{microCopy}</p>}
@@ -524,16 +588,16 @@ function PantallaReconocimiento({
           initial={reduce ? false : { scale: 0.4, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 300, damping: 18 }}
-          className="flex size-16 items-center justify-center overflow-hidden rounded-full bg-[var(--chip-bg)]"
+          className="flex size-12 items-center justify-center overflow-hidden rounded-full bg-[var(--chip-bg)]"
         >
           {iconoSrc ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={iconoSrc} alt="" aria-hidden="true" className="size-9" />
+            <img src={iconoSrc} alt="" aria-hidden="true" className="size-7" />
           ) : (
-            <Icono size={30} color="var(--accent)" aria-hidden="true" />
+            <Icono size={22} color="var(--accent)" aria-hidden="true" />
           )}
         </motion.span>
-        <h1 className="mt-6 text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
+        <h1 className="mt-6 text-balance text-[28px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
           {titulo}
         </h1>
         <p className="mt-4 max-w-[320px] text-[16px] leading-[1.5] text-[var(--text-primary)]">{texto}</p>
@@ -589,7 +653,7 @@ function PantallaCargando({ lineas, onListo }: { lineas: string[]; onListo: () =
           <ConteoPct valor={pct} reduce={!!reduce} />
         </span>
       </div>
-      <h2 className="mt-6 text-center text-[22px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
+      <h2 className="mt-6 text-balance text-center text-[28px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
         Construyendo tu <span className="text-[var(--accent)]">Check de Presencia</span>…
       </h2>
       <ul className="mt-8 flex w-full flex-col gap-3">
@@ -632,15 +696,23 @@ function PantallaResultado({
   const tiempoLabel = TIEMPO_LABEL_CORTO[tiempoValor] ?? 'tu ritmo';
   const reduce = useReducedMotion();
   return (
-    <div className="pt-4 text-center">
+    <div className="pb-24 pt-2 text-center">
       <span className="inline-block rounded-full bg-[var(--chip-bg)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--accent)]">
         Hecho con tus 4 respuestas
       </span>
-      <h1 className="mt-4 text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
+      <h1 className="mt-4 text-balance text-[28px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
         ¡Tu <span className="text-[var(--accent)]">Check de Presencia</span> está listo!
       </h1>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/iconos/carita-resultado.png" alt="" aria-hidden="true" className="mx-auto mt-2 size-14" />
+      {/* Celebración del hito (baseline #7): la carita entra con un rebote único. */}
+      <motion.img
+        src="/iconos/carita-resultado.png"
+        alt=""
+        aria-hidden="true"
+        className="mx-auto mt-2 size-12"
+        initial={reduce ? false : { scale: 0.5, rotate: -12, opacity: 0 }}
+        animate={{ scale: 1, rotate: 0, opacity: 1 }}
+        transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 320, damping: 14, delay: 0.15 }}
+      />
 
       <motion.div
         initial={reduce ? false : { scale: 0.92, opacity: 0 }}
@@ -657,19 +729,21 @@ function PantallaResultado({
       </motion.div>
 
       <p className="mt-6 text-[14px] font-semibold text-[var(--text-primary)]">
-        Los 3 ejes que analizará tu Check de Presencia:
+        Lo que Niki va a revisar en tu foto:
       </p>
       <ul className="mt-3 grid grid-cols-3 gap-2">
         {['Outfit', 'Postura', 'Actitud'].map((eje) => {
           return (
             <li
               key={eje}
-              className="flex flex-col items-center gap-2 rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--accent)_20%,transparent)] bg-[color-mix(in_oklab,var(--surface)_50%,transparent)] px-2 py-3"
+              className="flex flex-col items-center gap-2 px-2 py-1"
             >
               <span className="flex items-center gap-1.5 text-[13px] font-medium text-[var(--text-primary)]">
                 {eje}
               </span>
-              <Lock size={14} color="var(--text-secondary)" aria-label="Se desbloquea al activar tu plan" />
+              <span className="flex size-8 items-center justify-center rounded-full bg-[color-mix(in_oklab,var(--accent)_12%,transparent)]">
+                <Lock size={14} color="var(--accent)" aria-label="Se desbloquea al activar tu plan" />
+              </span>
             </li>
           );
         })}
@@ -677,25 +751,35 @@ function PantallaResultado({
       <p className="mt-4 text-center text-[13px] text-[var(--text-primary)]">
         <Flame size={14} color="var(--accent)" aria-hidden="true" className="mr-1 inline-block align-[-2px]" />
         <span>
-          Al activar tu plan, tu primera foto los desbloquea y arranca tu racha <span className="font-semibold">Glow-Up</span>.
+          Sin notas crueles: cada foto te da 3 ajustes que puedes hacer hoy. Con el plan Anual lo pruebas 3 días gratis y arranca tu racha <span className="font-semibold">Glow-Up</span>.
         </span>
       </p>
 
-      <motion.div whileTap={{ scale: 0.97 }} className="mt-6">
+      {/* CTA fijo abajo: el paso al plan siempre visible, también en pantallas de 667px. */}
+      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-[480px] bg-[linear-gradient(to_top,color-mix(in_oklab,var(--sunset-2)_40%,var(--bg))_55%,transparent)] px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-6">
+      <motion.div whileTap={{ scale: 0.97 }}>
         <Link
           href="/paywall"
+          onClick={() => {
+            try {
+              localStorage.removeItem(CLAVE_BORRADOR);
+            } catch {
+              // Storage bloqueado: no afecta el paso al plan.
+            }
+          }}
           className="flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)]"
         >
           Desbloquear mi Check de Presencia
         </Link>
       </motion.div>
+      </div>
     </div>
   );
 }
 
 function FilaPlan({ label, valor, ultimo = false }: { label: string; valor: string; ultimo?: boolean }) {
   return (
-    <div className={`flex items-center justify-between py-2.5 ${ultimo ? '' : 'border-b border-[color-mix(in_oklab,var(--text-tertiary)_15%,transparent)]'}`}>
+    <div className={`flex items-center justify-between py-2 ${ultimo ? '' : 'border-b border-[color-mix(in_oklab,var(--text-tertiary)_15%,transparent)]'}`}>
       <span className="text-[13px] text-[var(--text-tertiary)]">{label}</span>
       <span className="max-w-[65%] text-right text-[13px] font-semibold text-[var(--text-primary)]">{valor}</span>
     </div>
@@ -711,7 +795,7 @@ type PasoId = 'apertura' | 'objetivo' | 'dolor' | 'reconocimiento1' | 'ocasion' 
 const ORDEN: PasoId[] = ['apertura', 'objetivo', 'dolor', 'reconocimiento1', 'ocasion', 'tiempo', 'reconocimiento2', 'cargando', 'resultado'];
 // El progreso arranca en el paso 'objetivo' (índice 1) y llega a 100% en 'reconocimiento2'.
 const PRIMER_PASO_CON_PROGRESO = 1;
-const PASOS_CON_PROGRESO = 5; // objetivo, dolor, reconocimiento1, ocasion, tiempo -> reconocimiento2 = 100%
+const PASOS_CON_PROGRESO = 6; // objetivo, dolor, reconocimiento1, ocasion, tiempo, reconocimiento2 (~85%) -> resultado = 100%
 
 export default function Onboarding() {
   const [pasoIdx, setPasoIdx] = useState(0);
@@ -738,28 +822,49 @@ export default function Onboarding() {
   // Borrador del recorrido: si la persona sale a medias (X o cierra la pestaña),
   // al volver retoma en la última pregunta con sus respuestas. Se descarta al
   // llegar al resultado (ahí ya se guardan las respuestas finales, abajo).
-  // Se lee al tocar "Iniciar" (acción del usuario), no al montar: así no hay
-  // desajuste entre servidor y navegador ni estado seteado dentro de un efecto.
-  function iniciar() {
+  // Borrador de un recorrido a medias: se lee con useSyncExternalStore (sin
+  // desajuste de hidratación) para ofrecer "Retomar" o "Empezar de nuevo".
+  const borradorCrudo = useSyncExternalStore(suscribirStorage, leerBorradorCrudo, () => null);
+  const borrador = useMemo(() => {
+    if (!borradorCrudo) return null;
     try {
-      const crudo = localStorage.getItem(CLAVE_BORRADOR);
-      if (crudo) {
-        const b = JSON.parse(crudo) as { pasoIdx?: number; respuestas?: typeof respuestas };
-        const tope = ORDEN.indexOf('reconocimiento2');
-        if (b.respuestas && typeof b.pasoIdx === 'number' && b.pasoIdx > 0) {
-          setRespuestas(b.respuestas);
-          setPasoIdx(Math.min(b.pasoIdx, tope));
-          return;
-        }
-      }
+      const b = JSON.parse(borradorCrudo) as { pasoIdx?: number; respuestas?: typeof respuestas };
+      if (!b.respuestas || typeof b.pasoIdx !== 'number' || b.pasoIdx <= 0) return null;
+      return { pasoIdx: Math.min(b.pasoIdx, ORDEN.indexOf('reconocimiento2')), respuestas: b.respuestas };
     } catch {
-      // Borrador ilegible o storage bloqueado: se empieza de cero, sin romper nada.
+      return null;
     }
+  }, [borradorCrudo]);
+  const PREGUNTAS: PasoId[] = ['objetivo', 'dolor', 'ocasion', 'tiempo'];
+  const idxCasiListo = ORDEN.indexOf('reconocimiento2');
+  const textoRetomar = !borrador
+    ? null
+    : borrador.pasoIdx >= idxCasiListo
+      ? 'Ver mi Check de Presencia'
+      : `Retomar mi Check · ${PREGUNTAS.filter((q) => ORDEN.indexOf(q) < borrador.pasoIdx).length} de 4 respondidas`;
+
+  function iniciar() {
+    if (borrador) {
+      setRespuestas(borrador.respuestas);
+      setPasoIdx(borrador.pasoIdx);
+      return;
+    }
+    avanzar();
+  }
+  function empezarDeNuevo() {
+    try {
+      localStorage.removeItem(CLAVE_BORRADOR);
+    } catch {
+      // Storage bloqueado: igual se arranca desde la primera pregunta.
+    }
+    setRespuestas({});
     avanzar();
   }
   useEffect(() => {
     try {
-      if (paso === 'resultado') localStorage.removeItem(CLAVE_BORRADOR);
+      // En el resultado se guarda apuntando a "¡Ya casi está!": si sale aquí y vuelve,
+      // retoma a un toque del resultado. Se borra al tocar "Desbloquear".
+      if (paso === 'resultado') localStorage.setItem(CLAVE_BORRADOR, JSON.stringify({ pasoIdx: ORDEN.indexOf('reconocimiento2'), respuestas }));
       else if (pasoIdx > 0) localStorage.setItem(CLAVE_BORRADOR, JSON.stringify({ pasoIdx, respuestas }));
     } catch {
       // Navegación privada: el recorrido sigue funcionando, solo no se retoma.
@@ -792,8 +897,8 @@ export default function Onboarding() {
   const ocasionLabel = useMemo(() => OCASIONES.find((o) => o.valor === respuestas.ocasion)?.label ?? 'tu evento', [respuestas.ocasion]);
 
   const lineasCarga = [
-    `Leyendo tu objetivo`,
-    `Registrando lo que te frena`,
+    `Leyendo tu objetivo: ${OBJETIVO_CORTO[respuestas.objetivo ?? ''] ?? 'tu presencia'}`,
+    `Lo que te frena: ${DOLOR_CORTO[respuestas.dolor ?? ''] ?? 'tu presencia'}`,
     `Ajustando tu Check a: ${ocasionLabel}`,
     `Tu hábito: ${TIEMPO_LABEL_CORTO[respuestas.tiempo ?? 'express']}`,
   ];
@@ -821,7 +926,7 @@ export default function Onboarding() {
       </>
       )}
 
-      <MarcaNiki />
+      <MarcaNiki conLema={paso !== 'apertura'} />
       {mostrarEncabezado && (
         <Encabezado pct={pct} onAtras={retroceder} mostrarAtras={pasoIdx > 0} onSalir={() => setConfirmarSalida(true)} />
       )}
@@ -836,7 +941,9 @@ export default function Onboarding() {
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-1 flex-col"
         >
-          {paso === 'apertura' && <PantallaApertura onIniciar={iniciar} />}
+          {paso === 'apertura' && (
+            <PantallaApertura onIniciar={iniciar} textoRetomar={textoRetomar} onEmpezarDeNuevo={empezarDeNuevo} />
+          )}
 
           {paso === 'objetivo' && (
             <PantallaPregunta
@@ -853,7 +960,7 @@ export default function Onboarding() {
           {paso === 'dolor' && (
             <PantallaPregunta
               pregunta="¿Qué te frustra más al vestirte?"
-              icon={Eye}
+              icon={Search}
               opciones={DOLORES}
               onElegir={(v) => {
                 setRespuestas((r) => ({ ...r, dolor: v }));
@@ -865,7 +972,7 @@ export default function Onboarding() {
           {paso === 'reconocimiento1' && (
             <PantallaReconocimiento
               icon={DOLOR_ICONO[respuestas.dolor ?? 'todo']}
-              titulo="Tiene sentido"
+              titulo="No es falta de estilo"
               texto={RECONOCIMIENTO_DOLOR[respuestas.dolor ?? 'todo']}
               onContinuar={avanzar}
             />
@@ -903,7 +1010,7 @@ export default function Onboarding() {
               icon={Rocket}
               iconoSrc="/iconos/icono-4-esperando.gif"
               titulo="¡Ya casi está!"
-              texto={`Tu Check de Presencia para tu ${ocasionLabel.toLowerCase()} ya sabe qué te frena. Solo falta armar tu plan.`}
+              texto={`Se acabaron los 20 minutos dudando frente al armario: tu Check para tu ${ocasionLabel.toLowerCase()} ya sabe qué te frena.`}
               ctaLabel="Ver mi Check de Presencia"
               extra={
                 <div className="mt-6 w-full rounded-[var(--radius-card)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">

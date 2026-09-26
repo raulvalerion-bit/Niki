@@ -32,6 +32,8 @@ export interface OfertaProps {
   tituloMarked: string;
   /** N días de trial según 02C/ESTADO.md. undefined = esquema SIN trial → sin badge. */
   trialDias?: number;
+  /** false = la prueba es SOLO del Anual: el Mensual no lleva badge de trial. */
+  trialEnMensual?: boolean;
   /** El plan ANUAL — recomendado, primero en el DOM. */
   anual: PlanOferta & {
     /** "Se cobra $X/año" — OBLIGATORIO: el total nunca se esconde (52 §2). */
@@ -95,6 +97,7 @@ export function Oferta({
   kicker = 'LA OFERTA',
   tituloMarked,
   trialDias,
+  trialEnMensual = true,
   anual,
   mensual,
   stack,
@@ -180,7 +183,7 @@ export function Oferta({
           >
             <div className="flex items-center justify-between gap-3">
               <h3 className="text-[18px] font-semibold text-[var(--text-primary)]">{mensual.nombre}</h3>
-              {trialDias !== undefined && <TrialBadge dias={trialDias} />}
+              {trialDias !== undefined && trialEnMensual && <TrialBadge dias={trialDias} />}
             </div>
             <div className="mt-4">
               <Precio plan={mensual} />
