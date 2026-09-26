@@ -21,7 +21,7 @@ export default function AvisoIA() {
             El Check de Presencia es orientación generada por inteligencia artificial, no consejo
             profesional de imagen, psicológico ni médico.
           </strong>{' '}
-          Sos vos quien decide qué aplicar.
+          Eres tú quien decide qué aplicar.
         </p>
 
         <section>
@@ -38,7 +38,7 @@ export default function AvisoIA() {
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>No pone puntuaciones crueles ni comentarios sobre tu cuerpo fuera del outfit/postura/actitud.</li>
             <li>No comparte tus fotos con otros usuarios ni las publica.</li>
-            <li>No sustituye una consulta médica, psicológica o de estilismo profesional si la necesitás.</li>
+            <li>No sustituye una consulta médica, psicológica o de estilismo profesional si la necesitas.</li>
           </ul>
         </section>
 

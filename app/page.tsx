@@ -33,7 +33,7 @@ export default function LandingNiki() {
         subtitleMarked="Niki analiza tu outfit, postura y actitud — [b]sin críticas crueles[/b]."
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
-        socialProof={<span>Trial VIP de 3 días · tus fotos nunca se guardan ni se comparten</span>}
+        socialProof={<span>Trial VIP de 3 días · tus fotos son privadas: solo tú las ves</span>}
         visualPlaceholderSugerencia="captura del Check de Presencia con el puntaje 82/100 y los 3 ajustes ya generados"
       />
 
@@ -169,7 +169,7 @@ export default function LandingNiki() {
           {
             pregunta: '¿Mis fotos quedan guardadas o se comparten?',
             respuestaMarked:
-              'No. Se procesan para darte el resultado y [b]nunca se comparten[/b] ni se usan para entrenar nada público.',
+              'Se guardan en tu cuenta de forma privada para armar tu historial: [b]solo tú puedes verlas[/b]. Nunca se comparten con otros usuarios, no se venden y no se usan para entrenar nada público.',
           },
           {
             pregunta: '¿Me va a destrozar con una nota cruel tipo 3/10?',

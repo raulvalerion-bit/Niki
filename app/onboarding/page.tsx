@@ -36,7 +36,8 @@
 
 import { useMemo, useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { Hairline } from '@/components/landing/ui';
+import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react';
 import {
   ArrowLeft,
   Briefcase,
@@ -98,7 +99,7 @@ const OCASIONES: Opcion[] = [
 // Q4 — pledge de compromiso (peldaño 7 de LA ESCALERA, 02B): un tiempo que la
 // app va a usar después, no solo un dato decorativo.
 const TIEMPOS: Opcion[] = [
-  { valor: 'express', label: '2 minutos por la mañana (Express)', icon: Sunrise },
+  { valor: 'express', label: '2 minutos cada mañana', icon: Sunrise },
   { valor: 'eventos', label: '5 minutos antes de eventos importantes', icon: CalendarClock },
 ];
 
@@ -113,13 +114,27 @@ const DOLOR_ICONO: Record<string, LucideIcon> = {
 
 const RECONOCIMIENTO_DOLOR: Record<string, string> = {
   outfit: 'Nadie te enseñó a leer tu propio armario, y tus amigos solo dicen "te ves bien" por compromiso. El Check de Presencia te lo dice claro.',
-  postura: 'La postura es difícil de corregir sola: no te ves desde afuera en el momento. El Check de Presencia te muestra exactamente qué ajustar.',
+  postura: 'La postura es difícil de corregir por tu cuenta: no te ves desde afuera en el momento. El Check de Presencia te muestra exactamente qué ajustar.',
   actitud: 'La mirada es lo que menos feedback recibe — nadie te dice "baja los hombros" en el espejo. Eso es justo lo que el Check de Presencia sí te dice.',
   todo: 'Cuando es "un poco de todo", el problema no es tu ropa: es no tener una retroalimentación honesta. Eso es lo que hace el Check de Presencia.',
 };
 
+// Ejemplo del TONO del feedback (objeción #3 de FICHA-AVATAR: "consejos genéricos
+// de robot"; #4: "nota cruel"). Se rotula como ejemplo: no es un análisis del
+// usuario ni un puntaje — solo muestra cómo habla Niki para la ocasión elegida.
+const EJEMPLO_AJUSTE: Record<string, string> = {
+  entrevista: 'Tu outfit se ve profesional, pero los hombros caen hacia adelante. Llévalos atrás antes de entrar y tu presencia sube al instante.',
+  cita: 'Ese color te ilumina la cara, buena elección. Suelta un botón o remanga la prenda: se verá relajado sin perder estilo.',
+  negocios: 'Los tonos neutros te dan autoridad. Mantén la barbilla paralela al piso cuando hables: transmite seguridad sin esfuerzo.',
+  amigos: 'Tu look se ve cómodo y actual. Unos tenis limpios de color claro lo suben un nivel sin cambiar nada más.',
+  cena: 'El corte te queda bien de hombros. Si el pantalón arruga en el tobillo, acórtalo un poco: se verá hecho a tu medida.',
+  vacaciones: 'Los colores claros te favorecen con sol. Una camisa ligera abierta sobre la playera se ve más pensada y fresca.',
+};
+
+const CLAVE_BORRADOR = 'niki_onboarding_borrador';
+
 const TIEMPO_LABEL_CORTO: Record<string, string> = {
-  express: '2 minutos al día',
+  express: '2 minutos cada mañana',
   eventos: '5 minutos antes de tus eventos',
 };
 
@@ -136,33 +151,34 @@ function MarcaNiki() {
   return (
     <div className="flex items-center gap-2 pt-[max(16px,env(safe-area-inset-top))]">
       <span
-        className="flex size-8 shrink-0 items-center justify-center rounded-[9px]"
-        style={{ background: 'linear-gradient(160deg, #FF9457 0%, #FFD98A 100%)' }}
+        className="flex size-8 shrink-0 items-center justify-center rounded-[8px]"
+        style={{ background: 'linear-gradient(160deg, var(--sunset-1) 0%, var(--sunset-2) 100%)' }}
       >
         <svg width="16" height="16" viewBox="0 0 52 52" fill="none" aria-hidden="true">
           <circle
             cx="26"
             cy="26"
             r="19"
-            stroke="#3C2412"
+            stroke="var(--gold-text)"
             strokeWidth="7"
             strokeLinecap="round"
             strokeDasharray="119.4"
             strokeDashoffset="28"
             transform="rotate(-90 26 26)"
           />
-          <circle cx="26" cy="7.2" r="5" fill="#3C2412" />
+          <circle cx="26" cy="7.2" r="5" fill="var(--gold-text)" />
         </svg>
       </span>
       <div className="flex flex-col leading-tight">
-        <span className="text-[15px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">niki</span>
-        <span className="text-[10px] font-medium text-[var(--text-secondary)]">Tus ejes de Presencia e Imagen</span>
+        <span className="text-[16px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">niki</span>
+        <span className="text-[12px] font-medium text-[var(--text-primary)]">Tus ejes de Presencia e Imagen</span>
       </div>
     </div>
   );
 }
 
 function BarraProgreso({ pct }: { pct: number }) {
+  const reduce = useReducedMotion();
   return (
     <div
       className="h-[3px] w-full overflow-hidden rounded-full bg-[color-mix(in_oklab,var(--text-tertiary)_15%,transparent)]"
@@ -174,13 +190,82 @@ function BarraProgreso({ pct }: { pct: number }) {
       <motion.div
         className="h-full rounded-full bg-[var(--accent)]"
         animate={{ width: `${pct}%` }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: reduce ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
       />
     </div>
   );
 }
 
-function Encabezado({ pct, onAtras, mostrarAtras }: { pct: number; onAtras: () => void; mostrarAtras: boolean }) {
+/** Porcentaje héroe que cuenta en vez de saltar (baseline #2). */
+function ConteoPct({ valor, reduce }: { valor: number; reduce: boolean }) {
+  const mv = useMotionValue(0);
+  const texto = useTransform(mv, (v) => `${Math.round(v)}%`);
+  useEffect(() => {
+    if (reduce) {
+      mv.set(valor);
+      return;
+    }
+    const control = animate(mv, valor, { duration: 0.5, ease: [0.16, 1, 0.3, 1] });
+    return () => control.stop();
+  }, [valor, reduce, mv]);
+  return <motion.span>{texto}</motion.span>;
+}
+
+/** Hoja de confirmación al salir: el borrador queda guardado para retomar. */
+function HojaSalida({ onSeguir }: { onSeguir: () => void }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className="fixed inset-0 z-20 flex items-end justify-center bg-[color-mix(in_oklab,var(--text-primary)_40%,transparent)]"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: reduce ? 0 : 0.2 }}
+      onClick={onSeguir}
+    >
+      <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-salida"
+        className="w-full max-w-[480px] rounded-t-[var(--radius-card)] bg-[var(--surface)] px-5 pb-[max(24px,env(safe-area-inset-bottom))] pt-6 text-center shadow-[var(--shadow-2)]"
+        initial={{ y: reduce ? 0 : 40 }}
+        animate={{ y: 0 }}
+        exit={{ y: reduce ? 0 : 40 }}
+        transition={{ duration: reduce ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 id="titulo-salida" className="text-[20px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
+          ¿Salir de tu Check de Presencia?
+        </h2>
+        <p className="mt-2 text-[14px] text-[var(--text-primary)]">Guardamos tus respuestas en este celular: cuando vuelvas, sigues donde te quedaste.</p>
+        <motion.button
+          type="button"
+          autoFocus
+          whileTap={{ scale: 0.97 }}
+          onClick={onSeguir}
+          className="mt-6 flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)]"
+        >
+          Seguir con mi Check
+        </motion.button>
+        <Link href="/" className="mt-2 flex h-12 w-full items-center justify-center text-[14px] font-semibold text-[var(--text-primary)] underline underline-offset-2">
+          Salir
+        </Link>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function Encabezado({
+  pct,
+  onAtras,
+  mostrarAtras,
+  onSalir,
+}: {
+  pct: number;
+  onAtras: () => void;
+  mostrarAtras: boolean;
+  onSalir: () => void;
+}) {
   return (
     <div className="mt-3 flex items-center gap-3">
       <button
@@ -194,13 +279,14 @@ function Encabezado({ pct, onAtras, mostrarAtras }: { pct: number; onAtras: () =
         <ArrowLeft size={20} aria-hidden="true" />
       </button>
       <BarraProgreso pct={pct} />
-      <Link
-        href="/"
+      <button
+        type="button"
+        onClick={onSalir}
         aria-label="Salir del Check de Presencia"
         className="flex size-11 shrink-0 items-center justify-center rounded-full text-[var(--text-primary)]"
       >
         <X size={20} aria-hidden="true" />
-      </Link>
+      </button>
     </div>
   );
 }
@@ -288,12 +374,12 @@ function PantallaApertura({ onIniciar }: { onIniciar: () => void }) {
         className="w-full max-w-[280px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
       />
       <h1 className="mt-6 text-balance text-[30px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] [font-family:var(--font-display)]">
-¡Tu <span className="text-[var(--accent)]">Check de Presencia e Imagen</span> antes de salir!
+¡Tu <span className="text-[var(--accent)]">Check de Presencia</span> antes de salir!
       </h1>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/iconos/icono-7-carita-apertura.gif" alt="" aria-hidden="true" className="mt-4 size-20" />
-      <p className="mt-4 max-w-[320px] text-[16px] leading-[1.5] text-[var(--text-primary)]">
-        Analizamos tu outfit, tu postura y tu actitud en 30 segundos — con tono de coach, nunca de juez.
+      <p className="mt-4 max-w-[320px] text-balance text-[16px] leading-[1.5] text-[var(--text-primary)]">
+        Nadie te dice la verdad por pena. En 4 preguntas armamos tu Check; después, cada foto te dice en 30 segundos qué ajustar.
       </p>
       <motion.button
         type="button"
@@ -303,7 +389,7 @@ function PantallaApertura({ onIniciar }: { onIniciar: () => void }) {
       >
         Iniciar mi Check de Presencia
       </motion.button>
-      <p className="mt-3 text-[12px] text-[var(--text-primary)]">Tus fotos nunca se guardan ni se comparten.</p>
+      <p className="mt-3 text-[12px] text-[var(--text-primary)]">Tus fotos son privadas: solo tú las ves.</p>
     </div>
   );
 }
@@ -390,7 +476,7 @@ function PantallaPregunta({
             key={op.valor}
             initial={{ opacity: 0, y: reduce ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, delay: reduce ? 0 : i * 0.04 }}
+            transition={{ duration: 0.25, delay: reduce ? 0 : i * 0.06 }}
           >
             <ChipOpcion
               opcion={op}
@@ -416,7 +502,8 @@ function PantallaReconocimiento({
   iconoSrc,
   titulo,
   texto,
-  ctaLabel = 'Continuar',
+  ctaLabel = 'Seguir con mi Check',
+  extra,
   onContinuar,
 }: {
   icon: LucideIcon;
@@ -425,11 +512,13 @@ function PantallaReconocimiento({
   titulo: string;
   texto: string;
   ctaLabel?: string;
+  /** Contenido extra entre el texto y el botón (p. ej. el ejemplo de ajuste). */
+  extra?: React.ReactNode;
   onContinuar: () => void;
 }) {
   const reduce = useReducedMotion();
   return (
-    <div className="pt-8">
+    <div className="flex flex-1 flex-col justify-center pb-16 pt-8">
       <div className="flex flex-col items-center text-center">
         <motion.span
           initial={reduce ? false : { scale: 0.4, opacity: 0 }}
@@ -448,6 +537,7 @@ function PantallaReconocimiento({
           {titulo}
         </h1>
         <p className="mt-4 max-w-[320px] text-[16px] leading-[1.5] text-[var(--text-primary)]">{texto}</p>
+        {extra}
       </div>
       <motion.button
         type="button"
@@ -492,29 +582,29 @@ function PantallaCargando({ lineas, onListo }: { lineas: string[]; onListo: () =
             strokeLinecap="round"
             strokeDasharray={301.6}
             animate={{ strokeDashoffset: 301.6 * (1 - pct / 100) }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: reduce ? 0 : 0.4 }}
           />
         </svg>
         <span className="absolute text-[22px] font-bold tabular-nums text-[var(--text-primary)] [font-family:var(--font-display)]">
-          {pct}%
+          <ConteoPct valor={pct} reduce={!!reduce} />
         </span>
       </div>
-      <h2 className="mt-6 text-[22px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
+      <h2 className="mt-6 text-center text-[22px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
         Construyendo tu <span className="text-[var(--accent)]">Check de Presencia</span>…
       </h2>
       <ul className="mt-8 flex w-full flex-col gap-3">
         {lineas.map((l, i) => (
-          <li key={i} className={`flex items-center gap-3 text-[15px] ${i <= activo ? 'text-[var(--text-primary)]' : 'text-[var(--text-tertiary)] opacity-40'}`}>
+          <li key={i} className={`flex items-center gap-3 text-[15px] ${i <= activo ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}>
             {i < activo ? (
-              <Check size={18} color="var(--accent)" aria-hidden="true" />
+              <Check size={18} color="var(--accent)" aria-hidden="true" className="shrink-0" />
             ) : i === activo ? (
               <motion.span
                 animate={reduce ? {} : { opacity: [1, 0.3, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
-                className="size-2 rounded-full bg-[var(--accent)]"
+                className="mx-[5px] size-2 shrink-0 rounded-full bg-[var(--accent)]"
               />
             ) : (
-              <span className="size-2 rounded-full border border-[var(--text-tertiary)]" />
+              <span className="mx-[5px] size-2 shrink-0 rounded-full border border-[var(--text-tertiary)]" />
             )}
             {l}
           </li>
@@ -531,70 +621,74 @@ function PantallaCargando({ lineas, onListo }: { lineas: string[]; onListo: () =
 function PantallaResultado({
   objetivoLabel,
   ocasionLabel,
+  dolorLabel,
   tiempoValor,
 }: {
   objetivoLabel: string;
   ocasionLabel: string;
+  dolorLabel: string;
   tiempoValor: string;
 }) {
   const tiempoLabel = TIEMPO_LABEL_CORTO[tiempoValor] ?? 'tu ritmo';
   const reduce = useReducedMotion();
   return (
-    <div className="pt-8 text-center">
+    <div className="pt-4 text-center">
       <span className="inline-block rounded-full bg-[var(--chip-bg)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--accent)]">
         Hecho con tus 4 respuestas
       </span>
       <h1 className="mt-4 text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
-        ¡Tu plan de <span className="text-[var(--accent)]">Presencia</span> está listo!
+        ¡Tu <span className="text-[var(--accent)]">Check de Presencia</span> está listo!
       </h1>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/iconos/carita-resultado.png" alt="" aria-hidden="true" className="mx-auto mt-3 size-20" />
+      <img src="/iconos/carita-resultado.png" alt="" aria-hidden="true" className="mx-auto mt-2 size-14" />
 
       <motion.div
         initial={reduce ? false : { scale: 0.92, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 260, damping: 20, delay: 0.1 }}
-        className="mx-auto mt-8 w-full max-w-[320px] rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_20%,transparent)] bg-[var(--surface)] p-5 text-left shadow-[var(--shadow-2)]"
+        className="mt-5"
       >
-        <FilaPlan label="Tu objetivo" valor={objetivoLabel} />
-        <FilaPlan label="Enfocado en" valor={ocasionLabel} />
-        <FilaPlan label="Tu hábito" valor={tiempoLabel} ultimo />
+        <Hairline emphasis className="px-5 py-3 text-left shadow-[var(--shadow-2)]">
+          <FilaPlan label="Tu objetivo" valor={objetivoLabel} />
+          <FilaPlan label="Lo que te frena" valor={dolorLabel} />
+          <FilaPlan label="Enfocado en" valor={ocasionLabel} />
+          <FilaPlan label="Tu hábito" valor={tiempoLabel} ultimo />
+        </Hairline>
       </motion.div>
 
-      <p className="mx-auto mt-6 max-w-[320px] text-[14px] font-semibold text-[var(--text-primary)]">
-        Estos son los 3 ejes de tu Check de Presencia e Imagen que vamos a analizar y tu racha para saber cómo vas.
+      <p className="mt-6 text-[14px] font-semibold text-[var(--text-primary)]">
+        Los 3 ejes que analizará tu Check de Presencia:
       </p>
-      <div className="mx-auto mt-3 grid max-w-[320px] grid-cols-2 gap-2">
-        {['Outfit', 'Postura', 'Actitud', 'Racha'].map((eje) => {
-          // Actitud lleva la 2ª nota de marca (FICHA-ARTE: verde-lima, único uso en la app).
-          const esActitud = eje === 'Actitud';
+      <ul className="mt-3 grid grid-cols-3 gap-2">
+        {['Outfit', 'Postura', 'Actitud'].map((eje) => {
           return (
-            <div
+            <li
               key={eje}
-              className={`rounded-[var(--radius-button)] border bg-[var(--surface-2)] p-3 shadow-[inset_0_1px_3px_rgb(140_60_20_/_0.15)] ${
-                esActitud
-                  ? 'border-[color-mix(in_oklab,var(--accent-2)_45%,transparent)]'
-                  : 'border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)]'
-              }`}
+              className="flex flex-col items-center gap-2 rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--accent)_20%,transparent)] bg-[color-mix(in_oklab,var(--surface)_50%,transparent)] px-2 py-3"
             >
-              <p className="text-[11px] text-[var(--text-tertiary)]">{eje}</p>
-              <div className="mt-2 flex items-center justify-center">
-                <Lock size={13} color={esActitud ? 'var(--accent-2)' : 'var(--text-tertiary)'} aria-hidden="true" />
-              </div>
-            </div>
+              <span className="flex items-center gap-1.5 text-[13px] font-medium text-[var(--text-primary)]">
+                {eje}
+              </span>
+              <Lock size={14} color="var(--text-secondary)" aria-label="Se desbloquea al activar tu plan" />
+            </li>
           );
         })}
-      </div>
-      <p className="mx-auto mt-3 max-w-[300px] text-[12px] text-[var(--text-tertiary)]">
-        Se desbloquean con tu primera foto — el primer paso ya dentro de la app.
+      </ul>
+      <p className="mt-4 text-center text-[13px] text-[var(--text-primary)]">
+        <Flame size={14} color="var(--accent)" aria-hidden="true" className="mr-1 inline-block align-[-2px]" />
+        <span>
+          Al activar tu plan, tu primera foto los desbloquea y arranca tu racha <span className="font-semibold">Glow-Up</span>.
+        </span>
       </p>
 
-      <Link
-        href="/paywall"
-        className="mt-8 flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)]"
-      >
-        Desbloquear mi plan
-      </Link>
+      <motion.div whileTap={{ scale: 0.97 }} className="mt-6">
+        <Link
+          href="/paywall"
+          className="flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)]"
+        >
+          Desbloquear mi Check de Presencia
+        </Link>
+      </motion.div>
     </div>
   );
 }
@@ -621,6 +715,8 @@ const PASOS_CON_PROGRESO = 5; // objetivo, dolor, reconocimiento1, ocasion, tiem
 
 export default function Onboarding() {
   const [pasoIdx, setPasoIdx] = useState(0);
+  const [confirmarSalida, setConfirmarSalida] = useState(false);
+  const reduce = useReducedMotion();
   const [respuestas, setRespuestas] = useState<{
     objetivo?: string;
     dolor?: string;
@@ -639,6 +735,37 @@ export default function Onboarding() {
     window.scrollTo({ top: 0 });
   }, [pasoIdx]);
 
+  // Borrador del recorrido: si la persona sale a medias (X o cierra la pestaña),
+  // al volver retoma en la última pregunta con sus respuestas. Se descarta al
+  // llegar al resultado (ahí ya se guardan las respuestas finales, abajo).
+  // Se lee al tocar "Iniciar" (acción del usuario), no al montar: así no hay
+  // desajuste entre servidor y navegador ni estado seteado dentro de un efecto.
+  function iniciar() {
+    try {
+      const crudo = localStorage.getItem(CLAVE_BORRADOR);
+      if (crudo) {
+        const b = JSON.parse(crudo) as { pasoIdx?: number; respuestas?: typeof respuestas };
+        const tope = ORDEN.indexOf('reconocimiento2');
+        if (b.respuestas && typeof b.pasoIdx === 'number' && b.pasoIdx > 0) {
+          setRespuestas(b.respuestas);
+          setPasoIdx(Math.min(b.pasoIdx, tope));
+          return;
+        }
+      }
+    } catch {
+      // Borrador ilegible o storage bloqueado: se empieza de cero, sin romper nada.
+    }
+    avanzar();
+  }
+  useEffect(() => {
+    try {
+      if (paso === 'resultado') localStorage.removeItem(CLAVE_BORRADOR);
+      else if (pasoIdx > 0) localStorage.setItem(CLAVE_BORRADOR, JSON.stringify({ pasoIdx, respuestas }));
+    } catch {
+      // Navegación privada: el recorrido sigue funcionando, solo no se retoma.
+    }
+  }, [paso, pasoIdx, respuestas]);
+
   // El onboarding es anónimo (ocurre ANTES del login) — se guardan las
   // respuestas en localStorage para que el login las escriba en el profile
   // justo después del primer inicio de sesión (ver app/login/page.tsx).
@@ -655,7 +782,9 @@ export default function Onboarding() {
     setPasoIdx((i) => Math.min(i + 1, ORDEN.length - 1));
   }
   function retroceder() {
-    setPasoIdx((i) => Math.max(i - 1, 0));
+    // Desde el resultado se vuelve a la pantalla anterior a la carga: repetir la
+    // carga simulada al ir hacia atrás no aporta nada.
+    setPasoIdx((i) => (ORDEN[i] === 'resultado' ? ORDEN.indexOf('reconocimiento2') : Math.max(i - 1, 0)));
   }
 
   const objetivoLabel = useMemo(() => OBJETIVOS.find((o) => o.valor === respuestas.objetivo)?.label ?? 'tu presencia', [respuestas.objetivo]);
@@ -663,10 +792,10 @@ export default function Onboarding() {
   const ocasionLabel = useMemo(() => OCASIONES.find((o) => o.valor === respuestas.ocasion)?.label ?? 'tu evento', [respuestas.ocasion]);
 
   const lineasCarga = [
-    `Analizando tu objetivo: ${objetivoLabel}`,
-    `Registrando lo que más te frena: ${dolorLabel || 'tu presencia'}`,
-    `Configurando tu Check para: ${ocasionLabel}`,
-    `Armando tu hábito de ${TIEMPO_LABEL_CORTO[respuestas.tiempo ?? 'express']}`,
+    `Leyendo tu objetivo`,
+    `Registrando lo que te frena`,
+    `Ajustando tu Check a: ${ocasionLabel}`,
+    `Tu hábito: ${TIEMPO_LABEL_CORTO[respuestas.tiempo ?? 'express']}`,
   ];
 
   const mostrarEncabezado = paso !== 'apertura' && paso !== 'cargando';
@@ -679,6 +808,8 @@ export default function Onboarding() {
       {/* Dispositivo ownable (FICHA-ARTE: anillo de progreso) como eco de marca en el
           fondo — da profundidad y llena el espacio libre de las preguntas cortas sin
           competir con el contenido (detrás de todo, sin z-index). */}
+      {paso !== 'resultado' && (
+      <>
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-20 -right-20 size-72 rounded-full border-[3px] border-[color-mix(in_oklab,var(--accent)_16%,transparent)]"
@@ -687,20 +818,25 @@ export default function Onboarding() {
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-32 -right-32 size-72 rounded-full border-[3px] border-[color-mix(in_oklab,var(--accent)_10%,transparent)]"
       />
+      </>
+      )}
 
       <MarcaNiki />
-      {mostrarEncabezado && <Encabezado pct={pct} onAtras={retroceder} mostrarAtras={pasoIdx > 0} />}
+      {mostrarEncabezado && (
+        <Encabezado pct={pct} onAtras={retroceder} mostrarAtras={pasoIdx > 0} onSalir={() => setConfirmarSalida(true)} />
+      )}
+      <AnimatePresence>{confirmarSalida && <HojaSalida onSeguir={() => setConfirmarSalida(false)} />}</AnimatePresence>
 
       <AnimatePresence mode="wait">
         <motion.div
           key={paso}
-          initial={{ opacity: 0, x: 24 }}
+          initial={{ opacity: 0, x: reduce ? 0 : 24 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -24 }}
+          exit={{ opacity: 0, x: reduce ? 0 : -24 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-1 flex-col"
         >
-          {paso === 'apertura' && <PantallaApertura onIniciar={avanzar} />}
+          {paso === 'apertura' && <PantallaApertura onIniciar={iniciar} />}
 
           {paso === 'objetivo' && (
             <PantallaPregunta
@@ -766,9 +902,19 @@ export default function Onboarding() {
             <PantallaReconocimiento
               icon={Rocket}
               iconoSrc="/iconos/icono-4-esperando.gif"
-              titulo="¡Vamos avanzando!"
-              texto="Ya que has identificado lo que te frena, tu Check de Presencia e Imagen quedará armado para la ocasión que elijas."
-              ctaLabel="Ver mi Plan de Presencia e Imagen"
+              titulo="¡Ya casi está!"
+              texto={`Tu Check de Presencia para tu ${ocasionLabel.toLowerCase()} ya sabe qué te frena. Solo falta armar tu plan.`}
+              ctaLabel="Ver mi Check de Presencia"
+              extra={
+                <div className="mt-6 w-full rounded-[var(--radius-card)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--text-secondary)]">
+                    Así te habla Niki · ejemplo
+                  </p>
+                  <p className="mt-2 text-[14px] leading-[1.5] text-[var(--text-primary)]">
+                    “{EJEMPLO_AJUSTE[respuestas.ocasion ?? 'entrevista']}”
+                  </p>
+                </div>
+              }
               onContinuar={avanzar}
             />
           )}
@@ -776,7 +922,12 @@ export default function Onboarding() {
           {paso === 'cargando' && <PantallaCargando lineas={lineasCarga} onListo={avanzar} />}
 
           {paso === 'resultado' && (
-            <PantallaResultado objetivoLabel={objetivoLabel} ocasionLabel={ocasionLabel} tiempoValor={respuestas.tiempo ?? 'express'} />
+            <PantallaResultado
+              objetivoLabel={objetivoLabel}
+              ocasionLabel={ocasionLabel}
+              dolorLabel={dolorLabel || 'Tu presencia'}
+              tiempoValor={respuestas.tiempo ?? 'express'}
+            />
           )}
         </motion.div>
       </AnimatePresence>

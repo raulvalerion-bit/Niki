@@ -26,7 +26,7 @@ export default function Reembolsos() {
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">La Garantía del Primer Ajuste Honesto</h2>
           <p className="mt-2">
             Si tu primer Check de Presencia no te da al menos un ajuste concreto que puedas aplicar
-            hoy, escribinos a{' '}
+            hoy, escríbenos a{' '}
             <a href="mailto:hola@holaniki.com" className="text-[var(--accent)] underline">hola@holaniki.com</a>{' '}
             y te devolvemos todo. Sin preguntas, dentro de la ventana de reembolso vigente de Hotmart
             para tu compra (verificable en tu comprobante de compra).
@@ -55,8 +55,8 @@ export default function Reembolsos() {
         <section>
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Cómo cancelar tu suscripción</h2>
           <p className="mt-2">
-            Podés cancelar en cualquier momento desde el portal del comprador de Hotmart (mismo enlace
-            de arriba) o desde Ajustes dentro de la app. Cancelar detiene el próximo cobro; seguís
+            Puedes cancelar en cualquier momento desde el portal del comprador de Hotmart (mismo enlace
+            de arriba) o desde Ajustes dentro de la app. Cancelar detiene el próximo cobro; sigues
             teniendo acceso hasta el final del período ya pagado.
           </p>
         </section>

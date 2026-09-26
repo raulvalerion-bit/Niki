@@ -30,8 +30,8 @@ export default function Privacidad() {
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Qué datos recopilamos</h2>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>Datos de cuenta: nombre, email, y los datos que elijas darnos en el onboarding (edad, ocasión).</li>
-            <li>Las fotos que subís para tu Check de Presencia.</li>
-            <li>Datos de uso de la app (qué pantallas visitás, con qué frecuencia usás Niki).</li>
+            <li>Las fotos que subes para tu Check de Presencia.</li>
+            <li>Datos de uso de la app (qué pantallas visitas, con qué frecuencia usas Niki).</li>
             <li>Datos de pago: los procesa Hotmart directamente — niki nunca ve ni guarda tu tarjeta.</li>
           </ul>
         </section>
@@ -40,7 +40,8 @@ export default function Privacidad() {
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Cómo usamos tus fotos</h2>
           <p className="mt-2">
             Tu foto se envía a nuestro servidor, se analiza con un modelo de IA para generar tu Check
-            de Presencia (outfit, postura y actitud) y el resultado se te muestra a vos. No usamos tus
+            de Presencia (outfit, postura y actitud) y el resultado se te muestra a ti. La foto se guarda de
+            forma privada en tu cuenta para armar tu historial de Checks: solo tú puedes verla. No usamos tus
             fotos para entrenar modelos públicos, no las mostramos a otros usuarios y no las vendemos.
           </p>
         </section>
@@ -59,7 +60,7 @@ export default function Privacidad() {
         <section>
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Tus derechos</h2>
           <p className="mt-2">
-            Podés pedir acceso, corrección o eliminación de tus datos (incluidas tus fotos) escribiendo
+            Puedes pedir acceso, corrección o eliminación de tus datos (incluidas tus fotos) escribiendo
             a <a href="mailto:hola@holaniki.com" className="text-[var(--accent)] underline">hola@holaniki.com</a>.
             Respondemos en un plazo razonable según la ley de tu país.
           </p>

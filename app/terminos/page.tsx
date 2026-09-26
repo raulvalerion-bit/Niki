@@ -19,7 +19,7 @@ export default function Terminos() {
         <p>
           Estos Términos regulan el uso de niki, operada por{' '}
           <strong className="text-[var(--text-primary)]">Raúl Valerio Nebradt</strong>, desde México.
-          Al crear una cuenta o usar la app, aceptás estos términos.
+          Al crear una cuenta o usar la app, aceptas estos términos.
         </p>
 
         <section>
@@ -44,8 +44,8 @@ export default function Terminos() {
         <section>
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Uso aceptable</h2>
           <ul className="mt-2 list-disc space-y-1 pl-5">
-            <li>Solo subís fotos tuyas o de personas que te dieron permiso.</li>
-            <li>No usás niki para generar contenido dañino, ofensivo o sobre menores de edad.</li>
+            <li>Solo subes fotos tuyas o de personas que te dieron permiso.</li>
+            <li>No usas niki para generar contenido dañino, ofensivo o sobre menores de edad.</li>
             <li>Nos reservamos el derecho de suspender cuentas que violen estas condiciones.</li>
           </ul>
         </section>
