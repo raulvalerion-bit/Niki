@@ -39,7 +39,7 @@ const PLANES: Record<PlanId, { nombre: string; precio: string; valor: number; de
     nombre: 'VIP Pro Anual',
     precio: '$8.99',
     valor: 8.99,
-    detalle: '$107.88 al año · $0.30 al día · ahorras 40%',
+    detalle: '$107.88 al año · $0.30 al día · ~5 meses gratis',
     badge: '3 días gratis',
   },
   mensual: {
@@ -157,7 +157,7 @@ function TarjetaPlan({
           </span>
           <span className="text-[16px] font-semibold text-[var(--text-primary)]">{plan.nombre}</span>
         </span>
-        <span className="text-[20px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
+        <span className="text-[28px] font-bold leading-none text-[var(--text-primary)] [font-family:var(--font-display)]">
           <ConteoPrecio valor={plan.valor} />
           <span className="text-[13px] font-medium text-[var(--text-secondary)] [font-family:var(--font-body)]">/mes</span>
         </span>
@@ -195,6 +195,19 @@ export default function Paywall() {
     botonesPlan.current[siguiente]?.focus();
   }
 
+  // Al volver atrás desde Hotmart el navegador restaura la página tal cual
+  // (bfcache): sin esto el botón se quedaría en "Un momento…" para siempre.
+  useEffect(() => {
+    const reiniciar = () => setYendo(false);
+    window.addEventListener('pageshow', reiniciar);
+    return () => window.removeEventListener('pageshow', reiniciar);
+  }, []);
+  useEffect(() => {
+    if (!yendo) return;
+    const t = window.setTimeout(() => setYendo(false), 8000);
+    return () => window.clearTimeout(t);
+  }, [yendo]);
+
   // Con sesión: correo precargado en Hotmart y aviso si llegó aquí sin plan.
   useEffect(() => {
     const supabase = crearClienteSupabase();
@@ -212,7 +225,7 @@ export default function Paywall() {
 
   return (
     <main
-      className="relative mx-auto flex min-h-dvh w-full max-w-[480px] flex-col overflow-x-hidden px-5 pb-[calc(128px+env(safe-area-inset-bottom))] text-[var(--text-primary)] [font-family:var(--font-body)]"
+      className="relative mx-auto flex min-h-dvh w-full max-w-[480px] flex-col overflow-x-hidden px-5 pb-[calc(152px+env(safe-area-inset-bottom))] text-[var(--text-primary)] [font-family:var(--font-body)]"
       style={{ background: 'var(--bg-gradient)' }}
     >
       <div className="flex items-center justify-between">
@@ -316,7 +329,7 @@ export default function Paywall() {
         )}
       </AnimatePresence>
 
-      <p className="mx-auto mt-3 max-w-[320px] text-center text-[13px] leading-[1.5] text-[var(--text-secondary)]">
+      <p className="mx-auto mt-3 max-w-[320px] text-center text-[13px] leading-[1.5] text-[var(--text-primary)]">
         Precios en dólares: Hotmart los muestra en tu moneda y suma los impuestos de tu país.
       </p>
 
@@ -357,9 +370,14 @@ export default function Paywall() {
             )}
           </a>
         </motion.div>
-        <p className="mt-3 text-center text-[13px] leading-[1.4] text-[var(--text-primary)]">
+        {plan === 'anual' && (
+          <p className="mt-3 text-center text-[13px] leading-[1.4] text-[var(--text-primary)]">
+            <span className="font-semibold">Hoy pagas $0</span>, aunque Hotmart te muestre el precio del año
+          </p>
+        )}
+        <p className={`${plan === 'anual' ? 'mt-1' : 'mt-3'} text-center text-[13px] leading-[1.4] text-[var(--text-primary)]`}>
           <ShieldCheck size={14} color="var(--text-primary)" aria-hidden="true" className="mr-1 inline-block align-[-2px]" />
-          <span className="font-semibold">Garantía del Primer Ajuste Honesto</span> · Pago seguro
+          <span className="font-semibold">Garantía de 7 días</span> · Pago seguro
         </p>
       </div>
     </main>
