@@ -18,12 +18,12 @@
 - **Ventana mínima antes de declarar que una campaña fracasó:** 14 días (criterio conservador, sin dato propio todavía)
 
 ## 3. CÓMO PAGA ESTE MERCADO
-- Medios de pago disponibles en el checkout real de Hotmart: NO VERIFICADO — Hotmart aún no está configurado (pendiente, Sesión de servicios externos). Se verificará abriendo el checkout real antes de lanzar tráfico (protocolo de `18-VENTA-HOTMART.md`)
+- Medios de pago disponibles en el checkout real de Hotmart (verificado 2026-09-27, México, plan Anual con prueba): solo Débito/Crédito visible. Precio mostrado en MXN ($2,014 + IVA $322.24 = $2,336.24/año); la prueba aparece como casilla "Quiero un periodo gratis" (marcada por defecto) pero el pie dice "Total a pagar $2,336.24/año"; tras pagar, Hotmart muestra "$0.00/año" y cobra un valor simbólico para validar la tarjeta. Sin `off=` el link abre el plan Mensual.
 - Penetración de tarjeta de crédito: NO ENCONTRADO
-- **Consecuencia para el producto:** ninguna decisión tomada todavía sobre exclusión de medios de pago — revisar al configurar Hotmart
+- **Consecuencia para el producto:** la pantalla de planes avisa que Hotmart muestra el precio en moneda local con impuestos, y pide dejar marcada la casilla de prueba gratis (2026-09-27).
 
 ## 4. PRUEBA Y GARANTÍA (plazos que la pasarela permite DE VERDAD)
-- Plazos de prueba que admite Hotmart: configurable por producto — NO VERIFICADO EN PANEL todavía (pendiente)
+- Plazos de prueba que admite Hotmart: configurable por plan (verificado 2026-09-27): Anual 3 días, "Momento de cobro: Gratuito"; Mensual sin prueba. Garantía del producto en el panel: 7 días.
 - Plazos de garantía/reembolso que admite Hotmart: mínimo legal conocido = **7 días** (derecho de retracto / CDC de Brasil, que Hotmart aplica siempre — fuente: `docs/sistema/47-LEGAL-FISCAL-Y-PRIVACIDAD.md` §"Capa legal de SUSCRIPCIÓN", punto 3) | fecha: 2026-09-17
 - **Prueba elegida: 3 días · Garantía elegida: 7 días**
 - ⚠️ **REGLA DURA (`18`): la garantía tiene que durar MÁS que la prueba.** Comprobación: garantía 7 > prueba 3 → **SÍ**. Se publica la garantía.

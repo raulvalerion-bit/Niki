@@ -53,7 +53,9 @@ const PLANES: Record<PlanId, { nombre: string; precio: string; valor: number; de
 const ORDEN_PLANES: PlanId[] = ['anual', 'mensual'];
 
 const PASOS_TRIAL = [
-  { dia: 'Hoy', texto: 'Acceso completo, $0.00', icon: Unlock },
+  // Hotmart muestra abajo el precio del año aunque la prueba esté activa: se
+  // avisa aquí para que nadie crea que se le cobra hoy (checkout real, 2026-09-27).
+  { dia: 'Hoy', texto: 'Acceso completo, $0.00 · en Hotmart deja marcado "Quiero un periodo gratis"', icon: Unlock },
   { dia: 'Hasta el final del Día 3', texto: 'Si no te convence, cancelas gratis desde Hotmart', icon: ShieldCheck },
   { dia: 'Al terminar el Día 3', texto: 'Se cobran $107.88, solo si te quedas', icon: CreditCard },
 ];
@@ -313,6 +315,10 @@ export default function Paywall() {
           </motion.p>
         )}
       </AnimatePresence>
+
+      <p className="mx-auto mt-3 max-w-[320px] text-center text-[13px] leading-[1.5] text-[var(--text-secondary)]">
+        Precios en dólares: Hotmart los muestra en tu moneda y suma los impuestos de tu país.
+      </p>
 
       <div className="mt-6 flex items-start gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
