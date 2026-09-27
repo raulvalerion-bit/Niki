@@ -157,7 +157,7 @@ function TarjetaPlan({
           </span>
           <span className="text-[16px] font-semibold text-[var(--text-primary)]">{plan.nombre}</span>
         </span>
-        <span className="text-[28px] font-bold leading-none text-[var(--text-primary)] [font-family:var(--font-display)]">
+        <span className="text-[20px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
           <ConteoPrecio valor={plan.valor} />
           <span className="text-[13px] font-medium text-[var(--text-secondary)] [font-family:var(--font-body)]">/mes</span>
         </span>
@@ -372,7 +372,7 @@ export default function Paywall() {
         </motion.div>
         {plan === 'anual' && (
           <p className="mt-3 text-center text-[13px] leading-[1.4] text-[var(--text-primary)]">
-            <span className="font-semibold">Hoy pagas $0</span>, aunque Hotmart te muestre el precio del año
+            <span className="font-semibold">Hoy pagas $0</span> (Hotmart muestra el precio anual)
           </p>
         )}
         <p className={`${plan === 'anual' ? 'mt-1' : 'mt-3'} text-center text-[13px] leading-[1.4] text-[var(--text-primary)]`}>
