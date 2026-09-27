@@ -157,7 +157,7 @@ export default function LandingNiki() {
       <Garantia
         nombre="la Garantía del Primer Ajuste Honesto"
         condicionMarked="Si tu primer Check de Presencia no te da al menos [b]1 ajuste concreto que puedas aplicar hoy[/b], escribes un correo y te devolvemos todo. Sin preguntas."
-        pisoLegal="Respaldada por la política de reembolso de Hotmart"
+        pisoLegal="Respaldada por la garantía Hotmart de 7 días"
       />
 
       {/* 8. FAQ — objeciones literales de FICHA-AVATAR.md */}

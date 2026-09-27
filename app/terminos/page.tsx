@@ -36,7 +36,7 @@ export default function Terminos() {
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Acceso y suscripción</h2>
           <p className="mt-2">
             El acceso se vende como suscripción recurrente procesada por Hotmart. Se renueva
-            automáticamente cada mes o año según el plan elegido — cancelás cuando quieras desde tu
+            automáticamente cada mes o año según el plan elegido — cancelas cuando quieras desde tu
             cuenta o el portal del comprador de Hotmart, sin que se te cobre el siguiente período.
           </p>
         </section>

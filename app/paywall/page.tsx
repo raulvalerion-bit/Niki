@@ -16,18 +16,21 @@
 // certeza que me veo impecable"); beneficios = deseos #1, #3 y #5; nota bajo
 // el CTA = objeciones #5 (garantía) y #6 (pago seguro). El monto anual real
 // ($107.88) se muestra SIEMPRE — nunca solo el precio mensualizado.
-// Garantía: mismo nombre y condición que la landing, SIN número de días hasta
-// confirmar el plazo en el panel de Hotmart (FICHA-MERCADO.md §4).
+// Garantía: mismo nombre y condición que la landing; 7 días confirmados en el
+// panel de Hotmart (2026-09-27, FICHA-MERCADO.md §4) — sin fijar desde cuándo
+// cuentan, porque eso no está confirmado.
 //
-// El botón principal lleva a /login (siguiente paso de la secuencia: Paywall
-// → Login/Auth → App interna). El cobro real vía Hotmart se conecta en la
-// Sesión de servicios externos — por ahora este botón NO cobra nada.
+// El botón principal lleva a la página de pago de Hotmart (lib/hotmart/checkout).
+// Tras pagar, el webhook crea la cuenta y la persona entra en /login con el
+// correo de la compra. Si ya tiene sesión, su correo va precargado.
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react';
 import { X, Sparkles, CalendarClock, Flame, Unlock, CreditCard, ShieldCheck, Check, Loader2 } from 'lucide-react';
 import { Hairline } from '@/components/landing/ui';
+import { crearClienteSupabase } from '@/lib/supabase/client';
+import { urlCheckout } from '@/lib/hotmart/checkout';
 
 type PlanId = 'anual' | 'mensual';
 
@@ -174,6 +177,8 @@ function TarjetaPlan({
 export default function Paywall() {
   const [plan, setPlan] = useState<PlanId>('anual');
   const [yendo, setYendo] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
+  const [sinPlan, setSinPlan] = useState(false);
   const reduce = useReducedMotion() ?? false;
   const botonesPlan = useRef<Record<PlanId, HTMLButtonElement | null>>({ anual: null, mensual: null });
 
@@ -187,6 +192,15 @@ export default function Paywall() {
     setPlan(siguiente);
     botonesPlan.current[siguiente]?.focus();
   }
+
+  // Con sesión: correo precargado en Hotmart y aviso si llegó aquí sin plan.
+  useEffect(() => {
+    const supabase = crearClienteSupabase();
+    void supabase.auth.getUser().then(({ data }) => {
+      setEmail(data.user?.email ?? null);
+      setSinPlan(!!data.user && new URLSearchParams(window.location.search).has('sin_plan'));
+    });
+  }, []);
 
   const entrada = (i: number) => ({
     initial: { opacity: 0, y: reduce ? 0 : 12 },
@@ -209,6 +223,16 @@ export default function Paywall() {
           <X size={20} aria-hidden="true" />
         </Link>
       </div>
+
+      {sinPlan && (
+        <p
+          role="status"
+          className="mt-4 rounded-[var(--radius-card)] bg-[var(--surface)] px-4 py-3 text-[13px] leading-[1.5] text-[var(--text-primary)] shadow-[var(--shadow-1)]"
+        >
+          <span className="font-semibold">Tu cuenta aún no tiene un plan activo.</span> Si acabas de comprar, espera un
+          minuto y vuelve a entrar con el mismo correo de tu compra.
+        </p>
+      )}
 
       <motion.div {...entrada(0)} className="mt-4 flex flex-col items-center text-center">
         <h1 className="mt-4 text-balance text-[28px] font-bold leading-[1.12] text-[var(--text-primary)] [font-family:var(--font-display)]">
@@ -295,8 +319,8 @@ export default function Paywall() {
           <ShieldCheck size={18} color="var(--accent)" aria-hidden="true" />
         </span>
         <p className="text-[13px] leading-[1.5] text-[var(--text-primary)]">
-          <span className="font-semibold">Garantía del Primer Ajuste Honesto:</span> si tu primer Check no te da 1 ajuste
-          concreto que puedas aplicar hoy, te devolvemos todo.
+          <span className="font-semibold">Garantía del Primer Ajuste Honesto de 7 días:</span> si tu primer Check no te
+          da 1 ajuste concreto que puedas aplicar hoy, te devolvemos todo.
         </p>
       </div>
 
@@ -309,8 +333,8 @@ export default function Paywall() {
       {/* CTA fijo abajo: siempre visible sin importar el scroll (safe-area incluida). */}
       <div className="fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-[480px] bg-[linear-gradient(to_top,var(--bg)_72%,transparent)] px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-6">
         <motion.div whileTap={{ scale: 0.97 }}>
-          <Link
-            href="/login"
+          <a
+            href={urlCheckout(plan, email)}
             onClick={() => setYendo(true)}
             aria-busy={yendo}
             className="flex h-14 w-full items-center justify-center gap-2 rounded-[var(--radius-button)] bg-[var(--accent)] text-center text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)]"
@@ -325,7 +349,7 @@ export default function Paywall() {
             ) : (
               'Empezar mi mes VIP Pro'
             )}
-          </Link>
+          </a>
         </motion.div>
         <p className="mt-3 text-center text-[13px] leading-[1.4] text-[var(--text-primary)]">
           <ShieldCheck size={14} color="var(--text-primary)" aria-hidden="true" className="mr-1 inline-block align-[-2px]" />

@@ -3,12 +3,29 @@
 // app/app/error.tsx, app/admin/error.tsx → /api/log-error).
 
 import { crearClienteSupabaseServidor } from '@/lib/supabase/server';
-import { listarErroresAgrupados } from '@/lib/admin/queries';
+import { listarAvisosHotmart, listarErroresAgrupados } from '@/lib/admin/queries';
 import { Badge, SectionTitle, SinDatos, TablaContenedor } from '@/components/admin/ui';
+
+const LABEL_AVISO: Record<string, string> = {
+  applied: 'Aplicado',
+  duplicate: 'Repetido (ya aplicado)',
+  illegal: 'Bloqueado',
+  unauthorized: 'Rechazado: no vino de Hotmart',
+  ignored: 'Sin efecto',
+  error: 'Falló — Hotmart reintenta',
+};
+const TONO_AVISO: Record<string, 'neutral' | 'positivo' | 'negativo' | 'atencion'> = {
+  applied: 'positivo',
+  duplicate: 'neutral',
+  illegal: 'atencion',
+  unauthorized: 'negativo',
+  ignored: 'neutral',
+  error: 'negativo',
+};
 
 export default async function AdminSalud() {
   const supabase = await crearClienteSupabaseServidor();
-  const { recientes, agrupado } = await listarErroresAgrupados(supabase);
+  const [{ recientes, agrupado }, avisos] = await Promise.all([listarErroresAgrupados(supabase), listarAvisosHotmart(supabase)]);
 
   return (
     <div>
@@ -16,7 +33,39 @@ export default async function AdminSalud() {
 
       <div className="mb-8">
         <SectionTitle>Webhook de Hotmart</SectionTitle>
-        <SinDatos motivo="Hotmart no está conectado todavía — en cuanto lo esté, aquí vas a ver si los avisos de pago siguen llegando con normalidad." />
+        {avisos.length === 0 ? (
+          <SinDatos motivo="Todavía no llega ningún aviso de Hotmart. En cuanto alguien compre (o mandes una prueba desde Hotmart), aparece aquí." />
+        ) : (
+          <TablaContenedor>
+            <thead>
+              <tr className="border-b border-[var(--border-default)] text-xs text-[var(--text-tertiary)]">
+                <th scope="col" className="px-4 py-3 font-medium">
+                  Cuándo
+                </th>
+                <th scope="col" className="px-4 py-3 font-medium">
+                  Aviso
+                </th>
+                <th scope="col" className="px-4 py-3 font-medium">
+                  Resultado
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {avisos.map((a) => (
+                <tr key={a.id} className="border-b border-[var(--border-default)] last:border-0">
+                  <td className="px-4 py-3 whitespace-nowrap text-[var(--text-tertiary)]">
+                    {new Date(a.received_at).toLocaleString('es-MX')}
+                  </td>
+                  <td className="px-4 py-3 font-medium text-[var(--text-primary)]">{a.tipo ?? 'Sin tipo'}</td>
+                  <td className="px-4 py-3">
+                    <Badge tono={TONO_AVISO[a.resultado] ?? 'neutral'}>{LABEL_AVISO[a.resultado] ?? a.resultado}</Badge>
+                    {a.motivo && <span className="ml-2 text-xs text-[var(--text-tertiary)]">{a.motivo}</span>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </TablaContenedor>
+        )}
       </div>
 
       <div>

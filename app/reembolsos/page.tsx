@@ -12,14 +12,13 @@ export default function Reembolsos() {
         Política de Reembolso
       </h1>
       <p className="mt-2 text-sm text-[var(--text-tertiary)]">
-        Última actualización: 17 de septiembre de 2026 · v1
+        Última actualización: 27 de septiembre de 2026 · v2
       </p>
 
       <div className="mt-8 space-y-6 text-base leading-relaxed text-[var(--text-secondary)]">
         <p>
-          niki se vende a través de Hotmart. El reembolso se procesa según la ventana de garantía
-          configurada para el producto en el panel de Hotmart — nunca prometemos un plazo distinto
-          al configurado ahí.
+          niki se vende a través de Hotmart. Tienes 7 días de garantía, configurados en el panel de
+          Hotmart para este producto — nunca prometemos un plazo distinto al configurado ahí.
         </p>
 
         <section>
@@ -28,7 +27,7 @@ export default function Reembolsos() {
             Si tu primer Check de Presencia no te da al menos un ajuste concreto que puedas aplicar
             hoy, escríbenos a{' '}
             <a href="mailto:hola@holaniki.com" className="text-[var(--accent)] underline">hola@holaniki.com</a>{' '}
-            y te devolvemos todo. Sin preguntas, dentro de la ventana de reembolso vigente de Hotmart
+            y te devolvemos todo. Sin preguntas, dentro de los 7 días de garantía de Hotmart
             para tu compra (verificable en tu comprobante de compra).
           </p>
         </section>

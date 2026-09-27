@@ -57,6 +57,16 @@ export async function listarErroresAgrupados(supabase: SupabaseClient, limite = 
   return { recientes: filas.slice(0, 20), agrupado };
 }
 
+/** Últimos avisos de Hotmart (webhook_log, incluidos los rechazados). */
+export async function listarAvisosHotmart(supabase: SupabaseClient, limite = 20) {
+  const { data } = await supabase
+    .from('webhook_log')
+    .select('id, tipo, resultado, motivo, received_at')
+    .order('received_at', { ascending: false })
+    .limit(limite);
+  return data ?? [];
+}
+
 export async function metricasDeUso(supabase: SupabaseClient) {
   const { data: eventos } = await supabase
     .from('event_log')
