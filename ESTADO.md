@@ -1,5 +1,5 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-09-25 | Siguiente sesión: HOTMART (webhook en https://holaniki.com/api/hotmart/webhook + hottok en Vercel, garantía 7 días en el panel) — acordado con el usuario
+Última actualización: 2026-09-27 | Siguiente sesión: HOTMART (webhook en https://holaniki.com/api/hotmart/webhook + hottok en Vercel, garantía 7 días en el panel) — acordado con el usuario
 
 ▶️ CIERRE DE SESIÓN 2026-09-22 — TODO GUARDADO Y SUBIDO (working tree limpio, `git push` al día,
 último commit `1abcc6d`). Resumen de lo que se hizo hoy:
@@ -212,7 +212,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      cuenta con la que te registraste en Resend — no a cualquier destinatario; eso se resuelve
      solo verificando un dominio propio, ver punto 6).
   6. Dominio: `holaniki.com` COMPRADO en Namecheap (2026-09-25, US$11.48, privacidad WHOIS gratis activa, auto-renew). Agregado al proyecto Vercel `niki`: apex principal + `www.holaniki.com` redirige 308 al apex. DNS en Namecheap (Advanced DNS): A `@` → 76.76.21.21 · CNAME `www` → cname.vercel-dns.com — ✅ VERIFICADO 2026-09-25: https://holaniki.com responde 200 con SSL, www redirige 308 al apex, deploy con el correo nuevo en línea. Después: actualizar URLs de la app (metadata/sitemap/Supabase Auth redirect URLs), veredictos paywall/onboarding, y webhook Hotmart en `https://holaniki.com/api/hotmart/webhook`.
-  7. Hotmart: pendiente.
+  7. Hotmart: EN CURSO (2026-09-27). Producto `niki` id 8595742, checkout https://pay.hotmart.com/G107766783O. Planes: Mensual $14.99 SIN prueba (se le quitó la prueba de 3 días que tenía) · Anual $107.88 con 3 días gratis · garantía 7 días (7 > 3, regla dura OK). Webhook v2.0.0 → https://holaniki.com/api/hotmart/webhook (ya registrado en Hotmart). HOTMART_HOTTOK puesto por el usuario en Vercel. Código: `app/api/hotmart/webhook/route.ts` + `lib/hotmart/evento.ts` + RPC `apply_hotmart_event` (migración 20260927000000). Acceso a /app solo con plan vigente (`lib/acceso.ts`, middleware); sin plan → /paywall?sin_plan=1. Botón del paywall → checkout con `sck=paywall_<plan>` y correo precargado si hay sesión. Probado local con 9 eventos simulados (prueba gratis, primer cobro, compra completa sin doble ingreso, producto ajeno, cancelación, reembolso, cobro viejo bloqueado, recompra). Falta: prueba desde Hotmart ("Enviar prueba"), compra real E2E, confirmar cómo llega el inicio de la prueba gratis (hoy se asume importe 0 → trialing).
   Variables de entorno: `.env.example` (commiteado, plantilla) y `.env.local` (real, en
   `.gitignore` — NUNCA se sube). La clave secreta de Supabase que el usuario compartió sin querer
   en el chat el 2026-09-19 se le pidió rotar — no quedó guardada en ningún archivo del proyecto.
@@ -361,6 +361,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Cuando exista la app interna: montar los screenshots reales en el carrusel de la landing y volver a pasar el revisor-visual para cerrar esa puerta del todo
 
 ## Problemas conocidos ⚠️
+- Veredicto paywall y veredicto onboarding CADUCADOS por fecha (2026-09-27, sesión Hotmart): el onboarding NO cambió de código (el hook compara contra cualquier .tsx más nuevo); el paywall solo cambió el botón (ahora lleva a Hotmart), la garantía dice "de 7 días" y un aviso que solo sale con `?sin_plan=1`. Se re-lanza el revisor-visual del paywall en la prueba de compra de punta a punta, al cierre de la sesión Hotmart, con el flujo de pago real funcionando.
 - Carrusel de "La app por dentro" (pantalla de Onboarding incluida entre sus frames): usa PLACEHOLDERS rotulados — la app interna está pendiente de existir; se reemplazan por screenshots reales cuando esa app se haga (Sesión de app interna). Este es el motivo #1 por el que el veredicto del revisor-visual sobre la landing quedó en "no aprobado" — pendiente y esperado a esta altura, no un bug.
 - Visual del hero: placeholder honesto con sugerencia escrita (no hay app interna todavía para capturar) — mismo motivo que arriba.
 - El anillo de progreso (dispositivo ownable de FICHA-ARTE.md) no es visible en la landing todavía porque vive dentro de los placeholders de arriba — aparecerá solo cuando se monten los screenshots reales.
