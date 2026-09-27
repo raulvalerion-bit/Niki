@@ -39,7 +39,7 @@ const PLANES: Record<PlanId, { nombre: string; precio: string; valor: number; de
     nombre: 'VIP Pro Anual',
     precio: '$8.99',
     valor: 8.99,
-    detalle: '$107.88 al año · $0.30 al día · ~5 meses gratis',
+    detalle: '$107.88/año · $0.30/día · ~5 meses gratis',
     badge: '3 días gratis',
   },
   mensual: {
