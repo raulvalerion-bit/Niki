@@ -53,9 +53,9 @@ const PLANES: Record<PlanId, { nombre: string; precio: string; valor: number; de
 const ORDEN_PLANES: PlanId[] = ['anual', 'mensual'];
 
 const PASOS_TRIAL = [
-  // Hotmart muestra abajo el precio del año aunque la prueba esté activa: se
-  // avisa aquí para que nadie crea que se le cobra hoy (checkout real, 2026-09-27).
-  { dia: 'Hoy', texto: 'Acceso completo, $0.00 · en Hotmart deja marcado "Quiero un periodo gratis"', icon: Unlock },
+  // En el checkout real (2026-09-27) la casilla "Quiero un periodo gratis" ya
+  // viene marcada, pero Hotmart muestra abajo el precio del año: se aclara aquí.
+  { dia: 'Hoy', texto: 'Acceso completo por $0 (la prueba ya viene activada en Hotmart)', icon: Unlock },
   { dia: 'Hasta el final del Día 3', texto: 'Si no te convence, cancelas gratis desde Hotmart', icon: ShieldCheck },
   { dia: 'Al terminar el Día 3', texto: 'Se cobran $107.88, solo si te quedas', icon: CreditCard },
 ];
@@ -63,11 +63,12 @@ const PASOS_TRIAL = [
 const BENEFICIOS = [
   { texto: 'Check de Presencia ilimitado antes de cada salida', icon: Sparkles },
   { texto: 'Modo Alto Impacto para tu cita o entrevista', icon: CalendarClock },
-  { texto: 'Tu desafío Glow-Up de 21 días, completo', icon: Flame },
+  { texto: 'Tu Racha Glow-Up de 21 días, completa', icon: Flame },
 ];
 
 /** Logo confirmado en FICHA-ARTE.md: el Anillo Niki sobre su chip con degradé
-    atardecer + la línea de qué es Niki. */
+    atardecer. Sin subtítulo aquí: "Check de Presencia" ya se repite en el
+    primer pliegue (revisor-visual, 2026-09-27). */
 function MarcaNiki() {
   return (
     <div className="flex items-center gap-2 pt-[max(16px,env(safe-area-inset-top))]">
@@ -92,7 +93,6 @@ function MarcaNiki() {
       </span>
       <div className="flex flex-col leading-tight">
         <span className="text-[16px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">niki</span>
-        <span className="text-[13px] font-medium text-[var(--text-primary)]">Tu Check de Presencia antes de salir</span>
       </div>
     </div>
   );
@@ -377,7 +377,7 @@ export default function Paywall() {
         )}
         <p className={`${plan === 'anual' ? 'mt-1' : 'mt-3'} text-center text-[13px] leading-[1.4] text-[var(--text-primary)]`}>
           <ShieldCheck size={14} color="var(--text-primary)" aria-hidden="true" className="mr-1 inline-block align-[-2px]" />
-          <span className="font-semibold">Garantía de 7 días</span> · Pago seguro
+          <span className="font-semibold">Garantía Ajuste Honesto de 7 días</span> · Pago seguro
         </p>
       </div>
     </main>

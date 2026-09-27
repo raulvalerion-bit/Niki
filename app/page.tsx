@@ -117,7 +117,7 @@ export default function LandingNiki() {
           lineas: [
             { resultado: 'Check de Presencia ilimitado (12 meses)', valor: '$120' },
             { resultado: 'Modo Alto Impacto para entrevistas, citas y reuniones', valor: '$39' },
-            { resultado: 'Guía Glow-Up de 21 días', valor: '$27' },
+            { resultado: 'Racha Glow-Up de 21 días', valor: '$27' },
           ],
           totalTachado: '$186',
           nota: 'Hoy: $8.99/mes (se cobra $107.88/año)',
