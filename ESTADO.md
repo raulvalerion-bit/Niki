@@ -361,7 +361,22 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - App interna: construida y con datos reales conectados (gemas, checks con foto, hábito, perfil) —
   sin pasar por revisor-visual todavía
 - Servicios externos: en progreso, ya no bloqueados — ver detalle en la sección de arriba
-- Certificado /100: pendiente
+- Certificado /100 (pre-lanzamiento 2026-09-28, commit de50a9e = producción): **57/100 → NO APTO**
+  VENTA 15/20 (estructura canónica ✓, copy 18/20, render landing 25/40·12/20 del veredicto viejo — capturas reales
+  puestas hoy, falta re-revisar) · FUNNEL 15/20 (onboarding y paywall LISTA; puente D1-D7 no diseñado) ·
+  PRODUCTO 10/20 (resultado LISTA 37/40·16/20; Hoy/M0 sin revisor y con vacío abajo; pocos momentos del 56) ·
+  CONFIANZA 9/15 (IDOR ✓, cabeceras ✓, borrado de cuenta ✓; buzón de soporte muerto; pagos reales parciales) ·
+  VELOCIDAD 4/10 (Lighthouse móvil sin antivirus: 82, LCP 3.9 s > 2.5 s, CLS 0) · RETENCIÓN 4/15 (solo gemas;
+  sin racha, sin D1-D7, sin dunning; analítica sin embudo de landing/paywall).
+  Artefactos 61: docs/release/ (CLAIMS-LEDGER, PAYMENT-CERTIFICATION, ECONOMICS-CERTIFICATION, PRIVACY-DATA-MAP,
+  PUBLICATION-CERTIFICATE, RELEASE-MANIFEST.json) + MANUAL-DEL-DUENO.md.
+  BLOQUEANTES (61): (1) claims sin capacidad: "Modo Alto Impacto" y "Racha Glow-Up de 21 días" en landing y
+  paywall → construir o quitar (decisión del dueño); (2) buzón hola@holaniki.com no recibe (garantía, soporte,
+  derechos de privacidad) → reenvío Namecheap; (3) pagos sin certificar en real: compra mensual, cobro tras prueba,
+  reembolso; falta job de reconciliación semanal; (4) Supabase Free sin respaldos; (5) Vercel Hobby no permite uso
+  comercial. Arreglado en esta auditoría: cabeceras de seguridad + CSP, robots/sitemap/OG, /api/version,
+  borrado de cuenta E2E + gestión de suscripción y ayuda en Perfil, privacidad nombra a Anthropic, 21 pruebas +
+  CI en GitHub (verde), 3 textos falsos de la landing, capturas reales en landing, titular visible al cargar.
 
 ## Decisiones técnicas (NO re-discutir sin pedirlo el usuario)
 - Framework: Next.js (App Router) — decidido el 2026-09-17. Razón: landing con SEO/adquisición orgánica es canal #1 (TikTok/Reels + contenido), y la app comparte proyecto con la landing — regla del stack indica Next.js ante SEO/landing integrada
