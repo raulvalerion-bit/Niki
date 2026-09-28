@@ -189,7 +189,22 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      el registro de usuarios nuevos sigue funcionando igual. Queda 1 aviso menor sin acción: Supabase
      sugiere activar "protección contra contraseñas filtradas", pero Niki no usa contraseñas (el
      login es con código por correo), así que no aplica.
-  3. IA real (BFF): pendiente.
+  3. IA real (BFF): CONSTRUIDA, SIN PUBLICAR (2026-09-28, commit 9814a62 local, sin push) —
+     esperando que el usuario ponga ANTHROPIC_API_KEY en .env.local y Vercel ("configurada").
+     Decisiones técnicas: síncrono (1 foto → JSON, ~5-15 s, maxDuration 60) · modelo AI_MODEL=
+     claude-sonnet-5 (thinking off, max_tokens 1024, salida estructurada zod) · foto achicada en el
+     celular a 1280px JPEG → Storage → /api/check la descarga con la clave de servicio · RPC
+     `reservar_check` (límite 3/día por fecha local con zona horaria fijada en profiles.zona_horaria,
+     máx 6 intentos/día, tope global día/mes con reserva de $0.05 en ai_calls bajo advisory lock) y
+     `finalizar_check` (liquida costo real, +1 gema) — solo service_role · se quitaron las políticas
+     insert/update de `checks` (el usuario ya no puede escribirse su resultado) · foto inválida o
+     error de IA NO descuentan Check · tope alcanzado → email a admins 1 vez/día · Vercel:
+     AI_MODEL/AI_DAILY_BUDGET_USD=5 (sensitive, heredadas) + AI_MONTHLY_BUDGET_USD=50.
+     Pantallas: resultado (components/app/ResultadoCheck.tsx, captura docs/revisiones/resultado-check-375.png
+     con datos semilla), estados analizando/límite/error en app/app/page.tsx, detalle
+     app/app/historial/[id]. Pendiente: prueba real con clave → push → revisor-visual del resultado
+     (primera pantalla de su tipo) → borrar la ruta temporal app/dev-resultado (NO commiteada).
+     Sin fallback a otro proveedor (degradación = mensaje amable); anotar para después.
   4. Vercel: ✅ conectado y publicado (2026-09-22) — proyecto `niki` (id
      `prj_4sginvELVjRwcqKRKACly36blcrh`, cuenta `raulvalerion-bit`, sin team) con
      `Connected Git Repository = raulvalerion-bit/Niki`, rama `main`. Deploy automático

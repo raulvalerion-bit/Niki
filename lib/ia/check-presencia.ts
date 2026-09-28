@@ -68,7 +68,14 @@ NOTAS (enteros del 1 al 10)
 let cliente: Anthropic | null = null;
 function anthropic() {
   // timeout por intento + 2 reintentos automáticos del SDK en 429/5xx.
-  cliente ??= new Anthropic({ timeout: 40_000, maxRetries: 2 });
+  // ANTHROPIC_WORKSPACE_ID solo hace falta si la clave no está asignada a un
+  // espacio de trabajo en la consola de Anthropic (no es secreto).
+  const espacio = process.env.ANTHROPIC_WORKSPACE_ID;
+  cliente ??= new Anthropic({
+    timeout: 40_000,
+    maxRetries: 2,
+    defaultHeaders: espacio ? { 'anthropic-workspace-id': espacio } : undefined,
+  });
   return cliente;
 }
 
