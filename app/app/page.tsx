@@ -11,12 +11,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { Camera, Briefcase, Heart, Handshake, Users, UtensilsCrossed, Palmtree, RotateCcw, Moon } from 'lucide-react';
+import { Camera, Briefcase, Heart, Handshake, Users, UtensilsCrossed, Palmtree, RotateCcw, Moon, Zap, ArrowLeft } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { crearClienteSupabase } from '@/lib/supabase/client';
 import { registrarEvento } from '@/lib/eventos';
-import { LIMITE_CHECKS_DIA, MENSAJE_FOTO, MOTIVOS_FOTO, type ResultadoCheck as Resultado } from '@/lib/ia/resultado';
+import {
+  LIMITE_CHECKS_DIA,
+  MENSAJE_FOTO,
+  MOTIVOS_FOTO,
+  OCASIONES_ALTO_IMPACTO,
+  type RachaTrasCheck,
+  type ResultadoCheck as Resultado,
+} from '@/lib/ia/resultado';
 import { ResultadoCheck } from '@/components/app/ResultadoCheck';
+import { HoyInicio, type UltimoCheck } from '@/components/app/HoyInicio';
+import { type EstadoRacha } from '@/components/app/RachaGlowUp';
 
 type Paso = 'inicio' | 'foto' | 'analizando' | 'resultado' | 'limite' | 'error';
 
@@ -69,6 +78,11 @@ export default function Hoy() {
   const [usadosHoy, setUsadosHoy] = useState<number | null>(null);
   const [avisoValidacion, setAvisoValidacion] = useState<string | null>(null);
   const [resultado, setResultado] = useState<Resultado | null>(null);
+  const [racha, setRacha] = useState<EstadoRacha | null>(null);
+  const [rachaCheck, setRachaCheck] = useState<RachaTrasCheck | null>(null);
+  const [cargado, setCargado] = useState(false);
+  const [errorCarga, setErrorCarga] = useState(false);
+  const [ultimo, setUltimo] = useState<UltimoCheck | null>(null);
   const [error, setError] = useState<'pausa' | 'ia' | null>(null);
   const [pasoAnalisis, setPasoAnalisis] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -82,22 +96,66 @@ export default function Hoy() {
   useEffect(() => {
     let activo = true;
     (async () => {
+      try {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (!user) return;
-      const [{ data: perfil }, { count }] = await Promise.all([
-        supabase.from('profiles').select('gemas').eq('id', user.id).single(),
+      if (!user) {
+        if (activo) setCargado(true);
+        return;
+      }
+      const [{ data: perfil, error: errorPerfil }, { count, error: errorConteo }, { data: ultimos, error: errorUltimo }] = await Promise.all([
+        supabase
+          .from('profiles')
+          .select('gemas, racha_dias, racha_ultima_fecha, racha_mejor, congeladores, glowup_completado_at')
+          .eq('id', user.id)
+          .single(),
         supabase
           .from('checks')
           .select('id', { count: 'exact', head: true })
           .eq('user_id', user.id)
           .eq('fecha_local', fechaLocalHoy())
           .in('estado', ['procesando', 'listo']),
+        supabase
+          .from('checks')
+          .select('id, puntaje, resultado, created_at')
+          .eq('user_id', user.id)
+          .eq('estado', 'listo')
+          .order('created_at', { ascending: false })
+          .limit(2),
       ]);
       if (!activo) return;
-      if (perfil) setGemas(perfil.gemas);
+      const u = ultimos?.[0];
+      const anterior = ultimos?.[1];
+      setUltimo(
+        u && u.resultado && u.puntaje !== null
+          ? {
+              ...u,
+              puntaje: Number(u.puntaje),
+              anterior:
+                anterior && anterior.puntaje !== null
+                  ? { puntaje: Number(anterior.puntaje), created_at: anterior.created_at }
+                  : null,
+            }
+          : null
+      );
+      if (perfil) {
+        setGemas(perfil.gemas);
+        setRacha({
+          racha_dias: perfil.racha_dias,
+          racha_ultima_fecha: perfil.racha_ultima_fecha,
+          racha_mejor: perfil.racha_mejor,
+          congeladores: perfil.congeladores,
+          glowup_completado_at: perfil.glowup_completado_at,
+        });
+      }
+      if (errorPerfil || errorConteo || errorUltimo) throw new Error('carga');
       setUsadosHoy(count ?? 0);
+      setErrorCarga(false);
+      setCargado(true);
+      } catch {
+        if (activo) setErrorCarga(true);
+      }
     })();
     return () => {
       activo = false;
@@ -116,7 +174,8 @@ export default function Hoy() {
 
   function empezarCheck() {
     if (restantes === 0) {
-      setPaso('limite');
+      if (ultimo) router.push(`/app/historial/${ultimo.id}`);
+      else setPaso('limite');
       return;
     }
     setPaso('foto');
@@ -212,6 +271,7 @@ export default function Hoy() {
         setResultado(data.resultado);
         setUsadosHoy(LIMITE_CHECKS_DIA - data.restantes);
         setGemas(typeof data.gemas === 'number' ? data.gemas : null);
+        setRachaCheck(data.racha ?? null);
         setPaso('resultado');
         return;
       }
@@ -316,7 +376,7 @@ export default function Hoy() {
   if (paso === 'resultado' && resultado && ocasion) {
     return (
       <div className="flex flex-1 flex-col pt-4">
-        <ResultadoCheck resultado={resultado} ocasion={ocasion} gemasTotal={gemas ?? undefined} />
+        <ResultadoCheck resultado={resultado} ocasion={ocasion} gemasTotal={gemas ?? undefined} racha={rachaCheck} />
         <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={volverAlInicio} className={`mt-6 ${BOTON_PRIMARIO}`}>
           Listo
         </motion.button>
@@ -401,7 +461,16 @@ export default function Hoy() {
 
   if (paso === 'foto') {
     return (
-      <div className="flex flex-1 flex-col pt-4">
+      <div className="flex flex-1 flex-col pt-2">
+        <motion.button
+          type="button"
+          whileTap={{ scale: 0.97 }}
+          onClick={volverAlInicio}
+          className="-ml-2 mb-2 flex h-11 w-fit items-center gap-1 px-2 text-[15px] font-semibold text-[var(--accent)]"
+        >
+          <ArrowLeft size={18} aria-hidden="true" />
+          Hoy
+        </motion.button>
         <h1 className="text-balance text-center text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]">
           ¿Para qué ocasión es tu Check de hoy?
         </h1>
@@ -436,6 +505,20 @@ export default function Hoy() {
             );
           })}
         </div>
+
+        {ocasion && OCASIONES_ALTO_IMPACTO.includes(ocasion) && (
+          <motion.p
+            initial={reduce ? false : { opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+            className="mt-4 flex items-start gap-2 rounded-[var(--radius-button)] bg-[var(--chip-bg)] px-3 py-2 text-[13px] leading-[1.4] text-[var(--text-primary)]"
+          >
+            <Zap size={16} color="var(--accent)" fill="var(--accent)" aria-hidden="true" className="mt-0.5 shrink-0" />
+            <span>
+              <strong>Modo Alto Impacto activado:</strong> además de tu análisis, recibes un plan de 3 pasos para esta ocasión.
+            </span>
+          </motion.p>
+        )}
 
         <p className="mt-6 text-[15px] font-semibold text-[var(--text-primary)]">Tu foto de cuerpo entero</p>
         <p className="mt-1 text-[13px] text-[var(--text-secondary)]">De la cabeza a los zapatos, con buena luz.</p>
@@ -487,40 +570,21 @@ export default function Hoy() {
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center pt-4 text-center">
-      <p className="text-[15px] text-[var(--text-primary)]">Hola 👋</p>
-      <h1 className="mt-1 text-balance text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]">
-        {restantes === 0 ? 'Ya hiciste tus 3 Checks de hoy' : '¿Aún no hiciste tu Check de Presencia e Imagen de hoy?'}
-      </h1>
-
-      <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={empezarCheck} className={`mt-6 ${BOTON_PRIMARIO}`}>
-        <Camera size={20} aria-hidden="true" />
-        {restantes === 0 ? 'Ver mi último resultado' : 'Hacer mi Check de Presencia'}
-      </motion.button>
-      {restantes !== null && restantes > 0 && (
-        <p className="mt-3 text-[13px] text-[var(--text-secondary)]">
-          {restantes === LIMITE_CHECKS_DIA
-            ? 'Tienes 3 Checks disponibles hoy'
-            : `Te ${restantes === 1 ? 'queda 1 Check' : `quedan ${restantes} Checks`} hoy`}
-        </p>
-      )}
-
-      <div className="mt-6 flex w-full items-center gap-3 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">
-        <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[var(--surface-2)] shadow-[inset_0_1px_3px_rgb(140_60_20_/_0.15)]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/iconos/icono-3-gema.gif" alt="" aria-hidden="true" className="size-6" />
-        </span>
-        <div>
-          <p className="text-[14px] font-semibold text-[var(--text-primary)]">Tus gemas: {gemas ?? 0}</p>
-          <p className="text-[13px] text-[var(--text-secondary)]">Ganas una gema cada vez que obtienes tu calificación.</p>
-        </div>
-      </div>
-
-      <div className="mt-4 w-full rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">
-        <p className="text-[14px] leading-[1.5] text-[var(--text-primary)]">
-          Con tu primer Check, Niki empieza a conocer tu estilo — cada registro afina un poco más tus recomendaciones.
-        </p>
-      </div>
-    </div>
+    <HoyInicio
+      cargado={cargado}
+      errorCarga={errorCarga}
+      reintentar={() => {
+        setErrorCarga(false);
+        setCargado(false);
+        setRecarga((n) => n + 1);
+      }}
+      usadosHoy={usadosHoy}
+      restantes={restantes}
+      ultimo={ultimo}
+      racha={racha}
+      hoy={fechaLocalHoy()}
+      empezarCheck={empezarCheck}
+      abrirCheck={(id) => router.push(`/app/historial/${id}`)}
+    />
   );
 }

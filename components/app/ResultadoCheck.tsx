@@ -13,9 +13,30 @@
 
 import { useEffect, useState } from 'react';
 import { animate, motion, useReducedMotion } from 'motion/react';
-import { ArrowUp, Check, Quote, ShoppingBag, Target } from 'lucide-react';
+import { ArrowUp, Check, Flame, Quote, ShoppingBag, Target, Zap } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { puntajeDe, type ResultadoCheck as Resultado } from '@/lib/ia/resultado';
+import { META_GLOWUP, puntajeDe, type RachaTrasCheck, type ResultadoCheck as Resultado } from '@/lib/ia/resultado';
+
+/** Texto del momento de racha (56 M2/M4): con significado, sin inflar exclamaciones. */
+function mensajeRacha(r: RachaTrasCheck): { titulo: string; texto: string } | null {
+  if (r.hito === 21) return { titulo: '¡Glow-Up completo!', texto: '21 días seguidos cuidando tu presencia. Esta versión de ti llegó para quedarse.' };
+  if (r.hito === 14) return { titulo: 'Dos semanas seguidas', texto: 'A esta altura verte bien ya es parte de tu rutina. Faltan 7 días para tu Glow-Up.' };
+  if (r.hito === 7) return { titulo: 'Una semana completa', texto: 'La mayoría abandona antes del día 7; tú ya llegaste. Cada semana completa suma un congelador: salva tu racha si un día no haces tu Check.' };
+  if (r.hito === 3) return { titulo: '3 días seguidos', texto: 'Ya no es casualidad: es el inicio de tu hábito.' };
+  if (r.congeladores_usados > 0)
+    return {
+      titulo: 'Tu racha sigue viva',
+      texto: `Usamos ${r.congeladores_usados === 1 ? 'un congelador' : `${r.congeladores_usados} congeladores`} para cuidarla. Te ${r.congeladores === 1 ? 'queda 1' : `quedan ${r.congeladores}`}.`,
+    };
+  if (r.reiniciada) return { titulo: 'Empezaste una racha nueva', texto: `Tu récord sigue siendo de ${r.mejor} días. Hoy es el día 1.` };
+  return null;
+}
+
+const PASOS_ALTO_IMPACTO: { clave: 'antes' | 'al_llegar' | 'durante'; titulo: string }[] = [
+  { clave: 'antes', titulo: 'Antes de entrar' },
+  { clave: 'al_llegar', titulo: 'Al llegar' },
+  { clave: 'durante', titulo: 'Durante' },
+];
 
 const OCASION_LABEL: Record<string, string> = {
   entrevista: 'tu entrevista',
@@ -63,7 +84,7 @@ const ESTILO_NIVEL = {
   },
 } as const;
 
-function AnilloPuntaje({ puntaje }: { puntaje: number }) {
+export function AnilloPuntaje({ puntaje }: { puntaje: number }) {
   const reduce = useReducedMotion();
   const [mostrado, setMostrado] = useState(reduce ? puntaje : 0);
   const R = 66;
@@ -108,6 +129,7 @@ export function ResultadoCheck({
   ocasion,
   fecha,
   gemasTotal,
+  racha,
 }: {
   resultado: Resultado;
   ocasion: string;
@@ -115,7 +137,10 @@ export function ResultadoCheck({
   fecha?: string;
   /** Si viene, el Check es de recién: se celebra la gema nueva con el total. */
   gemasTotal?: number;
+  /** Si viene, se muestra el día de la Racha Glow-Up y, si toca, su momento. */
+  racha?: RachaTrasCheck | null;
 }) {
+  const momento = racha ? mensajeRacha(racha) : null;
   const reduce = useReducedMotion();
   const puntaje = puntajeDe(resultado);
   const niveles = nivelesPorNota(resultado);
@@ -155,6 +180,51 @@ export function ResultadoCheck({
           <img src="/iconos/icono-3-gema.gif" alt="" aria-hidden="true" className="size-5" />
           +1 gema · ya llevas {gemasTotal}
         </motion.p>
+      )}
+
+      {racha && (
+        <motion.div
+          initial={reduce ? false : { opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 260, damping: 22, delay: 1 }}
+          aria-live="polite"
+          className={`mt-3 w-full rounded-[var(--radius-card)] ${
+            !momento
+              ? ''
+              : racha.hito === 21
+                ? 'bg-[var(--accent)] p-4 text-[var(--bg)] shadow-[var(--shadow-2)]'
+                : 'border border-[color-mix(in_oklab,var(--accent)_28%,transparent)] bg-[var(--surface)] p-4 text-[var(--text-primary)]'
+          }`}
+        >
+          {momento ? (
+            <div className="flex items-start gap-3 text-left">
+              <span
+                className={`flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-button)] ${
+                  racha.hito === 21 ? 'bg-[var(--surface)]' : 'bg-[var(--chip-bg)]'
+                }`}
+              >
+                <Flame
+                  size={18}
+                  color="var(--accent)"
+                  fill="var(--accent)"
+                  aria-hidden="true"
+                />
+              </span>
+              <div>
+                <p className="text-[17px] font-bold [font-family:var(--font-display)]">{momento.titulo}</p>
+                <p className="mt-1 text-[15px] leading-[1.45]">{momento.texto}</p>
+                <p className="mt-2 text-[12px] font-semibold">
+                  Racha Glow-Up: día {racha.racha}{racha.racha <= META_GLOWUP ? ` de ${META_GLOWUP}` : ''}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <p className="flex items-center justify-center gap-1.5 text-[12px] font-semibold text-[var(--text-primary)]">
+              <Flame size={14} color="var(--accent)" fill="var(--accent)" aria-hidden="true" />
+              Racha Glow-Up: día {racha.racha}{racha.racha <= META_GLOWUP ? ` de ${META_GLOWUP}` : ''}
+            </p>
+          )}
+        </motion.div>
       )}
 
       <motion.div
@@ -203,6 +273,38 @@ export function ResultadoCheck({
         })}
       </div>
 
+      {resultado.plan_alto_impacto && (
+        <motion.section
+          {...entrada(5)}
+          aria-label="Tu plan de Alto Impacto"
+          className="mt-3 w-full rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--accent)_28%,transparent)] bg-[var(--surface)] p-4 text-left"
+        >
+          <div className="flex items-center gap-3">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-button)] bg-[var(--chip-bg)]">
+              <Zap size={18} color="var(--accent)" aria-hidden="true" />
+            </span>
+            <p className="text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--accent)]">Tu plan de Alto Impacto</p>
+          </div>
+          <ol className="mt-3 flex flex-col gap-3">
+            {PASOS_ALTO_IMPACTO.map((paso, i) => (
+              <li key={paso.clave} className="flex gap-3">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)] text-[12px] font-bold text-[var(--accent)]">
+                  {i + 1}
+                </span>
+                <div className="min-w-0">
+                  <p className="text-[12px] font-semibold text-[var(--text-primary)]">{paso.titulo}</p>
+                  <p className="text-[15px] leading-[1.45] text-[var(--text-primary)]">{resultado.plan_alto_impacto![paso.clave]}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-4 border-t border-[color-mix(in_oklab,var(--accent)_18%,transparent)] pt-3 text-[15px] font-semibold leading-[1.45] text-[var(--text-primary)]">
+            {resultado.frase_cierre}
+          </p>
+        </motion.section>
+      )}
+
+      {!resultado.plan_alto_impacto && (
       <motion.div
         {...entrada(5)}
         className="mt-3 flex w-full items-start gap-3 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--accent)_28%,transparent)] bg-[color-mix(in_oklab,var(--surface)_80%,transparent)] p-4 text-left"
@@ -215,6 +317,7 @@ export function ResultadoCheck({
           <p className="mt-1 text-[15px] font-semibold leading-[1.45] text-[var(--text-primary)]">{resultado.frase_cierre}</p>
         </div>
       </motion.div>
+      )}
     </div>
   );
 }

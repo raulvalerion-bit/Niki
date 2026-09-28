@@ -1,6 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
-import { ResultadoIA } from '@/lib/ia/resultado';
+import { OCASIONES_ALTO_IMPACTO, ResultadoIA } from '@/lib/ia/resultado';
 
 // Análisis de la foto del Check de Presencia (30-INTEGRACION-IA). SOLO
 // servidor: la clave vive en ANTHROPIC_API_KEY y el modelo en AI_MODEL.
@@ -56,6 +56,12 @@ CUÁNDO LA FOTO NO SIRVE (foto_valida = false, y aun así llenas los demás camp
 - menor_de_edad: la persona parece claramente menor de 18 años.
 - Si hay varias personas, analiza a la más centrada y en primer plano.
 
+MODO ALTO IMPACTO (solo si el mensaje dice "Modo Alto Impacto: activado")
+- La persona se juega algo importante (entrevista, cita, reunión, cena formal). Además del análisis,
+  llena plan_alto_impacto con 3 acciones concretas para ESA ocasión y ESA foto: antes (justo antes
+  de entrar), al_llegar (los primeros 10 segundos) y durante. Nada genérico: que se note que viste
+  su foto. En al_llegar retoma el ajuste_clave con otras palabras (es el momento de aplicarlo). Si no está activado, plan_alto_impacto = null.
+
 NOTAS (enteros del 1 al 10)
 - Sé honesto: la mayoría de fotos reales están entre 5 y 8. Un 9-10 es excepcional. Menos de 4 solo si algo choca de verdad con la ocasión.
 - Cada comentario: lo que funciona + UN ajuste concreto y accionable hoy (ej.: "Hombros atrás y barbilla nivelada al entrar"). Máx. 80 caracteres (se lee en 2 renglones de celular).
@@ -97,6 +103,7 @@ export async function analizarFoto(opts: {
   const inicio = Date.now();
   const contexto = [
     `Ocasión: ${OCASION_TEXTO[opts.ocasion] ?? 'salir'}.`,
+    `Modo Alto Impacto: ${OCASIONES_ALTO_IMPACTO.includes(opts.ocasion) ? 'activado' : 'no'}.`,
     opts.objetivo ? `Su objetivo con Niki (dato del usuario): "${opts.objetivo.slice(0, 120)}".` : null,
   ]
     .filter(Boolean)

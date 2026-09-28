@@ -48,7 +48,7 @@ function MarcaNiki() {
       </span>
       <div className="flex flex-col leading-tight">
         <span className="text-[15px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">niki</span>
-        <span className="text-[10px] font-medium text-[var(--text-primary)]">Tus ejes de Presencia e Imagen</span>
+        <span className="text-[10px] font-medium text-[var(--text-primary)]">Tu presencia, lista para salir</span>
       </div>
     </div>
   );
@@ -90,7 +90,7 @@ function BarraPestanas() {
 export default function AppInternaLayout({ children }: { children: React.ReactNode }) {
   return (
     <main
-      className="relative mx-auto flex min-h-dvh w-full max-w-[480px] flex-col overflow-x-hidden px-5 text-[var(--text-primary)] [font-family:var(--font-body)]"
+      className="relative mx-auto flex min-h-dvh w-full max-w-[480px] flex-col overflow-x-clip px-5 text-[var(--text-primary)] [font-family:var(--font-body)]"
       style={{ background: 'var(--bg-gradient)' }}
     >
       <div

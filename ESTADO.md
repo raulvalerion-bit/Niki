@@ -1,5 +1,5 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-09-28 | Siguiente sesión: prueba real del Check en el celular + revisar costo real por análisis; luego seguir hacia el lanzamiento
+Última actualización: 2026-09-28 | Siguiente sesión: 5ª pasada del revisor sobre Hoy (fixes ya aplicados: barra fija con overflow-x-clip, comparación vs Check anterior, subtítulo) → probar racha + Alto Impacto con foto real → resolver bloqueantes 2-5 del certificado
 
 ▶️ CIERRE DE SESIÓN 2026-09-22 — TODO GUARDADO Y SUBIDO (working tree limpio, `git push` al día,
 último commit `1abcc6d`). Resumen de lo que se hizo hoy:
@@ -407,6 +407,8 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Cuando exista la app interna: montar los screenshots reales en el carrusel de la landing y volver a pasar el revisor-visual para cerrar esa puerta del todo
 
 ## Problemas conocidos ⚠️
+- veredicto:hoy — NO LISTA en la 4ª pasada (33/40 · 17/20). Ya aplicados SIN re-revisar (se cortó la sesión por límite de créditos): barra de pestañas fija (overflow-x-hidden → overflow-x-clip en app/app/layout.tsx; medido y=730 en viewport 812 también tras scroll), variación vs Check anterior bajo el anillo, subtítulo "Tu presencia, lista para salir". Falta: 5ª pasada del revisor-visual (docs/revisiones/hoy-375.png + hoy-375-viewport.png).
+- Racha Glow-Up de 21 días y Modo Alto Impacto: CONSTRUIDOS 2026-09-28 (migraciones racha_glowup + habito_registros_delete_own aplicadas; 7 casos de racha probados en SQL; esquema de IA con plan_alto_impacto probado contra la API). Resultado LISTA 37/40·16/20 con ambos bloques. Falta probarlos con una foto real de persona (el dueño) y cerrar el bloqueante 1 del certificado en docs/release/CLAIMS-LEDGER.md.
 - veredicto:paywall — el código del paywall cambió DESPUÉS de su veredicto LISTA (2026-09-28), pero SOLO en 1 línea de copy ("Check de Presencia ilimitado antes de cada salida" → "3 Checks de Presencia al día", por el límite de IA aprobado). Verificado en captura a 375px (cabe en 1 línea, sin huérfanas) → docs/revisiones/paywall-375.png. Se re-lanza el revisor-visual la próxima vez que cambie el layout o más copy del paywall.
 - veredicto:onboarding — CADUCADO según el hook pre-stop (falso positivo, verificado 2026-09-28): el hook compara contra CUALQUIER .tsx más nuevo (app/page.tsx, app/paywall, app/admin), pero `git log -- app/onboarding` muestra que el último cambio del onboarding (2f6aef0, 2026-09-25 18:36) es ANTERIOR al veredicto (e0e2a1e, 18:37). Se re-lanza el revisor solo si se toca app/onboarding.
 - Veredicto onboarding CADUCADO solo por fecha (2026-09-27): el código del onboarding NO cambió en la sesión Hotmart (el hook compara contra cualquier .tsx más nuevo, p. ej. app/page.tsx o app/paywall/page.tsx). Se re-lanza el revisor-visual del onboarding la próxima vez que se toque su código. El paywall ya tiene veredicto nuevo LISTA (36/40 · 16/20 · copy 18/20, 2026-09-27, 3 pasadas).

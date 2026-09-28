@@ -4,7 +4,7 @@ import { crearClienteSupabaseServidor } from '@/lib/supabase/server';
 import { crearClienteSupabaseAdmin } from '@/lib/supabase/admin';
 import { tieneAcceso } from '@/lib/acceso';
 import { analizarFoto, ErrorAnalisis, MODELO, normalizarNota } from '@/lib/ia/check-presencia';
-import { LIMITE_CHECKS_DIA, puntajeDe, type ResultadoCheck } from '@/lib/ia/resultado';
+import { LIMITE_CHECKS_DIA, OCASIONES_ALTO_IMPACTO, puntajeDe, type ResultadoCheck } from '@/lib/ia/resultado';
 import { enviarCorreo } from '@/lib/email/enviar';
 
 // Check de Presencia con IA real (BFF — 09/30). El navegador ya subió la foto
@@ -165,10 +165,14 @@ export async function POST(req: NextRequest) {
       actitud: { nota: normalizarNota(r.actitud.nota), comentario: r.actitud.comentario },
       ajuste_clave: r.ajuste_clave,
       frase_cierre: r.frase_cierre,
+      plan_alto_impacto: OCASIONES_ALTO_IMPACTO.includes(ocasion) ? r.plan_alto_impacto : null,
     };
     const puntaje = puntajeDe(resultado);
-    const { error: errorFin } = await finalizar({ estado: 'listo', resultado, puntaje, ...gasto });
+    const { data: racha, error: errorFin } = await finalizar({ estado: 'listo', resultado, puntaje, ...gasto });
     if (errorFin) console.error('finalizar_check falló:', errorFin.message);
+    if (racha?.hito) {
+      await admin.from('event_log').insert({ tipo: 'racha_hito', user_id: user.id, metadata: { dias: racha.hito } });
+    }
 
     await admin.from('event_log').insert({ tipo: 'check_analizado', user_id: user.id, metadata: { ocasion, puntaje } });
     const { data: gemas } = await admin.from('profiles').select('gemas').eq('id', user.id).single();
@@ -178,6 +182,7 @@ export async function POST(req: NextRequest) {
       resultado,
       puntaje,
       gemas: gemas?.gemas ?? null,
+      racha: racha?.racha ? racha : null,
       restantes: Math.max(0, LIMITE_CHECKS_DIA - (reserva.usados as number)),
     });
   } catch (e) {

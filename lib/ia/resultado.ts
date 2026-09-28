@@ -24,6 +24,14 @@ export const ResultadoIA = z.object({
   ajuste_clave: z
     .string()
     .describe('EL cambio concreto que más sube su presencia hoy. Imperativo, máx. 90 caracteres.'),
+  plan_alto_impacto: z
+    .object({
+      antes: z.string().describe('Justo antes de entrar/salir: 1 acción concreta, máx. 80 caracteres.'),
+      al_llegar: z.string().describe('Los primeros 10 segundos al llegar: 1 acción, máx. 80 caracteres.'),
+      durante: z.string().describe('Durante el evento: 1 acción, máx. 80 caracteres.'),
+    })
+    .nullable()
+    .describe('SOLO si el mensaje dice "Modo Alto Impacto: activado"; si no, null.'),
   frase_cierre: z
     .string()
     .describe('Frase motivadora personal según su puntaje, máx. 140 caracteres. Tuteo.'),
@@ -32,7 +40,25 @@ export const ResultadoIA = z.object({
 export type ResultadoIA = z.infer<typeof ResultadoIA>;
 
 /** Lo que se guarda en `checks.resultado` y ve la pantalla. */
-export type ResultadoCheck = Pick<ResultadoIA, 'outfit' | 'postura' | 'actitud' | 'ajuste_clave' | 'frase_cierre'>;
+export type ResultadoCheck = Pick<ResultadoIA, 'outfit' | 'postura' | 'actitud' | 'ajuste_clave' | 'frase_cierre'> & {
+  /** Solo en ocasiones de Alto Impacto (y en Checks hechos desde el 2026-09-28). */
+  plan_alto_impacto?: ResultadoIA['plan_alto_impacto'];
+};
+
+/** Ocasiones donde se juega algo importante: activan el Modo Alto Impacto. */
+export const OCASIONES_ALTO_IMPACTO = ['entrevista', 'cita', 'negocios', 'cena'];
+
+/** Estado de la Racha Glow-Up que devuelve el servidor tras un Check. */
+export type RachaTrasCheck = {
+  racha: number;
+  mejor: number;
+  congeladores: number;
+  congeladores_usados: number;
+  hito: number | null;
+  reiniciada: boolean;
+};
+
+export const META_GLOWUP = 21;
 
 export function puntajeDe(r: ResultadoCheck): number {
   return Math.round(((r.outfit.nota + r.postura.nota + r.actitud.nota) / 3) * 10) / 10;

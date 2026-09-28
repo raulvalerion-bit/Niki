@@ -9,6 +9,7 @@
 import { useEffect, useState } from 'react';
 import { Sunrise, CalendarClock } from 'lucide-react';
 import { crearClienteSupabase } from '@/lib/supabase/client';
+import { RachaGlowUp, type EstadoRacha } from '@/components/app/RachaGlowUp';
 
 const DIAS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
@@ -29,8 +30,9 @@ function inicioDeSemana() {
   return lunes;
 }
 
+/** Fecha LOCAL del usuario en formato YYYY-MM-DD (toISOString usaría UTC y de noche marcaría mañana). */
 function aISO(fecha: Date) {
-  return fecha.toISOString().slice(0, 10);
+  return new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(fecha);
 }
 
 export default function Habitos() {
@@ -41,6 +43,7 @@ export default function Habitos() {
 
   const [ritmo, setRitmo] = useState<string>('express');
   const [diasCumplidos, setDiasCumplidos] = useState<Set<string>>(new Set());
+  const [racha, setRacha] = useState<EstadoRacha | null>(null);
 
   useEffect(() => {
     let activo = true;
@@ -50,8 +53,21 @@ export default function Habitos() {
       } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data: profile } = await supabase.from('profiles').select('habito_ritmo').eq('id', user.id).single();
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('habito_ritmo, racha_dias, racha_ultima_fecha, racha_mejor, congeladores, glowup_completado_at')
+        .eq('id', user.id)
+        .single();
       if (activo && profile?.habito_ritmo) setRitmo(profile.habito_ritmo);
+      if (activo && profile) {
+        setRacha({
+          racha_dias: profile.racha_dias,
+          racha_ultima_fecha: profile.racha_ultima_fecha,
+          racha_mejor: profile.racha_mejor,
+          congeladores: profile.congeladores,
+          glowup_completado_at: profile.glowup_completado_at,
+        });
+      }
 
       const finDeSemana = new Date(lunes);
       finDeSemana.setDate(lunes.getDate() + 6);
@@ -98,7 +114,13 @@ export default function Habitos() {
       </h1>
       <p className="mt-1 text-[14px] text-[var(--text-secondary)]">Semana del {fechaDeHoyLarga()}</p>
 
-      <div className="mt-5 w-full rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">
+      {racha && (
+        <div className="mt-5 w-full">
+          <RachaGlowUp estado={racha} hoy={hoyISO} />
+        </div>
+      )}
+
+      <div className="mt-4 w-full rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">
         <div className="flex items-center gap-3">
           <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
             <RitmoIcon size={20} color="var(--accent)" aria-hidden="true" />
