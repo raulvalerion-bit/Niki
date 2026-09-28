@@ -206,9 +206,11 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      Pantallas: resultado (components/app/ResultadoCheck.tsx, captura docs/revisiones/resultado-check-375.png
      con datos semilla), estados analizando/límite/error en app/app/page.tsx, detalle
      app/app/historial/[id], transición entre pestañas app/app/template.tsx. revisor-visual resultado:
-     LISTA 37/40 · 16/20 (6 pasadas) → docs/revisiones/resultado-check-veredicto.md. Pendiente: que el
-     usuario pruebe con su foto real en el celular; medir costo real por análisis en /admin (esperado
-     ~US$0.01-0.02); definir para qué sirven las gemas (el chip solo dice cuántas lleva).
+     LISTA 37/40 · 16/20 (6 pasadas) → docs/revisiones/resultado-check-veredicto.md. ✅ Probado por el usuario con
+     su foto real en el celular (2026-09-28): funcionó, consejo de postura útil. COSTO REAL MEDIDO:
+     US$0.0101 por análisis (3855 tokens entrada / 240 salida, 5.7 s) → la mitad de lo estimado; con
+     la fórmula del cupo daría hasta ~5/día ($1.80 ÷ 0.0101 ≈ 178/mes). Se mantiene 3/día hasta que el
+     usuario decida. Pendiente: definir para qué sirven las gemas (el chip solo dice cuántas lleva).
      Sin fallback a otro proveedor (degradación = mensaje amable); anotar para después.
   4. Vercel: ✅ conectado y publicado (2026-09-22) — proyecto `niki` (id
      `prj_4sginvELVjRwcqKRKACly36blcrh`, cuenta `raulvalerion-bit`, sin team) con
