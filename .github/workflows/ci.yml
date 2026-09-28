@@ -1,0 +1,28 @@
+# Revisión automática en cada cambio (61 Gate 9): lint, tipos, pruebas y build.
+# Usa valores de ejemplo (no secretos reales): el build solo necesita que existan.
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://ejemplo.supabase.co
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ejemplo
+      SUPABASE_URL: https://ejemplo.supabase.co
+      SUPABASE_SECRET_KEY: sb_secret_ejemplo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm audit --omit=dev --audit-level=high
