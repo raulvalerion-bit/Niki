@@ -8,7 +8,7 @@ const Eje = z.object({
   nota: z.number().describe('Nota de 1 a 10 (entero).'),
   comentario: z
     .string()
-    .describe('1 frase, máx. 110 caracteres: lo que funciona + el ajuste concreto. Tuteo, cálido.'),
+    .describe('1 frase corta, máx. 80 caracteres (2 renglones en el celular): lo que funciona + el ajuste concreto. Tuteo, cálido.'),
 });
 
 export const MOTIVOS_FOTO = ['sin_persona', 'no_cuerpo_entero', 'muy_oscura', 'inapropiada', 'menor_de_edad'] as const;

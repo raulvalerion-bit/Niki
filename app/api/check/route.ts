@@ -171,11 +171,13 @@ export async function POST(req: NextRequest) {
     if (errorFin) console.error('finalizar_check falló:', errorFin.message);
 
     await admin.from('event_log').insert({ tipo: 'check_analizado', user_id: user.id, metadata: { ocasion, puntaje } });
+    const { data: gemas } = await admin.from('profiles').select('gemas').eq('id', user.id).single();
 
     return NextResponse.json({
       checkId,
       resultado,
       puntaje,
+      gemas: gemas?.gemas ?? null,
       restantes: Math.max(0, LIMITE_CHECKS_DIA - (reserva.usados as number)),
     });
   } catch (e) {

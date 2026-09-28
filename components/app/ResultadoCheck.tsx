@@ -26,29 +26,39 @@ const OCASION_LABEL: Record<string, string> = {
   vacaciones: 'tus vacaciones',
 };
 
-const EJES: { clave: 'outfit' | 'postura' | 'actitud'; titulo: string; icono: LucideIcon; nivel: 'suave' | 'medio' | 'fuerte' }[] = [
-  { clave: 'outfit', titulo: 'Outfit', icono: ShoppingBag, nivel: 'suave' },
-  { clave: 'postura', titulo: 'Postura', icono: ArrowUp, nivel: 'medio' },
-  { clave: 'actitud', titulo: 'Actitud', icono: Check, nivel: 'fuerte' },
+type ClaveEje = 'outfit' | 'postura' | 'actitud';
+type Nivel = 'suave' | 'medio' | 'fuerte';
+
+const EJES: { clave: ClaveEje; titulo: string; icono: LucideIcon }[] = [
+  { clave: 'outfit', titulo: 'Outfit', icono: ShoppingBag },
+  { clave: 'postura', titulo: 'Postura', icono: ArrowUp },
+  { clave: 'actitud', titulo: 'Actitud', icono: Check },
 ];
+
+/** Escala de intensidad de FICHA-ARTE aplicada al dato: la nota más baja (lo
+    que más conviene ajustar) se ve "fuerte"; la más alta, "suave". */
+function nivelesPorNota(r: Resultado): Record<ClaveEje, Nivel> {
+  const orden = [...EJES].sort((a, b) => r[a.clave].nota - r[b.clave].nota).map((e) => e.clave);
+  return { [orden[0]]: 'fuerte', [orden[1]]: 'medio', [orden[2]]: 'suave' } as Record<ClaveEje, Nivel>;
+}
 
 const ESTILO_NIVEL = {
   suave: {
     caja: 'bg-[color-mix(in_oklab,var(--surface)_80%,transparent)] border',
     chip: 'bg-[color-mix(in_oklab,var(--accent)_8%,transparent)]',
-    nota: 'text-[var(--text-secondary)]',
+    nota: 'text-[var(--text-primary)]',
     titulo: 'text-[var(--text-primary)]',
   },
   medio: {
     caja: 'bg-[color-mix(in_oklab,var(--surface)_92%,var(--accent)_8%)] border',
     chip: 'bg-[color-mix(in_oklab,var(--accent)_20%,transparent)]',
-    nota: 'text-[var(--accent)]',
+    nota: 'text-[var(--text-primary)]',
     titulo: 'text-[var(--text-primary)]',
   },
   fuerte: {
-    caja: 'bg-[color-mix(in_oklab,var(--surface)_80%,var(--accent)_20%)] border-[1.5px] shadow-[var(--shadow-2)]',
+    caja: 'bg-[color-mix(in_oklab,var(--surface)_80%,var(--accent)_20%)] border-[1.5px]',
     chip: 'bg-[color-mix(in_oklab,var(--accent)_30%,transparent)]',
-    nota: 'text-[var(--accent)]',
+    nota: 'text-[var(--text-primary)]',
     titulo: 'text-[var(--accent)]',
   },
 } as const;
@@ -87,7 +97,7 @@ function AnilloPuntaje({ puntaje }: { puntaje: number }) {
         <span className="text-[40px] font-bold leading-none tabular-nums text-[var(--text-primary)] [font-family:var(--font-display)]">
           {mostrado.toFixed(1)}
         </span>
-        <span className="mt-1 text-[12px] font-medium text-[var(--text-secondary)]">de 10</span>
+        <span className="mt-1 text-[12px] font-medium text-[var(--text-primary)]">de 10</span>
       </div>
     </div>
   );
@@ -97,16 +107,18 @@ export function ResultadoCheck({
   resultado,
   ocasion,
   fecha,
-  gemaNueva,
+  gemasTotal,
 }: {
   resultado: Resultado;
   ocasion: string;
   /** Si viene, es un Check pasado (historial): se muestra la fecha en vez de "hoy". */
   fecha?: string;
-  gemaNueva?: boolean;
+  /** Si viene, el Check es de recién: se celebra la gema nueva con el total. */
+  gemasTotal?: number;
 }) {
   const reduce = useReducedMotion();
   const puntaje = puntajeDe(resultado);
+  const niveles = nivelesPorNota(resultado);
   const entrada = (i: number) =>
     reduce
       ? {}
@@ -124,7 +136,7 @@ export function ResultadoCheck({
       >
         {fecha ? `Tu Check del ${fecha}` : '¡Tus resultados para hoy!'}
       </motion.h1>
-      <motion.p {...entrada(0)} className="mt-1 text-[14px] text-[var(--text-secondary)]">
+      <motion.p {...entrada(0)} className="mt-1 text-[15px] text-[var(--text-primary)]">
         Para {OCASION_LABEL[ocasion] ?? 'salir'}
       </motion.p>
 
@@ -132,7 +144,7 @@ export function ResultadoCheck({
         <AnilloPuntaje puntaje={puntaje} />
       </div>
 
-      {gemaNueva && (
+      {gemasTotal !== undefined && (
         <motion.p
           initial={reduce ? false : { opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -140,28 +152,29 @@ export function ResultadoCheck({
           className="mt-3 flex items-center gap-1.5 rounded-full bg-[var(--chip-bg)] px-3 py-1 text-[12px] font-semibold text-[var(--accent)]"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/iconos/icono-3-gema.gif" alt="" aria-hidden="true" className="size-4" />
-          +1 gema por tu calificación
+          <img src="/iconos/icono-3-gema.gif" alt="" aria-hidden="true" className="size-5" />
+          +1 gema · ya llevas {gemasTotal}
         </motion.p>
       )}
 
       <motion.div
         {...entrada(1)}
-        className="mt-4 flex w-full items-start gap-3 rounded-[var(--radius-card)] bg-[var(--chip-bg)] p-4 text-left"
+        className="mt-4 flex w-full items-start gap-3 rounded-[var(--radius-card)] border-[1.5px] border-transparent p-4 text-left shadow-[var(--shadow-2)] [background:linear-gradient(color-mix(in_oklab,var(--surface)_84%,var(--accent)_16%),color-mix(in_oklab,var(--surface)_84%,var(--accent)_16%))_padding-box,linear-gradient(135deg,var(--accent),color-mix(in_oklab,var(--accent)_20%,transparent)_70%)_border-box]"
       >
         <span className="flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-button)] bg-[var(--surface)]">
           <Target size={18} color="var(--accent)" aria-hidden="true" />
         </span>
         <div>
           <p className="text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--accent)]">Tu ajuste clave</p>
-          <p className="mt-1 text-[14px] font-semibold leading-[1.45] text-[var(--text-primary)]">{resultado.ajuste_clave}</p>
+          <p className="mt-1 text-[17px] font-bold leading-[1.35] text-[var(--text-primary)]">{resultado.ajuste_clave}</p>
         </div>
       </motion.div>
 
       <div className="mt-3 flex w-full flex-col gap-3">
         {EJES.map((eje, i) => {
           const e = resultado[eje.clave];
-          const s = ESTILO_NIVEL[eje.nivel];
+          const nivel = niveles[eje.clave];
+          const s = ESTILO_NIVEL[nivel];
           const Icono = eje.icono;
           return (
             <motion.div
@@ -170,14 +183,20 @@ export function ResultadoCheck({
               className={`flex gap-3 rounded-[var(--radius-card)] border-[color-mix(in_oklab,var(--accent)_28%,transparent)] p-4 text-left ${s.caja}`}
             >
               <span className={`flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-button)] ${s.chip}`}>
-                <Icono size={18} color="var(--accent)" strokeWidth={eje.nivel === 'fuerte' ? 2.4 : 2} aria-hidden="true" />
+                <Icono
+                  size={18}
+                  // 2ª nota de la ficha (lima) solo en el ícono de Actitud, oscurecida para verse sobre crema.
+                  color={eje.clave === 'actitud' ? 'color-mix(in oklab, var(--accent-2) 55%, var(--text-primary))' : 'var(--accent)'}
+                  strokeWidth={nivel === 'fuerte' ? 2.4 : 2}
+                  aria-hidden="true"
+                />
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
                   <h2 className={`text-[15px] font-bold ${s.titulo}`}>{eje.titulo}</h2>
-                  <span className={`text-[14px] font-bold tabular-nums [font-family:var(--font-display)] ${s.nota}`}>{e.nota}/10</span>
+                  <span className={`text-[15px] font-bold tabular-nums [font-family:var(--font-display)] ${s.nota}`}>{e.nota}/10</span>
                 </div>
-                <p className="mt-1 text-[14px] leading-[1.45] text-[var(--text-secondary)]">{e.comentario}</p>
+                <p className="mt-1 text-[15px] leading-[1.45] text-[var(--text-primary)]">{e.comentario}</p>
               </div>
             </motion.div>
           );
@@ -186,14 +205,14 @@ export function ResultadoCheck({
 
       <motion.div
         {...entrada(5)}
-        className="mt-3 flex w-full items-start gap-3 rounded-[var(--radius-card)] border-[1.5px] border-transparent p-4 text-left [background:linear-gradient(color-mix(in_oklab,var(--surface)_88%,var(--accent)_12%),color-mix(in_oklab,var(--surface)_88%,var(--accent)_12%))_padding-box,linear-gradient(135deg,color-mix(in_oklab,var(--accent)_55%,transparent),transparent_65%)_border-box]"
+        className="mt-3 flex w-full items-start gap-3 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--accent)_28%,transparent)] bg-[color-mix(in_oklab,var(--surface)_80%,transparent)] p-4 text-left"
       >
         <span className="flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-button)] bg-[color-mix(in_oklab,var(--accent)_18%,transparent)]">
           <Quote size={16} color="var(--accent)" aria-hidden="true" />
         </span>
         <div>
           <p className="text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--accent)]">Tu presencia hoy</p>
-          <p className="mt-1 text-[14px] font-semibold leading-[1.45] text-[var(--text-primary)]">{resultado.frase_cierre}</p>
+          <p className="mt-1 text-[15px] font-semibold leading-[1.45] text-[var(--text-primary)]">{resultado.frase_cierre}</p>
         </div>
       </motion.div>
     </div>

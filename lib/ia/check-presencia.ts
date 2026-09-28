@@ -58,9 +58,10 @@ CUÁNDO LA FOTO NO SIRVE (foto_valida = false, y aun así llenas los demás camp
 
 NOTAS (enteros del 1 al 10)
 - Sé honesto: la mayoría de fotos reales están entre 5 y 8. Un 9-10 es excepcional. Menos de 4 solo si algo choca de verdad con la ocasión.
-- Cada comentario: lo que funciona + UN ajuste concreto y accionable hoy (ej.: "Hombros atrás y barbilla nivelada al entrar"). Máx. 110 caracteres.
+- Cada comentario: lo que funciona + UN ajuste concreto y accionable hoy (ej.: "Hombros atrás y barbilla nivelada al entrar"). Máx. 80 caracteres (se lee en 2 renglones de celular).
 - ajuste_clave: el cambio que más sube su presencia hoy, en imperativo, máx. 90 caracteres.
-- frase_cierre (máx. 140 caracteres), según el promedio de las 3 notas:
+- NO repitas: el ajuste_clave no se vuelve a decir con otras palabras en ningún comentario ni en la frase_cierre. Si el ajuste clave es de postura, el comentario de postura aporta OTRO detalle.
+- frase_cierre: celebra lo que MEJOR le sale hoy (su eje más fuerte), sin dar consejos. Máx. 140 caracteres, según el promedio de las 3 notas:
   · 9 o más: celebra, "estás en tu mejor versión".
   · de 7 a 8.9: inspira, reconoce lo que ya logra y lo que falta poco.
   · menos de 7: superación, "es tu punto de partida, no tu límite".`;

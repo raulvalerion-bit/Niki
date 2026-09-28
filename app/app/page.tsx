@@ -56,7 +56,14 @@ export default function Hoy() {
   const supabase = crearClienteSupabase();
   const router = useRouter();
   const [paso, setPaso] = useState<Paso>('inicio');
-  const [ocasion, setOcasion] = useState<string | null>(null);
+  // La última ocasión queda elegida para el siguiente Check (atajo para quien lo usa a diario).
+  const [ocasion, setOcasion] = useState<string | null>(() => {
+    try {
+      return typeof window === 'undefined' ? null : localStorage.getItem('niki_ultima_ocasion');
+    } catch {
+      return null;
+    }
+  });
   const [preview, setPreview] = useState<string | null>(null);
   const [gemas, setGemas] = useState<number | null>(null);
   const [usadosHoy, setUsadosHoy] = useState<number | null>(null);
@@ -65,6 +72,8 @@ export default function Hoy() {
   const [error, setError] = useState<'pausa' | 'ia' | null>(null);
   const [pasoAnalisis, setPasoAnalisis] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const cancelarRef = useRef<AbortController | null>(null);
+  const pidioAnalisisRef = useRef(false);
   const reduce = useReducedMotion();
 
   const [recarga, setRecarga] = useState(0);
@@ -116,7 +125,6 @@ export default function Hoy() {
   function volverAlInicio() {
     setPaso('inicio');
     setPreview(null);
-    setOcasion(null);
     setAvisoValidacion(null);
     setResultado(null);
     setError(null);
@@ -129,6 +137,19 @@ export default function Hoy() {
     if (!file) return;
     setPreview(URL.createObjectURL(file));
     setAvisoValidacion(null);
+  }
+
+  /** Cancelar responde al instante; lo que siga corriendo por detrás se descarta. */
+  function cancelarAnalisis() {
+    cancelarRef.current?.abort();
+    cancelarRef.current = null;
+    setAvisoValidacion(
+      pidioAnalisisRef.current
+        ? 'Cancelaste el análisis. Si ya estaba casi listo, lo verás en tu historial.'
+        : 'Cancelaste el análisis. No se gastó ningún Check.'
+    );
+    setRecarga((n) => n + 1);
+    setPaso('foto');
   }
 
   async function analizarPresencia() {
@@ -147,35 +168,50 @@ export default function Hoy() {
       return;
     }
 
+    const control = new AbortController();
+    let ruta: string | null = null;
+    let pidioAnalisis = false;
+    pidioAnalisisRef.current = false;
+    cancelarRef.current = control;
+    const siCancelo = () => {
+      if (control.signal.aborted) throw new DOMException('cancelado', 'AbortError');
+    };
     setPasoAnalisis(0);
     setPaso('analizando');
     try {
       const {
         data: { user },
       } = await supabase.auth.getUser();
+      siCancelo();
       if (!user) {
         router.push('/login');
         return;
       }
-      const ruta = `${user.id}/${crypto.randomUUID()}.jpg`;
+      ruta = `${user.id}/${crypto.randomUUID()}.jpg`;
       const { error: errorSubida } = await supabase.storage
         .from('checks-fotos')
         .upload(ruta, foto, { contentType: 'image/jpeg' });
+      siCancelo();
       if (errorSubida) throw new Error('subida');
 
       await registrarEvento(supabase, 'check_creado', user.id, { ocasion });
+      siCancelo();
 
+      pidioAnalisis = true;
+      pidioAnalisisRef.current = true;
       const res = await fetch('/api/check', {
+        signal: control.signal,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ocasion, foto: ruta, zonaHoraria: Intl.DateTimeFormat().resolvedOptions().timeZone }),
       });
       const data = await res.json().catch(() => ({}));
+      siCancelo();
 
       if (res.ok) {
         setResultado(data.resultado);
         setUsadosHoy(LIMITE_CHECKS_DIA - data.restantes);
-        setGemas((g) => (g ?? 0) + 1);
+        setGemas(typeof data.gemas === 'number' ? data.gemas : null);
         setPaso('resultado');
         return;
       }
@@ -209,9 +245,16 @@ export default function Hoy() {
           setError('ia');
           setPaso('error');
       }
-    } catch {
+    } catch (e) {
+      if (control.signal.aborted || (e instanceof DOMException && e.name === 'AbortError')) {
+        // La pantalla ya se actualizó en cancelarAnalisis().
+        if (ruta && !pidioAnalisis) void supabase.storage.from('checks-fotos').remove([ruta]);
+        return;
+      }
       setError('ia');
       setPaso('error');
+    } finally {
+      if (cancelarRef.current === control) cancelarRef.current = null;
     }
   }
 
@@ -243,7 +286,7 @@ export default function Hoy() {
               animate={{ opacity: 1, y: 0 }}
               exit={reduce ? undefined : { opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
-              className="text-[15px] text-[var(--text-secondary)]"
+              className="text-[15px] text-[var(--text-primary)]"
             >
               {PASOS_ANALISIS[pasoAnalisis]}
             </motion.p>
@@ -257,7 +300,15 @@ export default function Hoy() {
             transition={{ duration: reduce ? 0 : 14, ease: [0.1, 0.6, 0.3, 1] }}
           />
         </div>
-        <p className="mt-4 text-[13px] text-[var(--text-tertiary)]">Tarda unos segundos</p>
+        <p className="mt-4 text-[12px] text-[var(--text-primary)]">Tarda unos segundos</p>
+        <motion.button
+          type="button"
+          whileTap={{ scale: 0.97 }}
+          onClick={cancelarAnalisis}
+          className="mt-4 h-11 px-4 text-[15px] font-semibold text-[var(--accent)]"
+        >
+          Cancelar
+        </motion.button>
       </div>
     );
   }
@@ -265,11 +316,27 @@ export default function Hoy() {
   if (paso === 'resultado' && resultado && ocasion) {
     return (
       <div className="flex flex-1 flex-col pt-4">
-        <ResultadoCheck resultado={resultado} ocasion={ocasion} gemaNueva />
+        <ResultadoCheck resultado={resultado} ocasion={ocasion} gemasTotal={gemas ?? undefined} />
         <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={volverAlInicio} className={`mt-6 ${BOTON_PRIMARIO}`}>
           Listo
         </motion.button>
-        <p className="mt-3 text-center text-[13px] text-[var(--text-secondary)]">
+        {restantes !== null && restantes > 0 && (
+          <motion.button
+            type="button"
+            whileTap={{ scale: 0.97 }}
+            onClick={() => {
+              setResultado(null);
+              setPreview(null);
+              setAvisoValidacion(null);
+              if (inputRef.current) inputRef.current.value = '';
+              setPaso('foto');
+            }}
+            className="mt-2 h-11 self-center px-4 text-[15px] font-semibold text-[var(--accent)]"
+          >
+            Probar de nuevo con el ajuste
+          </motion.button>
+        )}
+        <p className="mt-2 text-center text-[12px] text-[var(--text-primary)]">
           {restantes === 0
             ? 'Ese fue tu último Check de hoy. Mañana tienes 3 nuevos.'
             : `Te ${restantes === 1 ? 'queda 1 Check' : `quedan ${restantes} Checks`} hoy · Guardado en tu historial`}
@@ -293,9 +360,9 @@ export default function Hoy() {
         <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={() => router.push('/app/historial')} className={`mt-8 max-w-xs ${BOTON_PRIMARIO}`}>
           Ver mi historial
         </motion.button>
-        <button type="button" onClick={volverAlInicio} className="mt-3 h-11 px-4 text-[14px] font-semibold text-[var(--accent)]">
+        <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={volverAlInicio} className="mt-3 h-11 px-4 text-[15px] font-semibold text-[var(--accent)]">
           Volver a Hoy
-        </button>
+        </motion.button>
       </div>
     );
   }
@@ -325,9 +392,9 @@ export default function Hoy() {
         >
           Intentar de nuevo
         </motion.button>
-        <button type="button" onClick={volverAlInicio} className="mt-3 h-11 px-4 text-[14px] font-semibold text-[var(--accent)]">
+        <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={volverAlInicio} className="mt-3 h-11 px-4 text-[15px] font-semibold text-[var(--accent)]">
           Volver a Hoy
-        </button>
+        </motion.button>
       </div>
     );
   }
@@ -350,6 +417,11 @@ export default function Hoy() {
                 whileTap={{ scale: 0.97, y: 2 }}
                 onClick={() => {
                   setOcasion(op.valor);
+                  try {
+                    localStorage.setItem('niki_ultima_ocasion', op.valor);
+                  } catch {
+                    /* sin almacenamiento: solo se pierde el atajo */
+                  }
                   setAvisoValidacion(null);
                 }}
                 className={`flex h-14 items-center gap-2 rounded-[var(--radius-button)] border border-b-4 px-3 text-left shadow-[var(--shadow-1)] transition-[border-bottom-width,background-color,border-color] duration-150 ${

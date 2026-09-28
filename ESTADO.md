@@ -1,5 +1,5 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-09-27 | Siguiente sesión: IA real (BFF) — la pieza que falta para poder vender (la garantía promete un ajuste concreto en el primer Check)
+Última actualización: 2026-09-28 | Siguiente sesión: prueba real del Check en el celular + revisar costo real por análisis; luego seguir hacia el lanzamiento
 
 ▶️ CIERRE DE SESIÓN 2026-09-22 — TODO GUARDADO Y SUBIDO (working tree limpio, `git push` al día,
 último commit `1abcc6d`). Resumen de lo que se hizo hoy:
@@ -189,8 +189,11 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      el registro de usuarios nuevos sigue funcionando igual. Queda 1 aviso menor sin acción: Supabase
      sugiere activar "protección contra contraseñas filtradas", pero Niki no usa contraseñas (el
      login es con código por correo), así que no aplica.
-  3. IA real (BFF): CONSTRUIDA, SIN PUBLICAR (2026-09-28, commit 9814a62 local, sin push) —
-     esperando que el usuario ponga ANTHROPIC_API_KEY en .env.local y Vercel ("configurada").
+  3. IA real (BFF): ✅ CONECTADA Y PUBLICADA (2026-09-28). Clave de Anthropic puesta por el usuario
+     en .env.local y Vercel (Sensitive); la clave NO está asignada a un workspace → se manda el header
+     con ANTHROPIC_WORKSPACE_ID=wrkspc_014axPkBKU2Go7jtQFsWxA7s (no secreto, en .env.local y Vercel).
+     Probado en real: llamada OK en 5.4 s, US$0.0065 con imagen chica (foto sin persona → sin_persona).
+     Local: la red del usuario intercepta TLS → para probar con Node usar NODE_OPTIONS=--use-system-ca.
      Decisiones técnicas: síncrono (1 foto → JSON, ~5-15 s, maxDuration 60) · modelo AI_MODEL=
      claude-sonnet-5 (thinking off, max_tokens 1024, salida estructurada zod) · foto achicada en el
      celular a 1280px JPEG → Storage → /api/check la descarga con la clave de servicio · RPC
@@ -202,8 +205,10 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
      AI_MODEL/AI_DAILY_BUDGET_USD=5 (sensitive, heredadas) + AI_MONTHLY_BUDGET_USD=50.
      Pantallas: resultado (components/app/ResultadoCheck.tsx, captura docs/revisiones/resultado-check-375.png
      con datos semilla), estados analizando/límite/error en app/app/page.tsx, detalle
-     app/app/historial/[id]. Pendiente: prueba real con clave → push → revisor-visual del resultado
-     (primera pantalla de su tipo) → borrar la ruta temporal app/dev-resultado (NO commiteada).
+     app/app/historial/[id], transición entre pestañas app/app/template.tsx. revisor-visual resultado:
+     LISTA 37/40 · 16/20 (6 pasadas) → docs/revisiones/resultado-check-veredicto.md. Pendiente: que el
+     usuario pruebe con su foto real en el celular; medir costo real por análisis en /admin (esperado
+     ~US$0.01-0.02); definir para qué sirven las gemas (el chip solo dice cuántas lleva).
      Sin fallback a otro proveedor (degradación = mensaje amable); anotar para después.
   4. Vercel: ✅ conectado y publicado (2026-09-22) — proyecto `niki` (id
      `prj_4sginvELVjRwcqKRKACly36blcrh`, cuenta `raulvalerion-bit`, sin team) con

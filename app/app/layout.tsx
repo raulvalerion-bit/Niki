@@ -48,7 +48,7 @@ function MarcaNiki() {
       </span>
       <div className="flex flex-col leading-tight">
         <span className="text-[15px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">niki</span>
-        <span className="text-[10px] font-medium text-[var(--text-secondary)]">Tus ejes de Presencia e Imagen</span>
+        <span className="text-[10px] font-medium text-[var(--text-primary)]">Tus ejes de Presencia e Imagen</span>
       </div>
     </div>
   );
@@ -95,11 +95,11 @@ export default function AppInternaLayout({ children }: { children: React.ReactNo
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-20 -right-20 size-72 rounded-full border-[3px] border-[color-mix(in_oklab,var(--accent)_16%,transparent)]"
+        className="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full border-[3px] border-[color-mix(in_oklab,var(--accent)_16%,transparent)]"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-32 -right-32 size-72 rounded-full border-[3px] border-[color-mix(in_oklab,var(--accent)_10%,transparent)]"
+        className="pointer-events-none absolute -top-36 -right-36 size-72 rounded-full border-[3px] border-[color-mix(in_oklab,var(--accent)_10%,transparent)]"
       />
 
       <MarcaNiki />
