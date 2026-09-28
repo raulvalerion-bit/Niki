@@ -6,7 +6,7 @@
 // request de la app entera).
 
 import { redirect } from 'next/navigation';
-import { LayoutDashboard, DollarSign, Users, Activity, TrendingUp, HeartPulse } from 'lucide-react';
+import { LayoutDashboard, DollarSign, Users, Activity, TrendingUp, HeartPulse, Wallet } from 'lucide-react';
 import { verificarAdmin } from '@/lib/admin/verificar';
 import { NavAdmin } from '@/components/admin/nav';
 
@@ -19,6 +19,7 @@ const SECCIONES: { href: string; label: string; icon: React.ReactNode }[] = [
   { href: '/admin/usuarios', label: 'Usuarios', icon: <Users size={17} aria-hidden="true" /> },
   { href: '/admin/uso', label: 'Uso', icon: <Activity size={17} aria-hidden="true" /> },
   { href: '/admin/negocio', label: 'Negocio', icon: <TrendingUp size={17} aria-hidden="true" /> },
+  { href: '/admin/gastos', label: 'Gastos', icon: <Wallet size={17} aria-hidden="true" /> },
   { href: '/admin/salud', label: 'Salud', icon: <HeartPulse size={17} aria-hidden="true" /> },
 ];
 
