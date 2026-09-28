@@ -101,10 +101,11 @@ outfit, su postura y su actitud antes de que sea tarde. El **Check de Presencia*
 ## 8. FAQ (objeciones literales de la ficha)
 1. "¿Una IA me va a dar consejos genéricos de robot?" → "No. Analiza TU foto, tu cuerpo y tu
    ocasión — nunca reglas genéricas de moda." (objeción #3)
-2. "¿Mis fotos quedan guardadas o se comparten?" → "No. Se procesan para darte el resultado y
-   nunca se comparten ni se usan para entrenar nada público." (objeción #2)
-3. "¿Me va a destrozar con una nota cruel tipo 3/10?" → "Nunca. Niki no pone notas frías: te da
-   3 ajustes concretos con tono de coach, siempre constructivo." (objeción #4)
+2. "¿Mis fotos quedan guardadas o se comparten?" → "Se guardan en tu cuenta de forma privada:
+   solo tú puedes verlas. Nunca se comparten ni se usan para entrenar nada." (objeción #2)
+3. "¿Me va a destrozar con una nota cruel tipo 3/10?" → "Nunca. Ves tu puntaje de presencia, pero siempre
+   con lo que ya te funciona y ajustes concretos con tono de coach. Y jamás opina de tu cuerpo o tu
+   cara: solo de lo que puedes cambiar hoy." (objeción #4 — corregido 2026-09-28: la app sí muestra puntaje)
 4. "Ya gasté plata en ropa antes y no cambió nada, ¿por qué esto sí?" → "Porque el problema no
    era tu ropa: era no saber leer tu postura y tu actitud a tiempo. Eso es lo que Niki te
    muestra." (objeción de escepticismo)
@@ -124,7 +125,7 @@ outfit, su postura y su actitud antes de que sea tarde. El **Check de Presencia*
   la gente nota mi presencia de inmediato")
 - Recap: "Trial VIP de 3 días · Garantía del Primer Ajuste Honesto · Sin críticas crueles, nunca"
 - PS: "PS: Niki analiza tu outfit, postura y actitud en 30 segundos con el Check de Presencia —
-  sin números fríos ni crueldad. Hoy entrás con 3 días de prueba gratis y la Garantía del Primer
+  honesto, pero sin crueldad. Hoy entras con 3 días de prueba gratis y la Garantía del Primer
   Ajuste Honesto: si no te sirve, te devolvemos todo."
 
 ## 10. FOOTER LEGAL

@@ -34,7 +34,20 @@ export default function LandingNiki() {
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
         socialProof={<span>Trial VIP de 3 días · tus fotos son privadas: solo tú las ves</span>}
-        visualPlaceholderSugerencia="captura del Check de Presencia con el puntaje 82/100 y los 3 ajustes ya generados"
+        visual={
+          <div className="flex justify-center bg-[color-mix(in_oklab,var(--accent)_6%,transparent)] py-8">
+            {/* Captura real de la app (pantalla de resultado, datos de ejemplo) — 2026-09-28 */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/capturas/resultado.jpg"
+              alt="Así se ve tu Check de Presencia: puntaje 7.3 de 10, tu ajuste clave y tus notas de outfit, postura y actitud"
+              width={250}
+              height={542}
+              fetchPriority="high"
+              className="w-[250px] rounded-[30px] border-[5px] border-[color-mix(in_oklab,var(--text-primary)_90%,var(--accent))] shadow-[var(--shadow-2)]"
+            />
+          </div>
+        }
       />
 
       {/* 2. PROBLEMA */}
@@ -95,14 +108,13 @@ export default function LandingNiki() {
         }}
       />
 
-      {/* 5. LA APP POR DENTRO — placeholders honestos (app interna aún no construida) */}
+      {/* 5. LA APP POR DENTRO — capturas reales de la app (datos de ejemplo), 2026-09-28 */}
       <AppPorDentro
         tituloMarked="¡Así se ve tu [acento]Check de Presencia[/acento]!"
         frames={[
-          { label: 'Tu Check de Presencia de hoy', nombrePantalla: 'Hoy' },
-          { label: 'Eliges tu ocasión', nombrePantalla: 'Onboarding' },
-          { label: 'Tus 3 ejes explicados', nombrePantalla: 'Scan completo' },
-          { label: 'Tu racha Glow-Up', nombrePantalla: 'Hábitos' },
+          { src: '/capturas/ocasion.jpg', label: 'Eliges tu ocasión y subes tu foto' },
+          { src: '/capturas/resultado.jpg', label: 'Tu puntaje y tu ajuste clave' },
+          { src: '/capturas/resultado-ejes.jpg', label: 'Outfit, postura y actitud, explicados' },
         ]}
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
@@ -166,7 +178,7 @@ export default function LandingNiki() {
           {
             pregunta: '¿Una IA me va a dar consejos genéricos de robot?',
             respuestaMarked:
-              'No. Analiza [b]TU foto, tu cuerpo y tu ocasión[/b] — nunca reglas genéricas de moda.',
+              'No. Analiza [b]TU foto real y tu ocasión[/b] — nunca reglas genéricas de moda.',
           },
           {
             pregunta: '¿Mis fotos quedan guardadas o se comparten?',
@@ -176,7 +188,7 @@ export default function LandingNiki() {
           {
             pregunta: '¿Me va a destrozar con una nota cruel tipo 3/10?',
             respuestaMarked:
-              'Nunca. Niki no pone notas frías: te da 3 ajustes concretos con [b]tono de coach[/b], siempre constructivo.',
+              'Nunca. Ves tu puntaje de presencia, pero siempre con lo que ya te funciona y [b]ajustes concretos con tono de coach[/b]. Y jamás opina de tu cuerpo o tu cara: solo de lo que puedes cambiar hoy.',
           },
           {
             pregunta: 'Ya gasté plata en ropa antes y no cambió nada, ¿por qué esto sí?',
@@ -184,8 +196,8 @@ export default function LandingNiki() {
               'Porque el problema no era tu ropa: era no saber leer tu postura y tu actitud a tiempo. Eso es lo que Niki te muestra.',
           },
           {
-            pregunta: '¿Es seguro pagar? ¿Hay cuotas?',
-            respuestaMarked: 'Sí, el pago se procesa por Hotmart, con métodos locales según tu país.',
+            pregunta: '¿Es seguro pagar?',
+            respuestaMarked: 'Sí. El pago se procesa por Hotmart, una de las plataformas de pago más usadas en Latinoamérica, con tarjeta de débito o crédito.',
           },
         ]}
       />
@@ -197,7 +209,7 @@ export default function LandingNiki() {
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
         recap="Trial VIP de 3 días · Garantía del Primer Ajuste Honesto · Sin críticas crueles, nunca"
-        psMarked="PS: Niki analiza tu outfit, postura y actitud en 30 segundos con el Check de Presencia — sin números fríos ni crueldad. Hoy entras con 3 días de prueba gratis y la Garantía del Primer Ajuste Honesto: si no te sirve, te devolvemos todo."
+        psMarked="PS: Niki analiza tu outfit, postura y actitud en 30 segundos con el Check de Presencia — honesto, pero sin crueldad. Hoy entras con 3 días de prueba gratis y la Garantía del Primer Ajuste Honesto: si no te sirve, te devolvemos todo."
       />
 
       {/* 10. FOOTER LEGAL */}

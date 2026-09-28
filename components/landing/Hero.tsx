@@ -7,7 +7,6 @@
 // fondo YA incluido · carga inmediata (fade simple, nada que compita con el LCP).
 
 import type { ReactNode } from 'react';
-import { motion } from 'motion/react';
 import Link from 'next/link';
 import { Camera } from 'lucide-react';
 import { CtaButton } from './ui';
@@ -81,13 +80,10 @@ export function Hero({
           )}
         </header>
 
-        {/* Carga inmediata: fade simple 300ms — el LCP manda (55 T4) */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="mx-auto flex max-w-[820px] flex-col items-center pt-10 text-center md:pt-16"
-        >
+        {/* El titular es el LCP: se pinta visible desde el HTML del servidor, sin
+            esperar a que cargue JavaScript para aparecer (antes: fade desde opacidad 0,
+            LCP 4.7 s en Lighthouse móvil, 2026-09-28). */}
+        <div className="mx-auto flex max-w-[820px] flex-col items-center pt-10 text-center md:pt-16">
           {/* H1: bold completo por defecto; el acento lo pone el [acento] del copy */}
           <h1 className="text-balance text-[40px] font-bold leading-[1.08] tracking-[-0.01em] text-[var(--text-primary)] [font-family:var(--font-display)] md:text-[60px]">
             <MarkedCopy text={h1Marked} />
@@ -123,7 +119,7 @@ export function Hero({
               </div>
             )}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
