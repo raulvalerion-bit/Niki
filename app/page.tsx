@@ -115,7 +115,7 @@ export default function LandingNiki() {
         trialEnMensual={false}
         stack={{
           lineas: [
-            { resultado: 'Check de Presencia ilimitado (12 meses)', valor: '$120' },
+            { resultado: '3 Checks de Presencia al día (12 meses)', valor: '$120' },
             { resultado: 'Modo Alto Impacto para entrevistas, citas y reuniones', valor: '$39' },
             { resultado: 'Racha Glow-Up de 21 días', valor: '$27' },
           ],
@@ -132,7 +132,7 @@ export default function LandingNiki() {
           ctaLabel: 'Empezar mi prueba gratis de 3 días',
           ctaHref: CTA_HREF,
           features: [
-            'Check de Presencia ilimitado',
+            'Hasta 3 Checks de Presencia al día',
             'Modo Alto Impacto para tus eventos',
             'Racha Glow-Up y seguimiento de hábitos',
             'Historial completo de tus Scans',
@@ -145,7 +145,7 @@ export default function LandingNiki() {
           descomposicionDia: 'Se cobra hoy, sin prueba gratis',
           ctaHref: CTA_HREF,
           features: [
-            'Check de Presencia ilimitado',
+            'Hasta 3 Checks de Presencia al día',
             'Modo Alto Impacto para tus eventos',
             'Racha Glow-Up y seguimiento de hábitos',
             'Cancelas cuando quieras',

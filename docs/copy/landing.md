@@ -78,7 +78,7 @@ outfit, su postura y su actitud antes de que sea tarde. El **Check de Presencia*
 - Título: `Empezá gratis. Seguí por [acento]menos de $0.30 al día[/acento]`
 - Trial: 3 días (decisión de ESTADO.md)
 - Stack de valor:
-  - "Check de Presencia ilimitado (12 meses)" — $120 (resultado central)
+  - "3 Checks de Presencia al día (12 meses)" — $120 (resultado central)
   - Bono 1: "Modo Alto Impacto para entrevistas, citas y reuniones" — $39 → mata objeción
     "bloqueo al vestirse para eventos importantes" (dolor #3 de la ficha)
   - Bono 2: "Guía Glow-Up de 21 días" — $27 → mata objeción "ya gasté plata en ropa antes y no
@@ -87,7 +87,7 @@ outfit, su postura y su actitud antes de que sea tarde. El **Check de Presencia*
 - Anual: $8.99/mes · "Se cobra $107.88/año" · ahorro "~5 meses gratis" · CTA "Empezar mi
   prueba gratis de 3 días" → `/onboarding`
 - Mensual: $14.99/mes · CTA "Elegir mensual" → `/onboarding`
-- Features (ambos): Check de Presencia ilimitado · Modo Alto Impacto · Racha Glow-Up y hábitos ·
+- Features (ambos): Hasta 3 Checks de Presencia al día · Modo Alto Impacto · Racha Glow-Up y hábitos ·
   Historial completo de tus Scans
 
 ## 7. GARANTÍA

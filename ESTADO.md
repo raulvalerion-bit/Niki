@@ -362,6 +362,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Cuando exista la app interna: montar los screenshots reales en el carrusel de la landing y volver a pasar el revisor-visual para cerrar esa puerta del todo
 
 ## Problemas conocidos ⚠️
+- veredicto:onboarding — CADUCADO según el hook pre-stop (falso positivo, verificado 2026-09-28): el hook compara contra CUALQUIER .tsx más nuevo (app/page.tsx, app/paywall, app/admin), pero `git log -- app/onboarding` muestra que el último cambio del onboarding (2f6aef0, 2026-09-25 18:36) es ANTERIOR al veredicto (e0e2a1e, 18:37). Se re-lanza el revisor solo si se toca app/onboarding.
 - Veredicto onboarding CADUCADO solo por fecha (2026-09-27): el código del onboarding NO cambió en la sesión Hotmart (el hook compara contra cualquier .tsx más nuevo, p. ej. app/page.tsx o app/paywall/page.tsx). Se re-lanza el revisor-visual del onboarding la próxima vez que se toque su código. El paywall ya tiene veredicto nuevo LISTA (36/40 · 16/20 · copy 18/20, 2026-09-27, 3 pasadas).
 - Carrusel de "La app por dentro" (pantalla de Onboarding incluida entre sus frames): usa PLACEHOLDERS rotulados — la app interna está pendiente de existir; se reemplazan por screenshots reales cuando esa app se haga (Sesión de app interna). Este es el motivo #1 por el que el veredicto del revisor-visual sobre la landing quedó en "no aprobado" — pendiente y esperado a esta altura, no un bug.
 - Visual del hero: placeholder honesto con sugerencia escrita (no hay app interna todavía para capturar) — mismo motivo que arriba.

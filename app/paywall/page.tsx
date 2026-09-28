@@ -61,7 +61,7 @@ const PASOS_TRIAL = [
 ];
 
 const BENEFICIOS = [
-  { texto: 'Check de Presencia ilimitado antes de cada salida', icon: Sparkles },
+  { texto: '3 Checks de Presencia al día', icon: Sparkles },
   { texto: 'Modo Alto Impacto para tu cita o entrevista', icon: CalendarClock },
   { texto: 'Tu Racha Glow-Up de 21 días, completa', icon: Flame },
 ];
