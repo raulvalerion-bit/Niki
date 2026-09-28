@@ -1,9 +1,9 @@
-# VEREDICTO revisor-visual — Hoy (M0, pantalla principal) — cuarta pasada
-Fecha: 2026-09-28 15:00
-Screenshot: docs/revisiones/hoy-375.png
-Usabilidad: 33/40
+# VEREDICTO revisor-visual — Hoy (M0, pantalla principal) — quinta pasada
+Fecha: 2026-09-28 16:00
+Screenshot: docs/revisiones/hoy-375-viewport.png
+Usabilidad: 36/40
 Craft: 17/20
 Copy (si vende): N-A
 Fidelidad (si hubo referencia): N-A
-Veredicto: NO LISTA
-Top defectos: 1) [barra de pestañas, app/app/layout.tsx:62 y 93] en docs/revisiones/hoy-375-viewport.png (375x812) la navegación principal NO se ve: está en y=879. La barra tiene `sticky bottom-0`, pero el `overflow-x-hidden` del <main> lo convierte en contenedor de scroll y anula el sticky; el efecto es que en Hoy (y en cualquier pestaña larga) hay que bajar hasta el final para cambiar de sección. No es "parte del flujo por diseño": el código pide sticky y no se cumple -> cambiar `overflow-x-hidden` por `overflow-x-clip` en el <main> (recorta igual y no crea contenedor de scroll) y volver a capturar el viewport de 812px con la barra visible abajo. 2) [anillo héroe "7.3 de 10"] el número está solo, sin interpretación: no dice si mejoró o empeoró ni contra qué (la regla de datos del SO pide insight, no solo la cifra) -> agregar bajo el anillo la variación contra el Check anterior ("↑ 0.4 vs tu Check del 25 sep") o, si solo hay uno, "Tu primer puntaje: la base para medir tu avance". 3) [encabezado, bajo el logo] "Tus ejes de Presencia e Imagen": "ejes" es vocabulario interno del producto, no del usuario, y aparece en todas las pestañas -> cambiarlo por una línea en su idioma ("Tu presencia, lista para salir") o quitarlo y dejar solo el logo.
+Veredicto: LISTA
+Top defectos: (no bloquean; se corrigen en el próximo pulido) 1) [encabezado, bajo "niki"] "Tu presencia, lista para salir" está a 10px (app/app/layout.tsx:51), por debajo del mínimo de 11-13px para labels y difícil de leer sobre el naranja -> subirlo a 12px. 2) [tarjeta Racha Glow-Up] "Día 5 de 21" no dice qué pasa al llegar a 21 (la meta del Glow-Up sin recompensa visible) -> sumar esa promesa a la línea desplegable de congeladores o al detalle ("Al día 21 completas tu Glow-Up"). 3) [captura de página completa docs/revisiones/hoy-375.png] la barra de pestañas aparece a media página: es un efecto de capturar con sticky, no un defecto de la UI -> la evidencia de referencia es la captura del viewport (hoy-375-viewport.png); si hace falta una captura de página completa, tomarla con la barra oculta.

@@ -48,7 +48,7 @@ function MarcaNiki() {
       </span>
       <div className="flex flex-col leading-tight">
         <span className="text-[15px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">niki</span>
-        <span className="text-[10px] font-medium text-[var(--text-primary)]">Tu presencia, lista para salir</span>
+        <span className="text-[12px] font-medium text-[var(--text-primary)]">Tu presencia, lista para salir</span>
       </div>
     </div>
   );

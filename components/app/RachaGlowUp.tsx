@@ -142,7 +142,7 @@ export function RachaGlowUp({ estado, hoy }: { estado: EstadoRacha; hoy: string 
       </button>
       {explicar && (
         <p className="text-[12px] leading-[1.45] text-[var(--text-primary)]">
-          Si un día no haces tu Check, un congelador guarda tu racha. Ganas uno cada 7 días seguidos (máximo 2).
+          Al día 21 completas tu Glow-Up. Si un día no haces tu Check, un congelador guarda tu racha; ganas uno cada 7 días seguidos (máximo 2).
         </p>
       )}
     </section>
