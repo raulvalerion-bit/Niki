@@ -6,10 +6,17 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { CalendarClock, Clock, Sparkles } from 'lucide-react';
+import { CalendarClock, ChevronRight, Clock, Sparkles } from 'lucide-react';
 import { crearClienteSupabase } from '@/lib/supabase/client';
 
-type Check = { id: string; ocasion: string; estado: string; created_at: string };
+type Check = { id: string; ocasion: string; estado: string; puntaje: number | null; created_at: string };
+
+const ESTADO_LABEL: Record<string, string> = {
+  procesando: 'Analizando',
+  invalida: 'Foto no válida',
+  error: 'No se analizó',
+  pendiente: 'Sin resultado',
+};
 
 const OCASION_LABEL: Record<string, string> = {
   entrevista: 'Entrevista',
@@ -22,6 +29,17 @@ const OCASION_LABEL: Record<string, string> = {
 
 function fechaCorta(iso: string) {
   return new Intl.DateTimeFormat('es-MX', { day: 'numeric', month: 'short' }).format(new Date(iso));
+}
+
+/** Fila tocable solo si tiene resultado (un elemento que parece tocable siempre hace algo). */
+function Fila({ href, className, children }: { href: string | null; className: string; children: React.ReactNode }) {
+  return href ? (
+    <Link href={href} className={`${className} transition-transform duration-100 active:scale-[0.98]`}>
+      {children}
+    </Link>
+  ) : (
+    <div className={className}>{children}</div>
+  );
 }
 
 export default function Historial() {
@@ -37,7 +55,7 @@ export default function Historial() {
       if (!user) return;
       const { data } = await supabase
         .from('checks')
-        .select('id, ocasion, estado, created_at')
+        .select('id, ocasion, estado, puntaje, created_at')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
       if (activo) setChecks(data ?? []);
@@ -59,8 +77,9 @@ export default function Historial() {
       {hayChecks ? (
         <div className="mt-5 flex flex-col gap-2.5">
           {checks!.map((c) => (
-            <div
+            <Fila
               key={c.id}
+              href={c.estado === 'listo' ? `/app/historial/${c.id}` : null}
               className="flex items-center gap-3 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]"
             >
               <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[var(--chip-bg)]">
@@ -76,10 +95,15 @@ export default function Historial() {
                 </p>
                 <p className="text-[13px] text-[var(--text-secondary)]">{fechaCorta(c.created_at)}</p>
               </div>
-              <span className="text-[12px] font-medium text-[var(--text-tertiary)]">
-                {c.estado === 'listo' ? 'Listo' : 'En camino'}
-              </span>
-            </div>
+              {c.estado === 'listo' && c.puntaje !== null ? (
+                <span className="flex items-center gap-1 text-[16px] font-bold tabular-nums text-[var(--accent)] [font-family:var(--font-display)]">
+                  {Number(c.puntaje).toFixed(1)}
+                  <ChevronRight size={16} aria-hidden="true" />
+                </span>
+              ) : (
+                <span className="text-[12px] font-medium text-[var(--text-tertiary)]">{ESTADO_LABEL[c.estado] ?? 'Sin resultado'}</span>
+              )}
+            </Fila>
           ))}
         </div>
       ) : (

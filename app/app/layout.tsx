@@ -6,13 +6,9 @@
 // pestañas de abajo entre las 4 pantallas — mismo patrón de tokens que
 // onboarding/paywall/login.
 //
-// SIN BACKEND todavía (ESTADO.md: "Servicios externos: bloqueados"): no hay
-// Supabase ni proveedor de IA conectados. Estas pantallas muestran el ESTADO
-// REAL de un usuario recién registrado (día 1, sin historial) — NUNCA se
-// fabrica un scan, una racha o una calificación que el usuario no generó de
-// verdad (misma regla que en onboarding/page.tsx). El botón "Hacer mi Check
-// de Presencia" abre el flujo de foto pero la IA responde con un aviso
-// honesto ("se conecta en la próxima sesión") en vez de inventar un análisis.
+// Conectado a Supabase y a la IA real (2026-09-28): el Check de Presencia se
+// analiza en /api/check. Nunca se fabrica un scan, una racha o una
+// calificación que el usuario no generó de verdad.
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

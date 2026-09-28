@@ -4,21 +4,21 @@
 // pantalla más vista de la app. Blueprint de las 4 piezas: (1) el dato de
 // hoy, (2) la acción de 1 tap, (3) el estado de la racha, (4) el insight.
 //
-// CONECTADO a Supabase (2026-09-19): las gemas se leen de verdad del profile
-// del usuario. El botón principal sube la foto al bucket privado
-// `checks-fotos` (carpeta = user_id, ver migración de Storage) y guarda un
-// registro real en `checks` — pero el análisis por IA todavía no está
-// conectado — se avisa con honestidad en vez de inventar un resultado
-// (misma regla que en onboarding/page.tsx).
+// IA REAL (2026-09-28): la foto se achica en el celular, se sube al bucket
+// privado `checks-fotos` (carpeta = user_id) y /api/check la analiza en el
+// servidor, que aplica el límite de 3 Checks al día y el tope de gasto.
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
-import { Camera, Briefcase, Heart, Handshake, Users, UtensilsCrossed, Palmtree } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { Camera, Briefcase, Heart, Handshake, Users, UtensilsCrossed, Palmtree, RotateCcw, Moon } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { crearClienteSupabase } from '@/lib/supabase/client';
 import { registrarEvento } from '@/lib/eventos';
+import { LIMITE_CHECKS_DIA, MENSAJE_FOTO, MOTIVOS_FOTO, type ResultadoCheck as Resultado } from '@/lib/ia/resultado';
+import { ResultadoCheck } from '@/components/app/ResultadoCheck';
 
-type Paso = 'inicio' | 'foto' | 'procesando';
+type Paso = 'inicio' | 'foto' | 'analizando' | 'resultado' | 'limite' | 'error';
 
 const OCASIONES: { valor: string; label: string; icon: LucideIcon }[] = [
   { valor: 'entrevista', label: 'Entrevista', icon: Briefcase },
@@ -29,17 +29,47 @@ const OCASIONES: { valor: string; label: string; icon: LucideIcon }[] = [
   { valor: 'vacaciones', label: 'Vacaciones', icon: Palmtree },
 ];
 
+const PASOS_ANALISIS = ['Revisando tu outfit…', 'Mirando tu postura…', 'Leyendo tu actitud…', 'Armando tu ajuste clave…'];
+
+const BOTON_PRIMARIO =
+  'flex h-14 w-full items-center justify-center gap-2 rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)] disabled:opacity-40';
+
+function fechaLocalHoy() {
+  return new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+}
+
+/** Achica la foto a máx. 1280 px (JPEG): sube rápido con datos móviles y la IA cuesta menos. */
+async function achicarFoto(archivo: File): Promise<Blob> {
+  const bitmap = await createImageBitmap(archivo);
+  const escala = Math.min(1, 1280 / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(bitmap.width * escala);
+  canvas.height = Math.round(bitmap.height * escala);
+  canvas.getContext('2d')!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+  return new Promise((resolve, reject) =>
+    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('sin_blob'))), 'image/jpeg', 0.85)
+  );
+}
+
 export default function Hoy() {
   const supabase = crearClienteSupabase();
+  const router = useRouter();
   const [paso, setPaso] = useState<Paso>('inicio');
   const [ocasion, setOcasion] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [gemas, setGemas] = useState<number | null>(null);
-  const [guardando, setGuardando] = useState(false);
+  const [usadosHoy, setUsadosHoy] = useState<number | null>(null);
   const [avisoValidacion, setAvisoValidacion] = useState<string | null>(null);
+  const [resultado, setResultado] = useState<Resultado | null>(null);
+  const [error, setError] = useState<'pausa' | 'ia' | null>(null);
+  const [pasoAnalisis, setPasoAnalisis] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const reduce = useReducedMotion();
 
+  const [recarga, setRecarga] = useState(0);
+
+  // Gemas y Checks usados hoy (se vuelve a leer al volver a Hoy).
   useEffect(() => {
     let activo = true;
     (async () => {
@@ -47,14 +77,52 @@ export default function Hoy() {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) return;
-      const { data } = await supabase.from('profiles').select('gemas').eq('id', user.id).single();
-      if (activo && data) setGemas(data.gemas);
+      const [{ data: perfil }, { count }] = await Promise.all([
+        supabase.from('profiles').select('gemas').eq('id', user.id).single(),
+        supabase
+          .from('checks')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .eq('fecha_local', fechaLocalHoy())
+          .in('estado', ['procesando', 'listo']),
+      ]);
+      if (!activo) return;
+      if (perfil) setGemas(perfil.gemas);
+      setUsadosHoy(count ?? 0);
     })();
     return () => {
       activo = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [recarga]);
+
+  // Mensajes de progreso mientras la IA responde (5-15 s): nunca un spinner mudo.
+  useEffect(() => {
+    if (paso !== 'analizando') return;
+    const t = setInterval(() => setPasoAnalisis((i) => Math.min(i + 1, PASOS_ANALISIS.length - 1)), 2800);
+    return () => clearInterval(t);
+  }, [paso]);
+
+  const restantes = usadosHoy === null ? null : Math.max(0, LIMITE_CHECKS_DIA - usadosHoy);
+
+  function empezarCheck() {
+    if (restantes === 0) {
+      setPaso('limite');
+      return;
+    }
+    setPaso('foto');
+  }
+
+  function volverAlInicio() {
+    setPaso('inicio');
+    setPreview(null);
+    setOcasion(null);
+    setAvisoValidacion(null);
+    setResultado(null);
+    setError(null);
+    if (inputRef.current) inputRef.current.value = '';
+    setRecarga((n) => n + 1);
+  }
 
   function onArchivo(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -64,74 +132,201 @@ export default function Hoy() {
   }
 
   async function analizarPresencia() {
-    if (!ocasion) return;
     const archivo = inputRef.current?.files?.[0];
-    setGuardando(true);
+    if (!ocasion || !archivo) return;
+    if (!navigator.onLine) {
+      setAvisoValidacion('Estás sin conexión. Conéctate a internet y vuelve a intentarlo.');
+      return;
+    }
+
+    let foto: Blob;
+    try {
+      foto = await achicarFoto(archivo);
+    } catch {
+      setAvisoValidacion('No pudimos abrir esa foto. Prueba con otra de tu galería (JPG o PNG).');
+      return;
+    }
+
+    setPasoAnalisis(0);
+    setPaso('analizando');
     try {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (user) {
-        let fotoUrl: string | null = null;
-        if (archivo) {
-          const extension = archivo.name.split('.').pop() ?? 'jpg';
-          const ruta = `${user.id}/${crypto.randomUUID()}.${extension}`;
-          const { error: errorSubida } = await supabase.storage.from('checks-fotos').upload(ruta, archivo);
-          if (errorSubida) {
-            console.error('No se pudo subir la foto del Check:', errorSubida.message);
-          } else {
-            fotoUrl = ruta;
-          }
-        }
-        const { error: errorInsert } = await supabase
-          .from('checks')
-          .insert({ user_id: user.id, ocasion, foto_url: fotoUrl, estado: 'pendiente' });
-        if (errorInsert) {
-          console.error('No se pudo guardar el Check:', errorInsert.message);
-        } else {
-          // Acción principal de la app (21-BACKOFFICE, sección Uso) — cuántas
-          // veces se ejecutó la función core.
-          await registrarEvento(supabase, 'check_creado', user.id, { ocasion });
-        }
+      if (!user) {
+        router.push('/login');
+        return;
       }
-    } finally {
-      // La foto/registro son "mejor esfuerzo": si algo falla igual avanzamos
-      // a la pantalla honesta de "todavía sin IA conectada" — nunca se deja
-      // al usuario con el botón trabado (regla de oro de UX del SO).
-      setGuardando(false);
-      setPaso('procesando');
+      const ruta = `${user.id}/${crypto.randomUUID()}.jpg`;
+      const { error: errorSubida } = await supabase.storage
+        .from('checks-fotos')
+        .upload(ruta, foto, { contentType: 'image/jpeg' });
+      if (errorSubida) throw new Error('subida');
+
+      await registrarEvento(supabase, 'check_creado', user.id, { ocasion });
+
+      const res = await fetch('/api/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ocasion, foto: ruta, zonaHoraria: Intl.DateTimeFormat().resolvedOptions().timeZone }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        setResultado(data.resultado);
+        setUsadosHoy(LIMITE_CHECKS_DIA - data.restantes);
+        setGemas((g) => (g ?? 0) + 1);
+        setPaso('resultado');
+        return;
+      }
+      switch (data.error) {
+        case 'foto': {
+          const motivo = MOTIVOS_FOTO.find((m) => m === data.motivo);
+          setAvisoValidacion(
+            (motivo ? MENSAJE_FOTO[motivo] : 'No pudimos leer esa foto. Prueba con otra.') + ' Este intento no se descontó.'
+          );
+          setPaso('foto');
+          return;
+        }
+        case 'limite':
+          setUsadosHoy(LIMITE_CHECKS_DIA);
+          setPaso('limite');
+          return;
+        case 'sin_plan':
+          router.push('/paywall?sin_plan=1');
+          return;
+        case 'sesion':
+          router.push('/login');
+          return;
+        case 'duplicado':
+          router.push(`/app/historial/${data.checkId}`);
+          return;
+        case 'pausa':
+          setError('pausa');
+          setPaso('error');
+          return;
+        default:
+          setError('ia');
+          setPaso('error');
+      }
+    } catch {
+      setError('ia');
+      setPaso('error');
     }
   }
 
-  if (paso === 'procesando') {
+  if (paso === 'analizando') {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center pt-8 text-center">
+      <div className="flex flex-1 flex-col items-center justify-center pt-8 text-center" aria-live="polite">
         <motion.span
           initial={reduce ? false : { scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 260, damping: 20 }}
-          className="flex size-16 items-center justify-center rounded-full bg-[var(--chip-bg)]"
+          className="flex size-16 items-center justify-center overflow-hidden rounded-full bg-[var(--chip-bg)]"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/iconos/icono-4-esperando.gif" alt="" aria-hidden="true" className="size-10" />
+          {preview ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={preview} alt="" aria-hidden="true" className="size-full object-cover" />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src="/iconos/icono-4-esperando.gif" alt="" aria-hidden="true" className="size-10" />
+          )}
         </motion.span>
         <h1 className="mt-6 text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]">
-          Ya casi está tu Check de Presencia
+          Niki está mirando tu foto
         </h1>
-        <p className="mt-3 max-w-[300px] text-[15px] leading-[1.5] text-[var(--text-primary)]">
-          Estamos conectando el análisis por IA — es lo próximo que construimos. Tu Check quedó guardado, te avisamos apenas puedas ver tu resultado.
+        <div className="mt-3 h-6">
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={pasoAnalisis}
+              initial={reduce ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduce ? undefined : { opacity: 0, y: -6 }}
+              transition={{ duration: 0.2 }}
+              className="text-[15px] text-[var(--text-secondary)]"
+            >
+              {PASOS_ANALISIS[pasoAnalisis]}
+            </motion.p>
+          </AnimatePresence>
+        </div>
+        <div className="mt-6 h-2 w-full max-w-60 overflow-hidden rounded-full bg-[var(--surface-2)]">
+          <motion.div
+            className="h-full rounded-full bg-[var(--accent)]"
+            initial={{ width: '8%' }}
+            animate={{ width: '92%' }}
+            transition={{ duration: reduce ? 0 : 14, ease: [0.1, 0.6, 0.3, 1] }}
+          />
+        </div>
+        <p className="mt-4 text-[13px] text-[var(--text-tertiary)]">Tarda unos segundos</p>
+      </div>
+    );
+  }
+
+  if (paso === 'resultado' && resultado && ocasion) {
+    return (
+      <div className="flex flex-1 flex-col pt-4">
+        <ResultadoCheck resultado={resultado} ocasion={ocasion} gemaNueva />
+        <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={volverAlInicio} className={`mt-6 ${BOTON_PRIMARIO}`}>
+          Listo
+        </motion.button>
+        <p className="mt-3 text-center text-[13px] text-[var(--text-secondary)]">
+          {restantes === 0
+            ? 'Ese fue tu último Check de hoy. Mañana tienes 3 nuevos.'
+            : `Te ${restantes === 1 ? 'queda 1 Check' : `quedan ${restantes} Checks`} hoy · Guardado en tu historial`}
         </p>
-        <button
+      </div>
+    );
+  }
+
+  if (paso === 'limite') {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center pt-8 text-center">
+        <span className="flex size-16 items-center justify-center rounded-full bg-[var(--chip-bg)]">
+          <Moon size={28} color="var(--accent)" aria-hidden="true" />
+        </span>
+        <h1 className="mt-6 max-w-xs text-balance text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]">
+          Ya hiciste tus 3 Checks de hoy
+        </h1>
+        <p className="mt-3 max-w-xs text-[15px] leading-[1.5] text-[var(--text-secondary)]">
+          Mañana tienes 3 nuevos. Mientras, repasa tu último resultado y aplica tu ajuste clave antes de salir.
+        </p>
+        <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={() => router.push('/app/historial')} className={`mt-8 max-w-xs ${BOTON_PRIMARIO}`}>
+          Ver mi historial
+        </motion.button>
+        <button type="button" onClick={volverAlInicio} className="mt-3 h-11 px-4 text-[14px] font-semibold text-[var(--accent)]">
+          Volver a Hoy
+        </button>
+      </div>
+    );
+  }
+
+  if (paso === 'error') {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center pt-8 text-center">
+        <span className="flex size-16 items-center justify-center rounded-full bg-[var(--chip-bg)]">
+          <RotateCcw size={26} color="var(--accent)" aria-hidden="true" />
+        </span>
+        <h1 className="mt-6 max-w-xs text-balance text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]">
+          {error === 'pausa' ? 'Niki está tomando un respiro' : 'No pudimos analizar tu foto esta vez'}
+        </h1>
+        <p className="mt-3 max-w-xs text-[15px] leading-[1.5] text-[var(--text-secondary)]">
+          {error === 'pausa'
+            ? 'Hay mucha gente haciendo su Check ahora mismo. Vuelve a intentarlo en un rato. No se descontó de tus Checks de hoy.'
+            : 'Fue un problema de nuestro lado, no de tu foto. No se descontó de tus Checks de hoy.'}
+        </p>
+        <motion.button
           type="button"
+          whileTap={{ scale: 0.97 }}
           onClick={() => {
-            setPaso('inicio');
-            setPreview(null);
-            setOcasion(null);
-            setAvisoValidacion(null);
+            setError(null);
+            setPaso('foto');
           }}
-          className="mt-8 flex h-14 w-full max-w-[300px] items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)]"
+          className={`mt-8 max-w-xs ${BOTON_PRIMARIO}`}
         >
-          Entendido
+          Intentar de nuevo
+        </motion.button>
+        <button type="button" onClick={volverAlInicio} className="mt-3 h-11 px-4 text-[14px] font-semibold text-[var(--accent)]">
+          Volver a Hoy
         </button>
       </div>
     );
@@ -171,6 +366,7 @@ export default function Hoy() {
         </div>
 
         <p className="mt-6 text-[15px] font-semibold text-[var(--text-primary)]">Tu foto de cuerpo entero</p>
+        <p className="mt-1 text-[13px] text-[var(--text-secondary)]">De la cabeza a los zapatos, con buena luz.</p>
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
@@ -193,7 +389,6 @@ export default function Hoy() {
         <motion.button
           type="button"
           whileTap={{ scale: 0.97 }}
-          disabled={guardando}
           onClick={() => {
             if (!ocasion) {
               setAvisoValidacion('Elige para qué ocasión es tu Check (arriba) antes de continuar.');
@@ -206,11 +401,15 @@ export default function Hoy() {
             setAvisoValidacion(null);
             void analizarPresencia();
           }}
-          className="mt-6 flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)] disabled:opacity-40"
+          className={`mt-6 ${BOTON_PRIMARIO}`}
         >
-          {guardando ? 'Guardando…' : 'Analizar mi presencia'}
+          Analizar mi presencia
         </motion.button>
-        {avisoValidacion && <p className="mt-3 text-center text-sm font-medium text-[var(--error)]">{avisoValidacion}</p>}
+        {avisoValidacion && (
+          <p role="alert" className="mt-3 text-center text-sm font-medium text-[var(--error)]">
+            {avisoValidacion}
+          </p>
+        )}
       </div>
     );
   }
@@ -219,18 +418,20 @@ export default function Hoy() {
     <div className="flex flex-1 flex-col items-center pt-4 text-center">
       <p className="text-[15px] text-[var(--text-primary)]">Hola 👋</p>
       <h1 className="mt-1 text-balance text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]">
-        ¿Aún no hiciste tu Check de Presencia e Imagen de hoy?
+        {restantes === 0 ? 'Ya hiciste tus 3 Checks de hoy' : '¿Aún no hiciste tu Check de Presencia e Imagen de hoy?'}
       </h1>
 
-      <motion.button
-        type="button"
-        whileTap={{ scale: 0.97 }}
-        onClick={() => setPaso('foto')}
-        className="mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)]"
-      >
+      <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={empezarCheck} className={`mt-6 ${BOTON_PRIMARIO}`}>
         <Camera size={20} aria-hidden="true" />
-        Hacer mi Check de Presencia
+        {restantes === 0 ? 'Ver mi último resultado' : 'Hacer mi Check de Presencia'}
       </motion.button>
+      {restantes !== null && restantes > 0 && (
+        <p className="mt-3 text-[13px] text-[var(--text-secondary)]">
+          {restantes === LIMITE_CHECKS_DIA
+            ? 'Tienes 3 Checks disponibles hoy'
+            : `Te ${restantes === 1 ? 'queda 1 Check' : `quedan ${restantes} Checks`} hoy`}
+        </p>
+      )}
 
       <div className="mt-6 flex w-full items-center gap-3 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">
         <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[var(--surface-2)] shadow-[inset_0_1px_3px_rgb(140_60_20_/_0.15)]">
