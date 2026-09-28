@@ -42,14 +42,14 @@ export default function Privacidad() {
             Tu foto se envía a nuestro servidor, se analiza con un modelo de IA para generar tu Check
             de Presencia (outfit, postura y actitud) y el resultado se te muestra a ti. La foto se guarda de
             forma privada en tu cuenta para armar tu historial de Checks: solo tú puedes verla. No usamos tus
-            fotos para entrenar modelos públicos, no las mostramos a otros usuarios y no las vendemos.
+            fotos para entrenar modelos, no las mostramos a otros usuarios y no las vendemos. Guardamos tus fotos y resultados mientras tengas tu cuenta; al eliminarla, se borran.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Con quién compartimos datos</h2>
           <ul className="mt-2 list-disc space-y-1 pl-5">
-            <li><strong className="text-[var(--text-primary)]">Proveedor de IA</strong> — procesa tu foto para generar el análisis (subprocesador, bajo contrato de confidencialidad).</li>
+            <li><strong className="text-[var(--text-primary)]">Anthropic (Estados Unidos)</strong> — su IA (Claude) procesa tu foto para generar el análisis. Actúa como encargado del tratamiento y, por contrato, no usa tus fotos para entrenar sus modelos.</li>
             <li><strong className="text-[var(--text-primary)]">Supabase</strong> — base de datos y autenticación.</li>
             <li><strong className="text-[var(--text-primary)]">Vercel</strong> — hosting de la aplicación.</li>
             <li><strong className="text-[var(--text-primary)]">Resend</strong> — emails transaccionales (confirmación, recuperación de cuenta).</li>
@@ -60,7 +60,7 @@ export default function Privacidad() {
         <section>
           <h2 className="text-xl font-semibold text-[var(--text-primary)]">Tus derechos</h2>
           <p className="mt-2">
-            Puedes pedir acceso, corrección o eliminación de tus datos (incluidas tus fotos) escribiendo
+            Puedes eliminar tu cuenta con todas tus fotos y resultados tú mismo, desde Perfil → “Eliminar mi cuenta”. También puedes pedir acceso, corrección o eliminación de tus datos escribiendo
             a <a href="mailto:hola@holaniki.com" className="text-[var(--accent)] underline">hola@holaniki.com</a>.
             Respondemos en un plazo razonable según la ley de tu país.
           </p>

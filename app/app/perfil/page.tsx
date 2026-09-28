@@ -9,7 +9,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { CreditCard, ShieldCheck, FileText, RotateCcw, Sparkles, LogOut, ChevronRight } from 'lucide-react';
+import { CreditCard, ShieldCheck, FileText, RotateCcw, Sparkles, LogOut, ChevronRight, ExternalLink, Mail, Trash2 } from 'lucide-react';
+import { motion } from 'motion/react';
 import type { LucideIcon } from 'lucide-react';
 import { crearClienteSupabase } from '@/lib/supabase/client';
 
@@ -33,6 +34,9 @@ export default function Perfil() {
   const supabase = crearClienteSupabase();
   const [correo, setCorreo] = useState('');
   const [plan, setPlan] = useState('ninguno');
+  const [confirmarBorrado, setConfirmarBorrado] = useState(false);
+  const [borrando, setBorrando] = useState(false);
+  const [errorBorrado, setErrorBorrado] = useState<string | null>(null);
 
   useEffect(() => {
     let activo = true;
@@ -57,7 +61,26 @@ export default function Perfil() {
     router.refresh();
   }
 
+  async function eliminarCuenta() {
+    setBorrando(true);
+    setErrorBorrado(null);
+    try {
+      const res = await fetch('/api/cuenta/eliminar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ confirmacion: 'ELIMINAR' }),
+      });
+      if (!res.ok) throw new Error('fallo');
+      router.push('/');
+      router.refresh();
+    } catch {
+      setErrorBorrado('No pudimos eliminar tu cuenta. Revisa tu conexión e inténtalo otra vez, o escríbenos a hola@holaniki.com.');
+      setBorrando(false);
+    }
+  }
+
   const planInfo = PLAN_LABEL[plan] ?? PLAN_LABEL.ninguno;
+  const tieneSuscripcion = plan === 'trial' || plan === 'anual' || plan === 'mensual';
 
   return (
     <div className="flex flex-1 flex-col pt-4">
@@ -104,6 +127,29 @@ export default function Perfil() {
         ))}
       </div>
 
+      <div className="mt-4 flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] shadow-[var(--shadow-1)]">
+        <a
+          href="https://app.hotmart.com/comprador"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 px-4 py-3.5"
+        >
+          <CreditCard size={17} color="var(--text-secondary)" aria-hidden="true" />
+          <span className="flex-1 text-[14px] font-medium text-[var(--text-primary)]">
+            {tieneSuscripcion ? 'Administrar o cancelar mi suscripción' : 'Mis compras en Hotmart'}
+          </span>
+          <ExternalLink size={16} color="var(--text-tertiary)" aria-hidden="true" />
+        </a>
+        <a
+          href="mailto:hola@holaniki.com"
+          className="flex items-center gap-3 border-t border-[color-mix(in_oklab,var(--text-tertiary)_12%,transparent)] px-4 py-3.5"
+        >
+          <Mail size={17} color="var(--text-secondary)" aria-hidden="true" />
+          <span className="flex-1 text-[14px] font-medium text-[var(--text-primary)]">¿Necesitas ayuda? Escríbenos</span>
+          <ChevronRight size={16} color="var(--text-tertiary)" aria-hidden="true" />
+        </a>
+      </div>
+
       <button
         type="button"
         onClick={() => void cerrarSesion()}
@@ -112,6 +158,56 @@ export default function Perfil() {
         <LogOut size={16} aria-hidden="true" />
         Cerrar sesión
       </button>
+
+      {confirmarBorrado ? (
+        <div
+          role="alertdialog"
+          aria-labelledby="borrar-titulo"
+          className="mt-6 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--error)_40%,transparent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]"
+        >
+          <p id="borrar-titulo" className="text-[15px] font-bold text-[var(--text-primary)]">
+            ¿Eliminar tu cuenta para siempre?
+          </p>
+          <p className="mt-2 text-[14px] leading-[1.5] text-[var(--text-primary)]">
+            Se borran tus fotos, tus Checks, tus gemas y tu historial. No se puede deshacer.
+            {tieneSuscripcion && ' Tu suscripción de Hotmart NO se cancela sola: cancélala primero desde "Administrar o cancelar mi suscripción" para que no te sigan cobrando.'}
+          </p>
+          <div className="mt-4 flex gap-2">
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setConfirmarBorrado(false)}
+              disabled={borrando}
+              className="h-11 flex-1 rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)] text-[14px] font-semibold text-[var(--text-primary)]"
+            >
+              No, mantenerla
+            </motion.button>
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.97 }}
+              onClick={() => void eliminarCuenta()}
+              disabled={borrando}
+              className="h-11 flex-1 rounded-[var(--radius-button)] bg-[var(--error)] text-[14px] font-semibold text-white disabled:opacity-60"
+            >
+              {borrando ? 'Eliminando…' : 'Sí, eliminar'}
+            </motion.button>
+          </div>
+          {errorBorrado && (
+            <p role="alert" className="mt-3 text-[13px] font-medium text-[var(--error)]">
+              {errorBorrado}
+            </p>
+          )}
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setConfirmarBorrado(true)}
+          className="mx-auto mt-4 flex h-11 items-center gap-1.5 px-4 text-[13px] font-medium text-[var(--text-secondary)]"
+        >
+          <Trash2 size={15} aria-hidden="true" />
+          Eliminar mi cuenta
+        </button>
+      )}
 
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

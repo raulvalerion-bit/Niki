@@ -14,10 +14,23 @@ const manrope = Manrope({
   weight: ["400", "500", "600", "700"],
 });
 
+const TITULO = "Niki — Tu Check de Presencia antes de salir";
+const DESCRIPCION =
+  "Sube tu foto y recibe en 30 segundos 3 ajustes de outfit, postura y actitud para el evento al que vas — sin críticas crueles, con el tono de un coach que te quiere ver bien.";
+
 export const metadata: Metadata = {
-  title: "Niki — Tu Check de Presencia antes de salir",
-  description:
-    "Sube tu foto y recibe en 30 segundos 3 ajustes de outfit, postura y actitud para el evento al que vas — sin críticas crueles, con el tono de un coach que te quiere ver bien.",
+  metadataBase: new URL("https://holaniki.com"),
+  title: TITULO,
+  description: DESCRIPCION,
+  openGraph: {
+    title: TITULO,
+    description: DESCRIPCION,
+    url: "https://holaniki.com",
+    siteName: "Niki",
+    locale: "es_MX",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image", title: TITULO, description: DESCRIPCION },
 };
 
 export default function RootLayout({
