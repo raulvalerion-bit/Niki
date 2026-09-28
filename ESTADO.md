@@ -74,6 +74,14 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   de elección mientras el producto es nuevo): Anual $8.99/mes (se cobra $107.88/año, ~5 meses
   gratis vs. mensual, ≈$0.30/día) · Mensual $14.99/mes. Puede reintroducirse un tier Básico más
   adelante con datos reales de uso.
+- LÍMITE DE USO DE IA (aprobado por el usuario 2026-09-28): 3 Checks de Presencia AL DÍA por
+  persona (se renuevan a medianoche hora del usuario), igual en prueba y en pago. Fórmula del cupo
+  (02C): $8.99 (plan más barato) × 20% = $1.80/mes ÷ ~$0.02 por análisis (estimado, MEDIR con las
+  primeras llamadas reales) ≈ 90/mes = 3/día. Si el costo real sale menor, se puede subir a 4-5.
+  Tope global de gasto diario (AI_DAILY_BUDGET_USD) arranca en ~$5. Al llegar al tope: mensaje
+  cálido ("Ya hiciste tus 3 Checks de hoy, mañana tienes 3 nuevos"), nunca un error. El límite se
+  valida EN SERVIDOR en el endpoint de IA (por construir). Copy "ilimitado" reemplazado en landing,
+  paywall y docs/copy/landing.md por "3 Checks de Presencia al día" (commit 7bc589c).
 - Prueba social (estrellas/testimonios): PROHIBIDO agregarla hasta tener compradores reales —
   Niki no tiene usuarios todavía; se evaluó y se descartó a propósito por sugerencia externa
   (2026-09-18). Ver nota igual en `app/onboarding/page.tsx` y `app/paywall/page.tsx`.
@@ -362,6 +370,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Cuando exista la app interna: montar los screenshots reales en el carrusel de la landing y volver a pasar el revisor-visual para cerrar esa puerta del todo
 
 ## Problemas conocidos ⚠️
+- veredicto:paywall — el código del paywall cambió DESPUÉS de su veredicto LISTA (2026-09-28), pero SOLO en 1 línea de copy ("Check de Presencia ilimitado antes de cada salida" → "3 Checks de Presencia al día", por el límite de IA aprobado). Verificado en captura a 375px (cabe en 1 línea, sin huérfanas) → docs/revisiones/paywall-375.png. Se re-lanza el revisor-visual la próxima vez que cambie el layout o más copy del paywall.
 - veredicto:onboarding — CADUCADO según el hook pre-stop (falso positivo, verificado 2026-09-28): el hook compara contra CUALQUIER .tsx más nuevo (app/page.tsx, app/paywall, app/admin), pero `git log -- app/onboarding` muestra que el último cambio del onboarding (2f6aef0, 2026-09-25 18:36) es ANTERIOR al veredicto (e0e2a1e, 18:37). Se re-lanza el revisor solo si se toca app/onboarding.
 - Veredicto onboarding CADUCADO solo por fecha (2026-09-27): el código del onboarding NO cambió en la sesión Hotmart (el hook compara contra cualquier .tsx más nuevo, p. ej. app/page.tsx o app/paywall/page.tsx). Se re-lanza el revisor-visual del onboarding la próxima vez que se toque su código. El paywall ya tiene veredicto nuevo LISTA (36/40 · 16/20 · copy 18/20, 2026-09-27, 3 pasadas).
 - Carrusel de "La app por dentro" (pantalla de Onboarding incluida entre sus frames): usa PLACEHOLDERS rotulados — la app interna está pendiente de existir; se reemplazan por screenshots reales cuando esa app se haga (Sesión de app interna). Este es el motivo #1 por el que el veredicto del revisor-visual sobre la landing quedó en "no aprobado" — pendiente y esperado a esta altura, no un bug.
