@@ -137,10 +137,14 @@ export default function Login() {
   const [paso, setPaso] = useState<Paso>('correo');
   const [correo, setCorreo] = useState('');
   // Hotmart manda aquí al comprador después de pagar (página de agradecimiento: /login?compra=1).
-  const [vieneDeCompra, setVieneDeCompra] = useState(false);
+  // null = llegó normal · 'aprobada' = pagó · 'pendiente' = pago en proceso (boleto, análisis de crédito).
+  const [vieneDeCompra, setVieneDeCompra] = useState<null | 'aprobada' | 'pendiente'>(null);
   useEffect(() => {
     // Se lee después de montar (no en el render) para que el HTML del servidor y el del navegador coincidan.
-    void Promise.resolve().then(() => setVieneDeCompra(new URLSearchParams(window.location.search).has('compra')));
+    void Promise.resolve().then(() => {
+      const c = new URLSearchParams(window.location.search).get('compra');
+      setVieneDeCompra(c === 'pendiente' ? 'pendiente' : c !== null ? 'aprobada' : null);
+    });
   }, []);
   const [enviando, setEnviando] = useState(false);
   const [verificando, setVerificando] = useState(false);
@@ -264,10 +268,12 @@ export default function Login() {
             <Mail size={26} color="var(--accent)" aria-hidden="true" />
           </span>
           <h1 className="mt-5 text-balance text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
-            {vieneDeCompra ? '¡Gracias por tu compra!' : 'Entra con tu correo'}
+            {vieneDeCompra === 'aprobada' ? '¡Gracias por tu compra!' : vieneDeCompra === 'pendiente' ? 'Tu pago está en proceso' : 'Entra con tu correo'}
           </h1>
           <p className="mt-3 max-w-[300px] text-[15px] leading-[1.5] text-[var(--text-primary)]">
-            {vieneDeCompra
+            {vieneDeCompra === 'pendiente'
+              ? 'Hotmart te avisará por correo cuando se confirme. En cuanto pase, entra aquí con el correo con el que compraste.'
+              : vieneDeCompra === 'aprobada'
               ? 'Tu plan ya está activo. Escribe el correo con el que pagaste y te mandamos tu código de acceso.'
               : 'Sin contraseñas. Te mandamos un código de acceso al correo con el que compraste tu plan.'}
           </p>
