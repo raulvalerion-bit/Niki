@@ -110,8 +110,12 @@ function planDesdeNombre(nombre?: string): PlanNiki | null {
   return null;
 }
 
-function fecha(ms?: number): Date | null {
-  return typeof ms === 'number' && ms > 0 ? new Date(ms) : null;
+/** Hotmart manda fechas en milisegundos casi siempre, pero SUBSCRIPTION_CANCELLATION
+    trajo date_next_charge en SEGUNDOS (compra real 2026-09-29 → quedó "1970").
+    Todo valor menor a 10^12 se toma como segundos. */
+function fecha(valor?: number): Date | null {
+  if (typeof valor !== 'number' || valor <= 0) return null;
+  return new Date(valor < 1e12 ? valor * 1000 : valor);
 }
 
 /** Resumen SIN datos personales (ni correo, ni nombre, ni teléfono) para el
@@ -243,7 +247,8 @@ export function decidir(p: PayloadHotmart, ahora = new Date()): Decision {
       return {
         ...base,
         nuevoEstado: 'cancelled',
-        hasta: proximoCobro,
+        // Una fecha ya pasada nunca recorta el acceso pagado: null = se conserva la que había.
+        hasta: proximoCobro && proximoCobro > ahora ? proximoCobro : null,
         trialHasta: null,
         creaCuenta: false,
         ledger: null,

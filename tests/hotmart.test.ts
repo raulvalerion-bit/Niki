@@ -97,6 +97,19 @@ describe('webhook de Hotmart → decisión', () => {
     expect(d.hasta?.getTime()).toBe(proximo);
   });
 
+  it('cancelación con la fecha en SEGUNDOS (formato real de Hotmart) no manda el acceso a 1970', () => {
+    const proximoSeg = Math.floor((AHORA.getTime() + 17 * DIA) / 1000);
+    const d = decidir(evento('SUBSCRIPTION_CANCELLATION', { date_next_charge: proximoSeg }), AHORA);
+    if (d.tipo !== 'aplicar') throw new Error('debía aplicarse');
+    expect(d.hasta?.getTime()).toBe(proximoSeg * 1000);
+  });
+
+  it('cancelación con fecha ya pasada conserva el acceso que había (hasta = null)', () => {
+    const d = decidir(evento('SUBSCRIPTION_CANCELLATION', { date_next_charge: AHORA.getTime() - DIA }), AHORA);
+    if (d.tipo !== 'aplicar') throw new Error('debía aplicarse');
+    expect(d.hasta).toBeNull();
+  });
+
   it('reembolso y contracargo quitan el acceso y quedan en el registro de dinero', () => {
     const casos: [string, string][] = [
       ['PURCHASE_REFUNDED', 'refunded'],
