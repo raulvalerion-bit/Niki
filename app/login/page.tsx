@@ -12,7 +12,7 @@
 // trigger on_auth_user_created (ver supabase/migrations) crea el profile
 // automáticamente la primera vez que alguien entra con un correo nuevo.
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
@@ -136,6 +136,12 @@ export default function Login() {
   const supabase = crearClienteSupabase();
   const [paso, setPaso] = useState<Paso>('correo');
   const [correo, setCorreo] = useState('');
+  // Hotmart manda aquí al comprador después de pagar (página de agradecimiento: /login?compra=1).
+  const [vieneDeCompra, setVieneDeCompra] = useState(false);
+  useEffect(() => {
+    // Se lee después de montar (no en el render) para que el HTML del servidor y el del navegador coincidan.
+    void Promise.resolve().then(() => setVieneDeCompra(new URLSearchParams(window.location.search).has('compra')));
+  }, []);
   const [enviando, setEnviando] = useState(false);
   const [verificando, setVerificando] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -258,10 +264,12 @@ export default function Login() {
             <Mail size={26} color="var(--accent)" aria-hidden="true" />
           </span>
           <h1 className="mt-5 text-balance text-[26px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
-            Entra con tu correo
+            {vieneDeCompra ? '¡Gracias por tu compra!' : 'Entra con tu correo'}
           </h1>
           <p className="mt-3 max-w-[300px] text-[15px] leading-[1.5] text-[var(--text-primary)]">
-            Sin contraseñas. Te mandamos un código de acceso al correo con el que compraste tu plan.
+            {vieneDeCompra
+              ? 'Tu plan ya está activo. Escribe el correo con el que pagaste y te mandamos tu código de acceso.'
+              : 'Sin contraseñas. Te mandamos un código de acceso al correo con el que compraste tu plan.'}
           </p>
 
           <form onSubmit={enviarAcceso} className="mt-8 w-full max-w-[340px]">

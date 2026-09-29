@@ -31,6 +31,7 @@ import { X, Sparkles, CalendarClock, Flame, Unlock, CreditCard, ShieldCheck, Che
 import { Hairline } from '@/components/landing/ui';
 import { crearClienteSupabase } from '@/lib/supabase/client';
 import { urlCheckout } from '@/lib/hotmart/checkout';
+import { tieneAcceso } from '@/lib/acceso';
 
 type PlanId = 'anual' | 'mensual';
 
@@ -211,9 +212,19 @@ export default function Paywall() {
   // Con sesión: correo precargado en Hotmart y aviso si llegó aquí sin plan.
   useEffect(() => {
     const supabase = crearClienteSupabase();
-    void supabase.auth.getUser().then(({ data }) => {
+    void supabase.auth.getUser().then(async ({ data }) => {
       setEmail(data.user?.email ?? null);
       setSinPlan(!!data.user && new URLSearchParams(window.location.search).has('sin_plan'));
+      if (!data.user) return;
+      // Quien ya tiene su plan no vuelve a ver la venta: va directo a su Check
+      // (antes, un suscriptor que entraba por la página de ventas veía los
+      // planes de nuevo y creía que tenía que pagar otra vez — 2026-09-28).
+      const { data: perfil } = await supabase
+        .from('profiles')
+        .select('role, plan, plan_activo_hasta, suscripcion_estado')
+        .eq('id', data.user.id)
+        .maybeSingle();
+      if (tieneAcceso(perfil)) window.location.replace('/app');
     });
   }, []);
 
