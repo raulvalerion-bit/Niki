@@ -15,7 +15,7 @@ Estado: **real** = existe y se probó · **corregido** = el texto se ajustó a l
 | "Racha Glow-Up de 21 días" / "Racha Glow-Up y seguimiento de hábitos" / "Tu Racha Glow-Up de 21 días, completa" | landing Oferta (stack $27), paywall | `/app/habitos` es un tracker semanal; **no hay racha de 21 días** | — | lectura de `app/app/habitos/page.tsx` | **❌ sin capacidad** |
 | "Tus fotos son privadas: solo tú las ves" | landing, FAQ, privacidad | bucket privado `checks-fotos`, RLS por carpeta | — | prueba IDOR SQL: B ve 0 fotos de A | real |
 | "no se usan para entrenar nada" | FAQ, privacidad | Anthropic API no entrena con datos de la API | — | política pública del proveedor | real |
-| "Garantía del Primer Ajuste Honesto… escribes un correo y te devolvemos todo" | landing Garantía, PS | reembolso vía Hotmart (7 días, panel) + correo `hola@holaniki.com` | — | ⚠️ el buzón `hola@holaniki.com` **todavía no recibe correos** | **❌ canal roto** |
+| "Garantía del Primer Ajuste Honesto… escribes un correo y te devolvemos todo" | landing Garantía, PS | reembolso vía Hotmart (7 días, panel) + correo `hola@holaniki.com` | — | buzón con reenvío a Gmail, prueba de recepción OK 2026-09-28 | real |
 | "Respaldada por la garantía Hotmart de 7 días" | landing | garantía 7 días configurada en el panel | — | panel Hotmart (2026-09-27) | real |
 | "Trial VIP de 3 días" / "Empezar mi prueba gratis de 3 días" | landing, paywall | oferta Anual con prueba de 3 días en Hotmart | Anual | compra real 2026-09-27 → trialing | real |
 | "Se cobra hoy, sin prueba gratis" (Mensual) | landing, paywall | oferta Mensual sin prueba | Mensual | panel Hotmart | real |
@@ -29,4 +29,4 @@ Estado: **real** = existe y se probó · **corregido** = el texto se ajustó a l
 ## Bloqueantes de este ledger
 1. **Modo Alto Impacto** — construirlo o quitarlo del copy (landing + paywall). Decisión del dueño.
 2. **Racha Glow-Up de 21 días** — construirla o quitarla del copy (landing + paywall). Decisión del dueño.
-3. **Buzón hola@holaniki.com** — activar el reenvío en Namecheap (acción del dueño, gratis).
+3. ~~Buzón hola@holaniki.com~~ — ✅ activado y probado 2026-09-28.
