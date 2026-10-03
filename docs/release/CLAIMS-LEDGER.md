@@ -11,8 +11,8 @@ Estado: **real** = existe y se probó · **corregido** = el texto se ajustó a l
 | "Recibes 3 ajustes, concretos, accionables" | landing Solución | ajuste clave + ajuste en cada eje | — | esquema `ResultadoIA` + resultado real | real |
 | "Hasta 3 Checks de Presencia al día" / "3 Checks de Presencia al día (12 meses)" | landing Oferta, paywall | RPC `reservar_check` (límite 3/día, fecha local) | trial + pago | SQL: 3 ok, 4º "limite" (2026-09-28) | real |
 | "Historial completo de tus Scans" | landing Oferta | `/app/historial` + `/app/historial/[id]` | trial + pago | render + RLS | real |
-| "Modo Alto Impacto para entrevistas, citas y reuniones" / "…para tus eventos" / "…para tu cita o entrevista" | landing Oferta (stack $39 + features), paywall beneficios | **no existe** una función con ese nombre (el Check ya elige ocasión, pero no hay "modo") | — | búsqueda en código: solo aparece en el copy | **❌ sin capacidad** |
-| "Racha Glow-Up de 21 días" / "Racha Glow-Up y seguimiento de hábitos" / "Tu Racha Glow-Up de 21 días, completa" | landing Oferta (stack $27), paywall | `/app/habitos` es un tracker semanal; **no hay racha de 21 días** | — | lectura de `app/app/habitos/page.tsx` | **❌ sin capacidad** |
+| "Modo Alto Impacto para entrevistas, citas y reuniones" / "…para tus eventos" / "…para tu cita o entrevista" | landing Oferta (stack $39 + features), paywall beneficios | `OCASIONES_ALTO_IMPACTO` (entrevista/cita/negocios/cena) → aviso en Hoy + `plan_alto_impacto` (antes/al llegar/durante) en el resultado | Check real del dueño 2026-10-03 (ocasión entrevista, plan de 3 pasos guardado y mostrado) | prueba real con foto en el celular | **✅ con capacidad** |
+| "Racha Glow-Up de 21 días" / "Racha Glow-Up y seguimiento de hábitos" / "Tu Racha Glow-Up de 21 días, completa" | landing Oferta (stack $27), paywall | racha diaria con meta de 21 días, congeladores y mejor racha (`profiles.racha_*`, `finalizar_check`) | Check real del dueño 2026-10-03: racha 0 → 1, racha_ultima_fecha correcta en hora de México | prueba real + 7 casos en SQL (2026-09-28) | **✅ con capacidad** |
 | "Tus fotos son privadas: solo tú las ves" | landing, FAQ, privacidad | bucket privado `checks-fotos`, RLS por carpeta | — | prueba IDOR SQL: B ve 0 fotos de A | real |
 | "no se usan para entrenar nada" | FAQ, privacidad | Anthropic API no entrena con datos de la API | — | política pública del proveedor | real |
 | "Garantía del Primer Ajuste Honesto… escribes un correo y te devolvemos todo" | landing Garantía, PS | reembolso vía Hotmart (7 días, panel) + correo `hola@holaniki.com` | — | buzón con reenvío a Gmail, prueba de recepción OK 2026-09-28 | real |
@@ -27,6 +27,6 @@ Estado: **real** = existe y se probó · **corregido** = el texto se ajustó a l
 | Capturas "Así se ve tu Check de Presencia" | landing hero + carrusel | pantallas reales de la app con datos de ejemplo | — | `public/capturas/*.jpg` | corregido 2026-09-28 (antes placeholders) |
 
 ## Bloqueantes de este ledger
-1. **Modo Alto Impacto** — construirlo o quitarlo del copy (landing + paywall). Decisión del dueño.
-2. **Racha Glow-Up de 21 días** — construirla o quitarla del copy (landing + paywall). Decisión del dueño.
+1. ~~**Modo Alto Impacto**~~ — ✅ construido (2026-09-28) y verificado en real (2026-10-03).
+2. ~~**Racha Glow-Up de 21 días**~~ — ✅ construida (2026-09-28) y verificada en real (2026-10-03).
 3. ~~Buzón hola@holaniki.com~~ — ✅ activado y probado 2026-09-28.
