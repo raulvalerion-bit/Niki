@@ -118,20 +118,23 @@ export default function Hoy() {
           .in('estado', ['procesando', 'listo']),
         supabase
           .from('checks')
-          .select('id, puntaje, resultado, created_at')
+          .select('id, puntaje, resultado, created_at, ocasion')
           .eq('user_id', user.id)
           .eq('estado', 'listo')
           .order('created_at', { ascending: false })
-          .limit(2),
+          .limit(30),
       ]);
       if (!activo) return;
       const u = ultimos?.[0];
-      const anterior = ultimos?.[1];
+      // Solo se compara contra la misma ocasión: el mismo outfit vale distinto en
+      // una entrevista que con amigos, y un "↓" injusto desanima.
+      const anterior = u ? ultimos?.slice(1).find((c) => c.ocasion === u.ocasion) : undefined;
       setUltimo(
         u && u.resultado && u.puntaje !== null
           ? {
               ...u,
               puntaje: Number(u.puntaje),
+              ocasionLabel: OCASIONES.find((o) => o.valor === u.ocasion)?.label ?? null,
               anterior:
                 anterior && anterior.puntaje !== null
                   ? { puntaje: Number(anterior.puntaje), created_at: anterior.created_at }

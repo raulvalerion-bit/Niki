@@ -16,14 +16,18 @@ export type UltimoCheck = {
   puntaje: number;
   resultado: Resultado;
   created_at: string;
-  /** El Check anterior, para decir si mejoró o no (dato + interpretación, 17). */
+  /** Nombre visible de la ocasión del último Check (p. ej. "Entrevista"). */
+  ocasionLabel?: string | null;
+  /** El Check anterior DE LA MISMA OCASIÓN, para decir si mejoró o no (dato + interpretación, 17). */
   anterior?: { puntaje: number; created_at: string } | null;
 };
 
 const fechaCorta = (iso: string) => new Intl.DateTimeFormat('es-MX', { day: 'numeric', month: 'short' }).format(new Date(iso));
 
+// La ocasión va en la línea de arriba; aquí la comparación es siempre contra
+// la misma ocasión (la arma app/app/page.tsx).
 function interpretacion(u: UltimoCheck) {
-  if (!u.anterior) return 'Tu primer puntaje: la base para medir tu avance';
+  if (!u.anterior) return u.ocasionLabel ? 'Tu punto de partida para esta ocasión' : 'Tu primer puntaje: la base para medir tu avance';
   const d = Math.round((u.puntaje - u.anterior.puntaje) * 10) / 10;
   if (d > 0) return `↑ ${d.toFixed(1)} vs tu Check del ${fechaCorta(u.anterior.created_at)}`;
   if (d < 0) return `↓ ${Math.abs(d).toFixed(1)} vs tu Check del ${fechaCorta(u.anterior.created_at)}`;
@@ -111,7 +115,7 @@ export function HoyInicio({
         <motion.div {...aparece(1)} className="mt-4 flex flex-col items-center">
           <AnilloPuntaje puntaje={ultimo.puntaje} />
           <p className="mt-2 text-[12px] font-medium text-[var(--text-primary)]">
-            Tu último puntaje · {fechaCorta(ultimo.created_at)}
+            Tu último puntaje · {ultimo.ocasionLabel ? `${ultimo.ocasionLabel} · ` : ''}{fechaCorta(ultimo.created_at)}
           </p>
           <p className="mt-1 text-[15px] font-semibold text-[var(--text-primary)]">{interpretacion(ultimo)}</p>
         </motion.div>
