@@ -111,3 +111,34 @@ export async function costoIA(supabase: SupabaseClient) {
   for (const f of filas) porFeature.set(f.feature, (porFeature.get(f.feature) ?? 0) + (Number(f.cost_usd) || 0));
   return { totalLlamadas: filas.length, totalUsd, gastoHoy, porFeature: [...porFeature.entries()] };
 }
+
+export type DiferenciaReconciliacion = {
+  tipo: 'pagando_sin_acceso' | 'acceso_sin_pago';
+  email: string | null;
+  nombre: string | null;
+  estado_hotmart: string | null;
+  estado_niki: string | null;
+  detalle: string;
+};
+
+export async function ultimaReconciliacion(supabase: SupabaseClient) {
+  const { data } = await supabase
+    .from('reconciliacion_hotmart')
+    .select('id, ran_at, origen, ok, error, total_hotmart, total_con_acceso, manuales, diferencias')
+    .order('ran_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  return data as
+    | {
+        id: number;
+        ran_at: string;
+        origen: string;
+        ok: boolean;
+        error: string | null;
+        total_hotmart: number;
+        total_con_acceso: number;
+        manuales: number;
+        diferencias: DiferenciaReconciliacion[];
+      }
+    | null;
+}

@@ -3,8 +3,9 @@
 // app/app/error.tsx, app/admin/error.tsx → /api/log-error).
 
 import { crearClienteSupabaseServidor } from '@/lib/supabase/server';
-import { listarAvisosHotmart, listarErroresAgrupados } from '@/lib/admin/queries';
-import { Badge, SectionTitle, SinDatos, TablaContenedor } from '@/components/admin/ui';
+import { listarAvisosHotmart, listarErroresAgrupados, ultimaReconciliacion } from '@/lib/admin/queries';
+import { AdminCard, Badge, SectionTitle, SinDatos, TablaContenedor } from '@/components/admin/ui';
+import { BotonReconciliar } from '@/components/admin/reconciliar-client';
 
 const LABEL_AVISO: Record<string, string> = {
   applied: 'Aplicado',
@@ -25,11 +26,76 @@ const TONO_AVISO: Record<string, 'neutral' | 'positivo' | 'negativo' | 'atencion
 
 export default async function AdminSalud() {
   const supabase = await crearClienteSupabaseServidor();
-  const [{ recientes, agrupado }, avisos] = await Promise.all([listarErroresAgrupados(supabase), listarAvisosHotmart(supabase)]);
+  const [{ recientes, agrupado }, avisos, reconciliacion] = await Promise.all([
+    listarErroresAgrupados(supabase),
+    listarAvisosHotmart(supabase),
+    ultimaReconciliacion(supabase),
+  ]);
 
   return (
     <div>
       <SectionTitle subtitulo="Errores de la app y si los avisos de pago de Hotmart siguen llegando">Salud</SectionTitle>
+
+      <div className="mb-8">
+        <SectionTitle subtitulo="Cada lunes Niki compara quién paga en Hotmart contra quién puede entrar. Lo sano es 0 diferencias.">
+          Accesos vs. Hotmart
+        </SectionTitle>
+        <AdminCard destacada>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              {!reconciliacion ? (
+                <p className="text-sm text-[var(--text-secondary)]">Todavía no se ha corrido ninguna revisión.</p>
+              ) : reconciliacion.error === 'faltan_credenciales' ? (
+                <>
+                  <Badge tono="atencion">Falta conectar</Badge>
+                  <p className="mt-2 text-sm text-[var(--text-secondary)]">
+                    Faltan las credenciales de Hotmart (HOTMART_CLIENT_ID y HOTMART_CLIENT_SECRET en Vercel). Sin ellas no se puede revisar.
+                  </p>
+                </>
+              ) : !reconciliacion.ok ? (
+                <>
+                  <Badge tono="negativo">Falló</Badge>
+                  <p className="mt-2 text-sm text-[var(--text-secondary)]">
+                    Hotmart no respondió bien ({reconciliacion.error}). Vuelve a intentarlo; si se repite, revisa las credenciales.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <Badge tono={reconciliacion.diferencias.length ? 'negativo' : 'positivo'}>
+                    {reconciliacion.diferencias.length === 0
+                      ? 'Todo cuadra'
+                      : `${reconciliacion.diferencias.length} ${reconciliacion.diferencias.length === 1 ? 'diferencia' : 'diferencias'}`}
+                  </Badge>
+                  <p className="mt-2 text-sm text-[var(--text-secondary)]">
+                    {reconciliacion.total_hotmart} suscripciones en Hotmart · {reconciliacion.total_con_acceso} con acceso en Niki
+                    {reconciliacion.manuales > 0 && ` (${reconciliacion.manuales} dados a mano)`}
+                  </p>
+                </>
+              )}
+              {reconciliacion && (
+                <p className="mt-1 text-xs text-[var(--text-tertiary)]">
+                  Última revisión: {new Date(reconciliacion.ran_at).toLocaleString('es-MX')} ({reconciliacion.origen === 'cron' ? 'automática' : 'manual'})
+                </p>
+              )}
+            </div>
+            <BotonReconciliar />
+          </div>
+          {reconciliacion && reconciliacion.diferencias.length > 0 && (
+            <ul className="mt-4 flex flex-col gap-2 border-t border-[var(--border-default)] pt-4">
+              {reconciliacion.diferencias.map((d, i) => (
+                <li key={`${d.email}-${i}`} className="text-sm">
+                  <Badge tono={d.tipo === 'pagando_sin_acceso' ? 'negativo' : 'atencion'}>
+                    {d.tipo === 'pagando_sin_acceso' ? 'Paga y no puede entrar' : 'Entra sin estar pagando'}
+                  </Badge>
+                  <span className="ml-2 font-medium text-[var(--text-primary)]">{d.nombre ?? 'Sin nombre'}</span>
+                  <span className="ml-1 text-[var(--text-tertiary)]">{d.email}</span>
+                  <p className="mt-1 text-[var(--text-secondary)]">{d.detalle}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </AdminCard>
+      </div>
 
       <div className="mb-8">
         <SectionTitle>Webhook de Hotmart</SectionTitle>

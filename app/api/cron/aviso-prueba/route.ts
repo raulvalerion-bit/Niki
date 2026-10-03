@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'node:crypto';
+import { cronAutorizado } from '@/lib/cron';
 import { crearClienteSupabaseAdmin } from '@/lib/supabase/admin';
 import { enviarCorreo } from '@/lib/email/enviar';
 import { correoAvisoFinPrueba } from '@/lib/email/aviso-fin-prueba';
@@ -13,17 +13,8 @@ export const runtime = 'nodejs';
 
 const HORA_MS = 60 * 60 * 1000;
 
-function autorizado(req: NextRequest): boolean {
-  const secreto = process.env.CRON_SECRET;
-  const recibido = req.headers.get('authorization');
-  if (!secreto || !recibido) return false;
-  const a = crypto.createHash('sha256').update(recibido).digest();
-  const b = crypto.createHash('sha256').update(`Bearer ${secreto}`).digest();
-  return crypto.timingSafeEqual(a, b);
-}
-
 export async function GET(req: NextRequest) {
-  if (!autorizado(req)) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  if (!cronAutorizado(req.headers.get('authorization'))) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 
   const admin = crearClienteSupabaseAdmin();
   const ahora = Date.now();
