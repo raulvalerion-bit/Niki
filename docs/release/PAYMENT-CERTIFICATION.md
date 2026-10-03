@@ -20,17 +20,18 @@ Auditoría: 2026-09-28 · Proveedor: Hotmart (producto 8595742) · Webhook: `htt
 | Trial anual: aviso pre-cobro | ✅ VERIFICADO REAL | correo recibido por el dueño, 2026-09-27 |
 | Trial anual: primer cobro al terminar la prueba | ⛔ NO VERIFICADO | la prueba de test se canceló; se verifica con el primer cliente real |
 | Trial mensual | N/A justificado | el Mensual no tiene prueba (decisión de producto, 2026-09-18) |
-| Compra mensual pagada → acceso | ⛔ NO VERIFICADO REAL | solo simulado; requiere una compra real de US$14.99 |
+| Compra mensual pagada → acceso | ✅ VERIFICADO REAL | PURCHASE_APPROVED 2026-09-29 (HP1839322799, MXN 285) → plan mensual activo + 1 venta en el ledger |
 | Cancelación durante trial → sin cobro, acceso hasta fin | ✅ VERIFICADO REAL | SUBSCRIPTION_CANCELLATION 2026-09-27 |
-| Cancelación de plan pagado → acceso hasta fin de periodo | ⚠️ simulado + test | sin evento real |
+| Cancelación de plan pagado → acceso hasta fin de periodo | ✅ VERIFICADO REAL | SUBSCRIPTION_CANCELLATION 2026-09-29 (destapó el bug de fechas en segundos, corregido en 05b2bca) |
 | Pago rechazado → past_due → gracia → recuperación | ⚠️ simulado + test | sin evento real; **no hay correos de dunning** (58) |
 | Reenvío del mismo event_id | ✅ simulado | `processed_events` |
 | APPROVED + COMPLETE → un solo ingreso | ✅ simulado | ledger único por transaction+kind |
 | Producto/oferta/importe ajeno → rechazado | ✅ test + "Enviar prueba" | producto 0 → "sin efecto" |
 | Fallo después del webhook → retry completa acceso | ⚠️ parcial | Hotmart reintenta si no hay 200; no probado forzando fallo |
-| Reembolso y contracargo | ⚠️ simulado + test | sin evento real |
+| Reembolso | ✅ VERIFICADO REAL | PURCHASE_REFUNDED 2026-09-29 aplicado: suscripcion_estado=refunded, plan=ninguno, reembolso MXN 285 en el ledger (venta − reembolso = 0); correo de Hotmart recibido por el dueño |
+| Contracargo | ⚠️ simulado + test | sin evento real (no se provoca a propósito) |
 | Compra con email distinto al de la cuenta | ⚠️ | crea cuenta con el correo de Hotmart; no hay reconciliación visible |
 | Reconciliación semanal de entitlements | ❌ NO EXISTE | job pendiente (18) |
 
 ## Veredicto de pagos
-**NO CERTIFICADO todavía.** Lo implementado es sólido y está probado en código; faltan pruebas reales que cuestan dinero (compra mensual + reembolso dentro de la garantía) y el job de reconciliación. Ninguna prueba real se hizo sin autorización del dueño.
+**NO CERTIFICADO todavía.** Lo implementado es sólido y está probado en código; compra mensual, cancelación y reembolso ya verificados en real (2026-09-29). Faltan: primer cobro al terminar una prueba (se verifica con el primer cliente real) y el job de reconciliación semanal. Ninguna prueba real se hizo sin autorización del dueño.
