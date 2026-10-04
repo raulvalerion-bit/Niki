@@ -151,11 +151,15 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
 
   async function enviarCodigo() {
-    if (!correo.includes('@')) return;
+    // Nunca un botón mudo (regla de UX #11): si falta el correo, se dice.
+    if (!/^[^s@]+@[^s@]+.[^s@]+$/.test(correo.trim())) {
+      setError('Escribe tu correo completo (por ejemplo, tu@gmail.com) para mandarte el código.');
+      return;
+    }
     setEnviando(true);
     setError(null);
     const { error: errorEnvio } = await supabase.auth.signInWithOtp({
-      email: correo,
+      email: correo.trim(),
       options: { shouldCreateUser: true },
     });
     setEnviando(false);
@@ -175,7 +179,7 @@ export default function Login() {
     setVerificando(true);
     setError(null);
     const { error: errorVerificacion } = await supabase.auth.verifyOtp({
-      email: correo,
+      email: correo.trim(),
       token: codigo,
       type: 'email',
     });
@@ -260,7 +264,7 @@ export default function Login() {
         className="pointer-events-none absolute -bottom-32 -right-32 size-72 rounded-full border-[3px] border-[color-mix(in_oklab,var(--accent)_10%,transparent)]"
       />
 
-      <Encabezado onAtras={() => setPaso('correo')} mostrarAtras={paso !== 'correo'} />
+      <Encabezado onAtras={() => { setError(null); setPaso('correo'); }} mostrarAtras={paso !== 'correo'} />
 
       {paso === 'correo' && (
         <div className="mt-6 flex flex-1 flex-col items-center pt-8 text-center">
@@ -278,16 +282,21 @@ export default function Login() {
               : 'Sin contraseñas. Te mandamos un código de acceso al correo con el que compraste tu plan.'}
           </p>
 
-          <form onSubmit={enviarAcceso} className="mt-8 w-full max-w-[340px]">
+          <form onSubmit={enviarAcceso} noValidate className="mt-8 w-full max-w-[340px]">
             <input
               type="email"
               inputMode="email"
               autoComplete="email"
               required
               value={correo}
-              onChange={(e) => setCorreo(e.target.value)}
+              onChange={(e) => {
+                setCorreo(e.target.value);
+                setError(null);
+              }}
               placeholder="tu@correo.com"
               aria-label="Tu correo"
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? 'error-correo' : undefined}
               className="h-14 w-full rounded-[var(--radius-button)] border-2 border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] bg-[var(--surface)] px-4 text-[16px] text-[var(--text-primary)] shadow-[var(--shadow-1)] focus:border-[var(--accent)] focus:outline-none"
             />
             <motion.button
@@ -298,11 +307,16 @@ export default function Login() {
             >
               {enviando ? 'Enviando…' : 'Enviarme el acceso'}
             </motion.button>
+            {error && (
+              <p id="error-correo" role="alert" className="mt-3 text-sm font-medium text-[var(--error)]">
+                {error}
+              </p>
+            )}
           </form>
 
           <button
             type="button"
-            onClick={() => setPaso('rescate')}
+            onClick={() => { setError(null); setPaso('rescate'); }}
             className="mt-6 flex items-center gap-1.5 text-[13px] font-medium text-[var(--text-secondary)]"
           >
             <LifeBuoy size={14} aria-hidden="true" />
@@ -337,7 +351,7 @@ export default function Login() {
             </button>
             <button
               type="button"
-              onClick={() => setPaso('correo')}
+              onClick={() => { setError(null); setPaso('correo'); }}
               className="text-[13px] font-medium text-[var(--text-secondary)]"
             >
               Usar otro correo
@@ -352,16 +366,21 @@ export default function Login() {
             ¿Compraste y no te llega el acceso?
           </h1>
 
-          <form onSubmit={enviarAcceso} className="mt-6">
+          <form onSubmit={enviarAcceso} noValidate className="mt-6">
             <input
               type="email"
               inputMode="email"
               autoComplete="email"
               required
               value={correo}
-              onChange={(e) => setCorreo(e.target.value)}
+              onChange={(e) => {
+                setCorreo(e.target.value);
+                setError(null);
+              }}
               placeholder="El correo con el que compraste"
               aria-label="El correo con el que compraste"
+              aria-invalid={error ? true : undefined}
+              aria-describedby={error ? 'error-rescate' : undefined}
               className="h-14 w-full rounded-[var(--radius-button)] border-2 border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] bg-[var(--surface)] px-4 text-[16px] text-[var(--text-primary)] shadow-[var(--shadow-1)] focus:border-[var(--accent)] focus:outline-none"
             />
             <motion.button
@@ -372,6 +391,11 @@ export default function Login() {
             >
               {enviando ? 'Enviando…' : 'Reenviar mi acceso'}
             </motion.button>
+            {error && (
+              <p id="error-rescate" role="alert" className="mt-3 text-sm font-medium text-[var(--error)]">
+                {error}
+              </p>
+            )}
           </form>
 
           <p className="mt-3 text-[13px] leading-[1.5] text-[var(--text-secondary)]">
@@ -380,7 +404,7 @@ export default function Login() {
 
           <div className="mt-6 flex flex-col gap-3 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
             <p className="text-[13px] text-[var(--text-primary)]">
-              Revisa spam y promociones — llega como <span className="font-semibold">hola@holaniki.com</span>.
+              Revisa spam y promociones — llega como <span className="font-semibold">acceso@mail.holaniki.com</span>.
             </p>
             <p className="text-[13px] text-[var(--text-primary)]">
               Verifica que sea el mismo correo con el que compraste en Hotmart (está en tu comprobante).
