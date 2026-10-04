@@ -16,6 +16,7 @@ import { Faq } from '@/components/landing/Faq';
 import { CtaFinal } from '@/components/landing/CtaFinal';
 import { FooterLegal } from '@/components/landing/FooterLegal';
 import { StickyCtaMobile } from '@/components/landing/ui';
+import { motion, useReducedMotion } from 'motion/react';
 
 // Modelo 2 (onboarding-first, variante anónima — ESTADO.md): el CTA lleva a /onboarding,
 // nunca al checkout desde el hero. El pago se cierra en el paywall in-app.
@@ -23,6 +24,7 @@ const CTA_HREF = '/onboarding';
 const CTA_LABEL = 'Hacer mi Check de Presencia gratis';
 
 export default function LandingNiki() {
+  const reduce = useReducedMotion();
   return (
     <div className="min-h-dvh bg-[var(--bg)] text-[var(--text-primary)] [font-family:var(--font-body)]">
       {/* 1. HERO */}
@@ -36,6 +38,7 @@ export default function LandingNiki() {
         socialProof={<span>Trial VIP de 3 días · tus fotos son privadas: solo tú las ves</span>}
         visual={
           <div className="flex justify-center bg-[color-mix(in_oklab,var(--accent)_6%,transparent)] py-8">
+            <div className="relative">
             {/* Captura real de la app (pantalla de resultado, datos de ejemplo) — 2026-09-28 */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -46,6 +49,19 @@ export default function LandingNiki() {
               fetchPriority="high"
               className="w-[250px] rounded-[30px] border-[5px] border-[color-mix(in_oklab,var(--text-primary)_90%,var(--accent))] shadow-[var(--shadow-2)]"
             />
+            {/* Mascota Niki (FICHA-ARTE) saludando desde el borde del teléfono */}
+            <motion.img
+              src="/iconos/niki-saludando.webp"
+              alt=""
+              aria-hidden="true"
+              width={64}
+              height={64}
+              className="absolute -left-8 top-[360px] size-16 drop-shadow-[0_6px_12px_rgba(60,36,18,0.22)]"
+              initial={reduce ? false : { scale: 0.7, rotate: -6, opacity: 0 }}
+              animate={{ scale: 1, rotate: 0, opacity: 1 }}
+              transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 260, damping: 22, delay: 0.5 }}
+            />
+            </div>
           </div>
         }
       />
@@ -204,6 +220,7 @@ export default function LandingNiki() {
 
       {/* 9. CTA FINAL EMOCIONAL */}
       <CtaFinal
+        mascotaSrc="/iconos/niki-celebrando.webp"
         h2Marked="Imagina entrar y que [acento]todos lo noten[/acento]"
         futurePacingMarked="Subes tu foto antes de salir, ves tus 3 ajustes en 30 segundos, y cruzas la puerta sabiendo que vas a destacar."
         ctaLabel={CTA_LABEL}

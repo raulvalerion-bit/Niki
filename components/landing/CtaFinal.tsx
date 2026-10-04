@@ -25,6 +25,8 @@ export interface CtaFinalProps {
   recap?: string;
   /** El PS de la oferta Hormozi — máx 4 líneas (~55 palabras, warn). */
   psMarked?: string;
+  /** Mascota de la marca sobre el H2 (opcional, decorativa). */
+  mascotaSrc?: string;
   /** default 'cta-final' — lo observa StickyCtaMobile para ocultarse. */
   id?: string;
 }
@@ -36,6 +38,7 @@ export function CtaFinal({
   ctaHref,
   recap,
   psMarked,
+  mascotaSrc,
   id = 'cta-final',
 }: CtaFinalProps) {
   warnCopy('CtaFinal → h2', h2Marked, 8);
@@ -68,6 +71,18 @@ export function CtaFinal({
         viewport={VIEWPORT_ONCE}
         className="relative mx-auto flex max-w-[680px] flex-col items-center px-5 text-center"
       >
+        {mascotaSrc && (
+          <motion.img
+            variants={item}
+            src={mascotaSrc}
+            alt=""
+            aria-hidden="true"
+            width={80}
+            height={80}
+            className="mb-3 size-20 drop-shadow-[0_6px_12px_rgba(60,36,18,0.22)]"
+          />
+        )}
+
         <motion.h2
           variants={item}
           className="text-balance text-[30px] font-bold leading-[1.15] [font-family:var(--font-display)] md:text-[44px]"

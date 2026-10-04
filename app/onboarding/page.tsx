@@ -432,7 +432,7 @@ function PantallaApertura({
 ¡Tu <span className="text-[var(--accent)]">Check de Presencia</span> antes de salir!
       </h1>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/iconos/niki-saludando.png" alt="" aria-hidden="true" className="mt-4 size-20 drop-shadow-[0_4px_8px_rgba(60,36,18,0.18)]" />
+      <img src="/iconos/niki-saludando.webp" alt="" aria-hidden="true" className="mt-4 size-20 drop-shadow-[0_4px_8px_rgba(60,36,18,0.18)]" />
       <p className="mt-4 max-w-[320px] text-balance text-[16px] leading-[1.5] text-[var(--text-primary)]">
         Nadie te dice la verdad por pena. En 4 preguntas armamos tu Check; después, cada foto te dice en 30 segundos qué ajustar.
       </p>
@@ -705,7 +705,7 @@ function PantallaResultado({
       </h1>
       {/* Celebración del hito (baseline #7): Niki entra con un rebote único. */}
       <motion.img
-        src="/iconos/niki-celebrando.png"
+        src="/iconos/niki-celebrando.webp"
         alt=""
         aria-hidden="true"
         className="mx-auto mt-2 size-12 drop-shadow-[0_3px_6px_rgba(60,36,18,0.18)]"
@@ -1008,7 +1008,7 @@ export default function Onboarding() {
           {paso === 'reconocimiento2' && (
             <PantallaReconocimiento
               icon={Rocket}
-              iconoSrc="/iconos/niki-pensando.png"
+              iconoSrc="/iconos/niki-pensando.webp"
               titulo="¡Ya casi está!"
               texto={`Se acabaron los 20 minutos dudando frente al armario: tu Check para tu ${ocasionLabel.toLowerCase()} ya sabe qué te frena.`}
               ctaLabel="Ver mi Check de Presencia"
