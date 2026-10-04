@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Carrusel · 5 errores en una entrevista</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --text: #3C2412; --text-2: #6B4A32; --accent: #7A3E1D; --surface: #FFF3DE; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #222; font-family: 'Manrope', monospace; }
+  .slide { width: 1080px; height: 1350px; position: relative; overflow: hidden; color: var(--text);
+           background: linear-gradient(180deg, #FF9457 0%, #FFB768 42%, #FFD98A 78%, #FFE9B0 100%);
+           padding: 96px 88px; display: flex; flex-direction: column; margin-bottom: 24px; }
+  .slide::before, .slide::after { content: ''; position: absolute; border-radius: 50%; border: 6px solid rgb(122 62 29 / .14); }
+  .slide::before { width: 620px; height: 620px; top: -260px; right: -240px; }
+  .slide::after { width: 620px; height: 620px; top: -340px; right: -320px; border-color: rgb(122 62 29 / .08); }
+  .marca { display: flex; align-items: center; gap: 16px; font-family: 'Unbounded', monospace; font-weight: 700; font-size: 36px; position: relative; }
+  .chip { width: 64px; height: 64px; border-radius: 18px; background: linear-gradient(160deg,#FF9457,#FFD98A); display: grid; place-items: center; box-shadow: 0 6px 16px rgb(140 60 20 / .2); }
+  h1 { font-family: 'Unbounded', monospace; font-weight: 800; font-size: 92px; line-height: 1.04; letter-spacing: -0.02em; margin-top: 72px; position: relative; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .sub { font-size: 40px; line-height: 1.35; margin-top: 32px; font-weight: 600; color: var(--text-2); position: relative; }
+  .num { font-family: 'Unbounded', monospace; font-weight: 800; font-size: 200px; line-height: 1; color: var(--accent); margin-top: 80px; }
+  h2 { font-family: 'Unbounded', monospace; font-weight: 700; font-size: 72px; line-height: 1.1; margin-top: 24px; }
+  .card { margin-top: 48px; background: var(--surface); border-radius: 36px; padding: 44px 48px; box-shadow: 0 24px 48px -20px rgb(140 60 20 / .35); }
+  .card b { display: block; font-size: 26px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .card p { font-size: 40px; line-height: 1.35; font-weight: 600; }
+  .niki { position: absolute; right: 64px; bottom: 72px; width: 360px; filter: drop-shadow(0 16px 24px rgb(60 36 18 / .25)); }
+  .niki.chica { width: 250px; top: 110px; right: 88px; bottom: auto; }
+  .pie { position: absolute; left: 88px; bottom: 88px; font-size: 30px; font-weight: 700; color: var(--text-2); }
+  .cta { max-width: 560px; margin-top: 64px; background: var(--accent); color: #FFF3DE; border-radius: 32px; padding: 40px 48px; font-size: 44px; font-weight: 700; width: fit-content; }
+  .url { font-family: 'Unbounded', monospace; font-size: 40px; font-weight: 700; margin-top: 28px; }
+</style>
+</head>
+<body>
+
+<section class="slide" id="s1">
+  <div class="marca"><span class="chip"><svg width="32" height="32" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="19" stroke="#3C2412" stroke-width="7" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="28" transform="rotate(-90 26 26)"/><circle cx="26" cy="7.2" r="5" fill="#3C2412"/></svg></span>niki</div>
+  <h1>5 errores que <em>arruinan</em> tu entrevista en 5 segundos</h1>
+  <p class="sub">…y que nadie te dice por pena.</p>
+  <img class="niki" src="niki/niki-pensando.png" alt="">
+  <p class="pie">Desliza →</p>
+</section>
+
+<section class="slide" id="s2">
+  <div class="num">1</div>
+  <h2>Ropa que no es de tu talla</h2>
+  <div class="card"><b>Por qué pesa</b><p>Se nota más que el color o la marca. Holgado o apretado se lee como descuido.</p></div>
+  <div class="card"><b>El ajuste</b><p>Hombros de la prenda donde terminan los tuyos.</p></div>
+  <img class="niki chica" src="niki/niki-feliz.png" alt="">
+  <p class="pie">Desliza →</p>
+</section>
+
+<section class="slide" id="s3">
+  <div class="num">2</div>
+  <h2>Hombros caídos al entrar</h2>
+  <div class="card"><b>Por qué pesa</b><p>Proyecta inseguridad aunque no la sientas.</p></div>
+  <div class="card"><b>El ajuste</b><p>Hombros atrás y abajo, barbilla nivelada al cruzar la puerta.</p></div>
+  <img class="niki chica" src="niki/niki-pensando.png" alt="">
+  <p class="pie">Desliza →</p>
+</section>
+
+<section class="slide" id="s4">
+  <div class="num">3</div>
+  <h2>Brazos cruzados o manos en los bolsillos</h2>
+  <div class="card"><b>Por qué pesa</b><p>Cierra la conversación antes de que empiece.</p></div>
+  <div class="card"><b>El ajuste</b><p>Brazos relajados y manos visibles.</p></div>
+  <img class="niki chica" src="niki/niki-feliz.png" alt="">
+  <p class="pie">Desliza →</p>
+</section>
+
+<section class="slide" id="s5">
+  <div class="num">4</div>
+  <h2>La mirada que se escapa al saludar</h2>
+  <div class="card"><b>Por qué pesa</b><p>Se lee como nervios o poco interés.</p></div>
+  <div class="card"><b>El ajuste</b><p>Sostén la mirada 2 segundos y sonríe con los ojos.</p></div>
+  <img class="niki chica" src="niki/niki-saludando.png" alt="">
+  <p class="pie">Desliza →</p>
+</section>
+
+<section class="slide" id="s6">
+  <div class="num">5</div>
+  <h2>Un look que no va con la ocasión</h2>
+  <div class="card"><b>Por qué pesa</b><p>Lo que se ve increíble en un video no siempre va con una entrevista.</p></div>
+  <div class="card"><b>El ajuste</b><p>Primero la formalidad del lugar; después tu estilo.</p></div>
+  <img class="niki chica" src="niki/niki-pensando.png" alt="">
+  <p class="pie">Último →</p>
+</section>
+
+<section class="slide" id="s7">
+  <div class="marca"><span class="chip"><svg width="32" height="32" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="19" stroke="#3C2412" stroke-width="7" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="28" transform="rotate(-90 26 26)"/><circle cx="26" cy="7.2" r="5" fill="#3C2412"/></svg></span>niki</div>
+  <h1>¿Cuántos <em>tienes</em> tú?</h1>
+  <p class="sub">Sube una foto antes de salir y Niki te dice qué ajustar en 30 segundos. Sincero, sin críticas crueles.</p>
+  <div class="cta">Haz tu Check gratis · link en bio</div>
+  <p class="url" style="position:absolute;left:88px;bottom:88px">holaniki.com</p>
+  <img class="niki" src="niki/niki-ok.png" alt="" style="width:400px;bottom:60px">
+</section>
+
+</body>
+</html>
