@@ -455,6 +455,7 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - [ ] Más adelante: crear cuentas Hotmart/Resend, comprar dominio (se le pedirá guiado, paso a paso, en la Sesión de servicios externos)
 
 ## Notas para la próxima sesión
+- RUTA DE PRESENCIA (propuesta 2026-10-04, esperando OK del dueño): vista-previa-progreso.html + docs/revisiones/vista-previa-progreso.png — nivel 1-10 por eje (Outfit/Postura/Actitud, nunca baja), Misión de la semana desde el eje más débil (+3 gemas), pestaña Historial→Progreso con "siguiente paso" por eje, detalle de eje con "Lo que más te sube" (frecuencia de ajustes en sus Checks), resumen mensual con reto del mes nuevo. Todo derivado de checks.resultado, sin IA extra.
 - El usuario no es técnico. Explicar todo en simple. Decidir por él salvo gustos visuales/identidad y gastos.
 - El documento fuente de la idea está en: C:\Users\Raul Valerio\Documents\Z Rentas Inteligentes\Resumen de mi idea para la App Niki.pdf — ya fue leído e incorporado a FICHA-AVATAR.md, no hace falta releerlo salvo para citar textual.
 

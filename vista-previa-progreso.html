@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="es" data-kit="abc-v2">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Niki · Ruta de Presencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Propuesta 2026-10-04: recomendaciones por eje (Outfit · Postura · Actitud) que acompañan
+     el progreso mes a mes. Datos de ejemplo de un usuario en su 2º mes. Tokens = FICHA-ARTE. -->
+<style>
+  :root {
+    --sunset: linear-gradient(180deg, #FF9457 0%, #FFB768 42%, #FFD98A 78%, #FFE9B0 100%);
+    --surface: #FFF3DE; --surface-2: #F7E2BD; --text-1: #3C2412; --text-2: #8A6448;
+    --accent: #7A3E1D; --lima: #B7DE2A; --gold: #D4A72C;
+    --display: 'Unbounded', monospace; --body: 'Manrope', monospace;
+    --radius: 18px; --shadow: 0 12px 32px -12px rgb(140 60 20 / .22);
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #F3E6D4; font-family: var(--body); color: var(--text-1); padding: 32px 16px 64px; }
+  header.intro { max-width: 1200px; margin: 0 auto 32px; }
+  header.intro h1 { font-family: var(--display); font-size: 28px; }
+  header.intro p { margin-top: 8px; max-width: 720px; font-size: 16px; line-height: 1.5; color: #6B4A32; }
+  .grid { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; max-width: 1640px; margin: 0 auto; }
+  figure { width: 375px; }
+  figcaption { margin-bottom: 12px; font-size: 14px; font-weight: 600; color: #6B4A32; }
+  figcaption b { display: block; font-family: var(--display); font-size: 16px; color: var(--text-1); margin-bottom: 4px; }
+  .tel { width: 375px; height: 812px; overflow: hidden; border-radius: 36px; border: 6px solid #3C2412;
+         background: var(--sunset); position: relative; box-shadow: var(--shadow); }
+  .pant { padding: 20px 16px 96px; height: 100%; overflow: hidden; }
+  .marca { display: flex; align-items: center; gap: 8px; }
+  .chip-logo { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(160deg,#FF9457,#FFD98A);
+               display: grid; place-items: center; }
+  .marca b { font-family: var(--display); font-size: 15px; display: block; }
+  .marca span { font-size: 12px; font-weight: 500; }
+  h2 { font-family: var(--display); font-size: 24px; line-height: 1.15; text-align: center; margin-top: 16px; }
+  .card { background: var(--surface); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); margin-top: 12px; }
+  .kick { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+  .t { font-size: 16px; font-weight: 600; margin-top: 4px; line-height: 1.35; }
+  .s { font-size: 13px; color: var(--text-2); margin-top: 4px; line-height: 1.4; }
+  .fila { display: flex; gap: 12px; align-items: center; }
+  .ico { width: 40px; height: 40px; flex: none; border-radius: 12px; display: grid; place-items: center;
+         background: color-mix(in oklab, var(--accent) 12%, transparent); }
+  .ico.solido { background: var(--accent); }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 8px; height: 48px; border-radius: 14px;
+         background: var(--accent); color: #FFF3DE; font-weight: 700; font-size: 16px; margin-top: 16px; }
+  .barra { height: 8px; border-radius: 99px; background: var(--surface-2); margin-top: 8px; overflow: hidden; }
+  .barra i { display: block; height: 100%; border-radius: 99px; background: var(--accent); }
+  .puntos { display: flex; gap: 6px; margin-top: 10px; }
+  .puntos i { width: 22px; height: 22px; border-radius: 50%; border: 2px dashed #D9B98E; }
+  .puntos i.ok { border: none; background: var(--accent); }
+  .nav { position: absolute; left: 0; right: 0; bottom: 0; height: 72px; background: var(--surface);
+         display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #EBD3AE; }
+  .nav div { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; font-weight: 600; color: var(--text-2); }
+  .nav div.on { color: var(--accent); }
+  .nav div.on svg { background: color-mix(in oklab, var(--accent) 14%, transparent); border-radius: 10px; padding: 3px; box-sizing: content-box; }
+  .eje { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; }
+  .nivel { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; position: relative; }
+  .nivel b { font-family: var(--display); font-size: 18px; }
+  .nivel svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .tend { font-size: 12px; font-weight: 700; color: #4F7A12; white-space: nowrap; }
+  .tend.baja { color: var(--text-2); }
+  .reco { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-top: 1px solid #EBD3AE; }
+  .reco:first-of-type { border-top: none; }
+  .num { width: 24px; height: 24px; flex: none; border-radius: 50%; background: color-mix(in oklab, var(--accent) 14%, transparent);
+         font-size: 12px; font-weight: 700; display: grid; place-items: center; color: var(--accent); }
+  .reco p { font-size: 14px; line-height: 1.4; }
+  .reco small { display: block; font-size: 12px; color: var(--text-2); margin-top: 2px; }
+  .grafico { display: flex; align-items: flex-end; gap: 8px; height: 88px; margin-top: 12px; }
+  .grafico div { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--text-2); }
+  .grafico span { width: 100%; border-radius: 6px 6px 3px 3px; background: color-mix(in oklab, var(--accent) 35%, transparent); }
+  .grafico div:last-child span { background: var(--accent); }
+  .tabs { display: flex; gap: 8px; margin-top: 12px; }
+  .tabs span { padding: 6px 12px; border-radius: 99px; font-size: 13px; font-weight: 600; background: rgb(255 243 222 / .6); }
+  .tabs span.on { background: var(--accent); color: #FFF3DE; }
+  .masc { display: block; margin: 8px auto 0; width: 104px; height: 104px; filter: drop-shadow(0 6px 12px rgb(60 36 18 / .22)); }
+  .cmp { display: grid; grid-template-columns: 1fr auto auto; gap: 8px 12px; align-items: center; font-size: 14px; margin-top: 8px; }
+  .cmp .h { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-2); letter-spacing: .05em; }
+  .cmp .v { font-family: var(--display); font-size: 15px; text-align: right; }
+  .cmp .v.sube { color: var(--accent); }
+  .sello { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px;
+           background: color-mix(in oklab, var(--lima) 30%, #FFF3DE); font-size: 12px; font-weight: 700; margin-top: 8px; }
+  .dorado { background: var(--gold); }
+</style>
+</head>
+<body>
+
+<header class="intro">
+  <h1>La Ruta de Presencia de Niki</h1>
+  <p>Una propuesta: cada eje (Outfit, Postura y Actitud) tiene su nivel, sus recomendaciones y una misión semanal, todo calculado con los Checks reales de la persona. Cada mes Niki le muestra cuánto avanzó y qué sigue. Datos de ejemplo de Sofía, en su segundo mes.</p>
+</header>
+
+<div class="grid">
+
+  <!-- 1. HOY con la misión de la semana -->
+  <figure>
+    <figcaption><b>1 · Hoy</b>Nace la "Misión de la semana": sale de su eje más débil.</figcaption>
+    <div class="tel"><div class="pant">
+      <div class="marca"><span class="chip-logo"><svg width="16" height="16" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="19" stroke="#3C2412" stroke-width="7" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="28" transform="rotate(-90 26 26)"/><circle cx="26" cy="7.2" r="5" fill="#3C2412"/></svg></span><div><b>niki</b><span>Tu presencia, lista para salir</span></div></div>
+      <h2>Hoy ya cuidaste<br>tu presencia</h2>
+      <div style="display:flex;justify-content:center;margin-top:12px">
+        <div style="position:relative;width:136px;height:136px">
+          <svg viewBox="0 0 160 160" width="136" height="136" style="transform:rotate(-90deg)"><circle cx="80" cy="80" r="66" fill="none" stroke="#F7E2BD" stroke-width="12"/><circle cx="80" cy="80" r="66" fill="none" stroke="#7A3E1D" stroke-width="12" stroke-linecap="round" stroke-dasharray="414.7" stroke-dashoffset="91"/></svg>
+          <div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center"><div><b style="font-family:var(--display);font-size:34px">7.8</b><div style="font-size:12px">de 10</div></div></div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:13px;margin-top:8px">Primera cita · 4 oct · <b>↑ 0.6 vs tu Check anterior</b></p>
+      <div class="card" style="outline:2px solid var(--accent)">
+        <div class="fila">
+          <span class="ico solido"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFF3DE" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="#FFF3DE"/></svg></span>
+          <div style="flex:1"><div class="kick">Misión de la semana · Postura</div><div class="t">Hombros atrás en tus próximos 3 Checks</div></div>
+        </div>
+        <div class="puntos"><i class="ok"></i><i class="ok"></i><i></i></div>
+        <div class="s">2 de 3 · Te falta 1 para sumar <b>+3 gemas</b> y acercarte a Postura nivel 4.</div>
+      </div>
+      <div class="card">
+        <div class="fila">
+          <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A3E1D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3 4 5 4 9a4 4 0 0 1-8 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 0-8z"/></svg></span>
+          <div><div class="kick">Racha Glow-Up</div><div class="t">Día 9 de 21</div></div>
+        </div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Hoy</div>
+      <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>Progreso</div>
+      <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Hábitos</div>
+      <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Perfil</div>
+    </nav></div>
+  </figure>
+
+  <!-- 2. PROGRESO: los 3 ejes -->
+  <figure>
+    <figcaption><b>2 · Progreso</b>"Historial" pasa a ser "Progreso": un nivel por eje y lo que más le conviene ajustar.</figcaption>
+    <div class="tel"><div class="pant">
+      <h2 style="text-align:left;margin-top:4px">Tu Ruta de<br>Presencia</h2>
+      <p class="s" style="font-size:14px">Octubre 2026 · 14 Checks este mes</p>
+      <div class="tabs"><span class="on">Este mes</span><span>Septiembre</span><span>Todo</span></div>
+
+      <div class="card">
+        <div class="eje">
+          <div class="nivel"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="#F7E2BD" stroke-width="5"/><circle cx="28" cy="28" r="24" fill="none" stroke="#7A3E1D" stroke-width="5" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="45"/></svg><b>5</b></div>
+          <div><div class="kick">Outfit · Nivel 5</div><div class="t" style="font-size:14px">Ya combinas con intención</div></div>
+          <span class="tend">↑ 0.9</span>
+        </div>
+        <div class="s" style="margin-top:10px"><b>Siguiente paso:</b> un accesorio que cierre el look (cinturón o reloj).</div>
+      </div>
+
+      <div class="card" style="outline:2px solid var(--accent)">
+        <div class="eje">
+          <div class="nivel"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="#F7E2BD" stroke-width="5"/><circle cx="28" cy="28" r="24" fill="none" stroke="#7A3E1D" stroke-width="5" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="98"/></svg><b>3</b></div>
+          <div><div class="kick">Postura · Nivel 3 · Tu foco</div><div class="t" style="font-size:14px">Mejorando, aún se encorva</div></div>
+          <span class="tend">↑ 0.4</span>
+        </div>
+        <div class="s" style="margin-top:10px"><b>Siguiente paso:</b> hombros atrás y barbilla nivelada al llegar.</div>
+      </div>
+
+      <div class="card">
+        <div class="eje">
+          <div class="nivel"><svg viewBox="0 0 56 56"><circle cx="28" cy="28" r="24" fill="none" stroke="#F7E2BD" stroke-width="5"/><circle cx="28" cy="28" r="24" fill="none" stroke="#7A3E1D" stroke-width="5" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="30"/></svg><b>6</b></div>
+          <div><div class="kick">Actitud · Nivel 6</div><div class="t" style="font-size:14px">Tu sonrisa ya es tu firma</div></div>
+          <span class="tend baja">= estable</span>
+        </div>
+        <div class="s" style="margin-top:10px"><b>Siguiente paso:</b> sostén la mirada 2 segundos al saludar.</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>Hoy</div>
+      <div class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>Progreso</div>
+      <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Hábitos</div>
+      <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Perfil</div>
+    </nav></div>
+  </figure>
+
+  <!-- 3. DETALLE DE UN EJE -->
+  <figure>
+    <figcaption><b>3 · Dentro de un eje</b>Su evolución y sus recomendaciones en orden, sacadas de sus propios Checks.</figcaption>
+    <div class="tel"><div class="pant">
+      <p style="font-size:14px;font-weight:600">‹ Progreso</p>
+      <div class="kick" style="margin-top:12px">Postura</div>
+      <h2 style="text-align:left;margin-top:4px">Nivel 3 de 10</h2>
+      <div class="barra"><i style="width:64%"></i></div>
+      <p class="s">Te faltan <b>2 Checks con 7+ en postura</b> para el nivel 4.</p>
+
+      <div class="card">
+        <div class="kick">Tus últimos 6 Checks</div>
+        <div class="grafico">
+          <div><span style="height:44px"></span>5.2</div><div><span style="height:48px"></span>5.6</div><div><span style="height:46px"></span>5.4</div>
+          <div><span style="height:56px"></span>6.1</div><div><span style="height:58px"></span>6.3</div><div><span style="height:66px"></span>6.8</div>
+        </div>
+        <p class="s" style="margin-top:8px"><b>↑ 1.6 desde tu primer Check.</b> Tu mejor avance de los tres ejes.</p>
+      </div>
+
+      <div class="card">
+        <div class="kick">Lo que más te sube</div>
+        <div class="reco"><span class="num">1</span><p>Hombros atrás y barbilla nivelada al llegar.<small>Niki te lo marcó en 5 de tus 6 Checks</small></p></div>
+        <div class="reco"><span class="num">2</span><p>Peso en ambos pies, sin cargar la cadera.<small>En 3 de 6</small></p></div>
+        <div class="reco"><span class="num">3</span><p>Brazos relajados, fuera de los bolsillos.<small>En 2 de 6</small></p></div>
+      </div>
+    </div></div>
+  </figure>
+
+  <!-- 4. RESUMEN DEL MES -->
+  <figure>
+    <figcaption><b>4 · Tu mes con Niki</b>El día 1 de cada mes: cuánto avanzó, su mejor momento y su foco del mes nuevo.</figcaption>
+    <div class="tel"><div class="pant">
+      <img class="masc" src="public/iconos/niki-celebrando.webp" alt="">
+      <h2>Septiembre:<br>subiste en 2 de 3</h2>
+      <div class="card">
+        <div class="cmp">
+          <span class="h">Eje</span><span class="h">Ago</span><span class="h">Sep</span>
+          <span>Outfit</span><span class="v">5.8</span><span class="v sube">6.7</span>
+          <span>Postura</span><span class="v">5.2</span><span class="v sube">6.3</span>
+          <span>Actitud</span><span class="v">7.1</span><span class="v">7.1</span>
+        </div>
+        <span class="sello">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3C2412" stroke-width="2.5" stroke-linecap="round"><path d="M12 2l3 7h7l-5.5 4.5 2 7.5L12 17l-6.5 4 2-7.5L2 9h7z"/></svg>
+          Nuevo nivel: Outfit 5
+        </span>
+      </div>
+      <div class="card">
+        <div class="kick">Tu mejor momento</div>
+        <div class="t">8.4 en tu entrevista del 22 sep</div>
+        <p class="s">Ese día todo cuadró: blazer, postura firme y sonrisa.</p>
+      </div>
+      <div class="card dorado">
+        <div class="kick" style="color:#3C2412">Tu foco de octubre</div>
+        <div class="t">Postura nivel 4 + tu primer Check de boda</div>
+        <p class="s" style="color:#3C2412">Un reto nuevo para que tu progreso no se detenga.</p>
+      </div>
+      <div class="btn">Empezar mi mes</div>
+    </div></div>
+  </figure>
+
+</div>
+</body>
+</html>
