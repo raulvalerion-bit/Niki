@@ -98,7 +98,7 @@ export function CtaFinal({
         <motion.p
           variants={item}
           className="mt-4 max-w-[520px] text-[17px] leading-relaxed"
-          style={{ color: 'color-mix(in oklab, var(--gold-text) 82%, transparent)' }}
+          style={{ color: 'var(--gold-text)' }}
         >
           <MarkedCopy text={futurePacingMarked} />
         </motion.p>
@@ -126,7 +126,7 @@ export function CtaFinal({
             className="mt-10 max-w-[520px] border-l-2 pl-4 text-left text-[15px] italic leading-[1.6]"
             style={{
               borderColor: 'var(--accent)',
-              color: 'color-mix(in oklab, var(--gold-text) 85%, transparent)',
+              color: 'var(--gold-text)',
             }}
           >
             <MarkedCopy text={psMarked} />

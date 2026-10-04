@@ -170,7 +170,10 @@ export function EnlaceCta({ href, className, children }: { href: string; classNa
       className={className}
     >
       {estado === 'yendo' && <Loader2 size={18} aria-hidden="true" className="mr-2 shrink-0 animate-spin" />}
-      {estado === 'fallo' ? <span role="status">Revisa tu conexión y vuelve a tocar</span> : children}
+      {estado === 'fallo' ? 'Revisa tu conexión y vuelve a tocar' : children}
+      <span role="status" className="sr-only">
+        {estado === 'fallo' ? 'No pudimos abrir tu Check. Revisa tu conexión y vuelve a tocar.' : ''}
+      </span>
     </MotionLink>
   );
 }

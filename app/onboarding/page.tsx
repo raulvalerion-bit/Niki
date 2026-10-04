@@ -799,6 +799,17 @@ const PASOS_CON_PROGRESO = 6; // objetivo, dolor, reconocimiento1, ocasion, tiem
 
 export default function Onboarding() {
   const [pasoIdx, setPasoIdx] = useState(0);
+
+  // El plan que eligió en la página de ventas (?plan=) llega preseleccionado a la pantalla de planes.
+  useEffect(() => {
+    const elegido = new URLSearchParams(window.location.search).get('plan');
+    if (elegido !== 'anual' && elegido !== 'mensual') return;
+    try {
+      localStorage.setItem('niki_plan_preferido', elegido);
+    } catch {
+      // Storage bloqueado: la pantalla de planes abre en el Anual, como siempre.
+    }
+  }, []);
   const [confirmarSalida, setConfirmarSalida] = useState(false);
   const reduce = useReducedMotion();
   const [respuestas, setRespuestas] = useState<{

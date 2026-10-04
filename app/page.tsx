@@ -99,7 +99,6 @@ export default function LandingNiki() {
       <Agitacion
         frases={[
           'Pierdes horas dudando frente al espejo — y oportunidades por una presencia que no refleja lo que vales.',
-          'En [acento]6 meses[/acento], si nada cambia, sigues exactamente en el mismo lugar — pero con 6 meses menos.',
           'TikTok no conoce tu cuerpo; tus amigos dicen "te ves bien" por compromiso: [b]nadie te dice la verdad[/b].',
         ]}
         contraste={{
@@ -162,7 +161,7 @@ export default function LandingNiki() {
           totalAnual: 'Se cobra $107.88 al año',
           ahorro: '~5 meses gratis',
           ctaLabel: 'Hacer mi Check gratis',
-          ctaHref: CTA_HREF,
+          ctaHref: '/onboarding?plan=anual',
           features: [
             'Hasta 3 Checks de Presencia al día',
             'Modo Alto Impacto para tus eventos',
@@ -173,9 +172,9 @@ export default function LandingNiki() {
         mensual={{
           nombre: 'Mensual',
           precioMes: '$14.99',
-          ctaLabel: 'Elegir mensual',
+          ctaLabel: 'Quiero el plan mensual',
           descomposicionDia: 'Se cobra hoy, sin prueba gratis',
-          ctaHref: CTA_HREF,
+          ctaHref: '/onboarding?plan=mensual',
           features: [
             'Hasta 3 Checks de Presencia al día',
             'Modo Alto Impacto para tus eventos',

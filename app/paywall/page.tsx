@@ -24,7 +24,7 @@
 // Tras pagar, el webhook crea la cuenta y la persona entra en /login con el
 // correo de la compra. Si ya tiene sesión, su correo va precargado.
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react';
 import { X, Sparkles, CalendarClock, Flame, Unlock, CreditCard, ShieldCheck, Check, Loader2 } from 'lucide-react';
@@ -177,8 +177,22 @@ function TarjetaPlan({
   );
 }
 
+const sinSuscripcion = () => () => {};
+function leerPlanPreferido(): PlanId | null {
+  try {
+    const p = localStorage.getItem('niki_plan_preferido');
+    return p === 'anual' || p === 'mensual' ? p : null;
+  } catch {
+    return null; // Storage bloqueado: Anual por defecto.
+  }
+}
+
 export default function Paywall() {
-  const [plan, setPlan] = useState<PlanId>('anual');
+  // El plan que eligió en la página de ventas (lo guarda el recorrido de inicio) llega
+  // preseleccionado; si toca otro plan aquí, manda su elección.
+  const [planTocado, setPlan] = useState<PlanId | null>(null);
+  const preferido = useSyncExternalStore(sinSuscripcion, leerPlanPreferido, () => null);
+  const plan: PlanId = planTocado ?? preferido ?? 'anual';
   const [yendo, setYendo] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
   const [sinPlan, setSinPlan] = useState(false);
