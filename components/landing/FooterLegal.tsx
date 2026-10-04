@@ -37,14 +37,9 @@ export function FooterLegal({ appName, logo, enlaces, soporteEmail, anio }: Foot
             {appName}
           </p>
           <nav aria-label="Enlaces legales">
-            <ul className="flex flex-wrap items-center gap-x-1 gap-y-0">
-              {enlaces.map((e, i) => (
+            <ul className="-ml-1 grid grid-cols-2 gap-x-3 sm:flex sm:flex-wrap sm:items-center">
+              {enlaces.map((e) => (
                 <li key={e.href} className="flex items-center">
-                  {i > 0 && (
-                    <span aria-hidden="true" className="px-1 text-[var(--text-tertiary)]">
-                      ·
-                    </span>
-                  )}
                   {/* py-3 = área táctil ≥44px sin líneas pegadas */}
                   <a
                     href={e.href}
@@ -61,7 +56,7 @@ export function FooterLegal({ appName, logo, enlaces, soporteEmail, anio }: Foot
         {/* Fila 2: copyright + soporte */}
         <p className="mt-3 text-[13px] text-[var(--text-tertiary)]">
           © {year} {appName} ·{' '}
-          <a href={`mailto:${soporteEmail}`} className="py-3 underline-offset-4 hover:underline">
+          <a href={`mailto:${soporteEmail}`} className="inline-block py-3 underline-offset-4 hover:underline">
             {soporteEmail}
           </a>
         </p>

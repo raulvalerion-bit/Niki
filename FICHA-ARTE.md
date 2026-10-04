@@ -15,6 +15,8 @@
 
 ## Brand kit final (valores que viven en globals.css/@theme)
 - Fondo: degradé `#FF9457 → #FFB768 → #FFD98A → #FFE9B0` (naranja→amarillo, "atardecer sin sol" — pedido explícito del usuario) · Superficie: `#FFF3DE` (translúcida sobre el degradé en pantallas con muchas tarjetas) · Texto 1º/2º: `#3C2412` / `#8A6448`
+- Color dorado `--gold` #D4A72C (3ª nota, registrada 2026-10-04 a pedido del revisor): pedido explícito del dueño 2026-09-17 para reemplazar el marrón sólido en bloques celebratorios/aspiracionales PUNTUALES de la landing — "Después" (Solución) y CTA final; texto encima siempre `#3C2412` (AA 6.6:1). Usos permitidos: solo esos bloques y los trazos de logo sobre él; NUNCA en botones ni texto.
+- Gris neutro `--gray-claro` #ECECEC (registrado 2026-10-04 a pedido del revisor): pedido explícito del dueño para el fondo de los bloques "En 6 meses" (Agitación) y "Antes" (Solución) — el estado SIN Niki, contraste deliberado frío vs. el dorado del "Después". Solo esos 2 bloques; nunca superficie general.
 - Acento: `#7A3E1D` (marrón cálido — reemplazó al magenta original por pedido del usuario: "neutral entre hombre y mujer, que un hombre no se abstenga por ver rosa") · SOLO en: anillo de progreso, CTA principal, chip de tab activo, bordes finos de las tarjetas de resultado · 2ª nota: `#B7DE2A` (verde-lima oscurecido, un solo acento secundario en el ícono de "Actitud")
 - Semánticos: éxito `#7A3E1D` (reutiliza el acento, no hay error/aviso visibles aún en las pantallas mockeadas — se definen en Sesión 3 con estados reales)
 - Display: Unbounded (600/700) · Body: Manrope (400/500/600/700) · Escala: display 20-30px / title 21-22px / body 12.5-14px / label 10-11px

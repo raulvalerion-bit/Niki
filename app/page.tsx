@@ -17,6 +17,8 @@ import { CtaFinal } from '@/components/landing/CtaFinal';
 import { FooterLegal } from '@/components/landing/FooterLegal';
 import { StickyCtaMobile } from '@/components/landing/ui';
 import { motion, useReducedMotion } from 'motion/react';
+import { AnilloCaptura } from '@/components/landing/AnilloCaptura';
+import { LogoAnillo } from '@/components/landing/LogoAnillo';
 
 // Modelo 2 (onboarding-first, variante anónima — ESTADO.md): el CTA lleva a /onboarding,
 // nunca al checkout desde el hero. El pago se cierra en el paywall in-app.
@@ -30,12 +32,13 @@ export default function LandingNiki() {
       {/* 1. HERO */}
       <Hero
         appName="niki"
+        logo={<LogoAnillo lado={28} />}
         loginHref="/login"
-        h1Marked="Revisa si tu outfit e imagen son las mejores en [acento]30 segundos[/acento]"
+        h1Marked="Revisa si tu outfit e imagen brillan en [acento]30 segundos[/acento]"
         subtitleMarked="Niki analiza tu outfit, postura y actitud — [b]sin críticas crueles[/b]."
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
-        socialProof={<span>Trial VIP de 3 días · tus fotos son privadas: solo tú las ves</span>}
+        socialProof={<span>Prueba VIP gratis de 3 días · tus fotos son privadas: solo tú las ves</span>}
         visual={
           <div className="flex justify-center bg-[color-mix(in_oklab,var(--accent)_6%,transparent)] py-8">
             <div className="relative">
@@ -49,6 +52,7 @@ export default function LandingNiki() {
               fetchPriority="high"
               className="w-[250px] rounded-[30px] border-[5px] border-[color-mix(in_oklab,var(--text-primary)_90%,var(--accent))] shadow-[var(--shadow-2)]"
             />
+            <AnilloCaptura puntaje={7.3} bordeMarco={5} centroX={189} centroY={256} />
             {/* Mascota Niki (FICHA-ARTE) saludando desde el borde del teléfono */}
             <motion.img
               src="/iconos/niki-saludando.webp"
@@ -56,7 +60,7 @@ export default function LandingNiki() {
               aria-hidden="true"
               width={64}
               height={64}
-              className="absolute -left-8 top-[360px] size-16 drop-shadow-[0_6px_12px_rgba(60,36,18,0.22)]"
+              className="absolute -right-8 top-[40px] size-16 drop-shadow-[0_6px_12px_rgba(60,36,18,0.22)]"
               initial={reduce ? false : { scale: 0.7, rotate: -6, opacity: 0 }}
               animate={{ scale: 1, rotate: 0, opacity: 1 }}
               transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 260, damping: 22, delay: 0.5 }}
@@ -73,20 +77,20 @@ export default function LandingNiki() {
           {
             icon: EyeOff,
             textoMarked:
-              '¿Sientes que tu ropa se ve rara o fuera de lugar, pero [b]nadie te lo dice[/b] por pena?',
+              '¿Algo no te queda y [b]nadie te lo dice[/b] por pena?',
           },
           {
             icon: Frown,
-            textoMarked: '¿No tienes ni idea de cómo combinar tu ropa ni qué le favorece a tu cuerpo?',
+            textoMarked: '¿No sabes cómo combinar tu ropa ni qué le favorece a tu cuerpo?',
           },
           {
             icon: ShieldAlert,
             textoMarked:
-              '¿Te da pánico ir mal vestido a una cita o entrevista y arruinar todo en 5 segundos?',
+              '¿Te aterra arruinar una cita o entrevista por cómo te ves?',
           },
           {
             icon: Camera,
-            textoMarked: '¿Sientes que tu mirada y tu postura transmiten debilidad, sin saber cómo corregirlo?',
+            textoMarked: '¿Tu mirada y tu postura transmiten debilidad y no sabes corregirlo?',
           },
         ]}
       />
@@ -94,15 +98,15 @@ export default function LandingNiki() {
       {/* 3. AGITACIÓN */}
       <Agitacion
         frases={[
-          'Cada mes sigues perdiendo horas dudando frente al espejo — y varias oportunidades por una presencia que no refleja lo que vales.',
+          'Pierdes horas dudando frente al espejo — y oportunidades por una presencia que no refleja lo que vales.',
           'En [acento]6 meses[/acento], si nada cambia, sigues exactamente en el mismo lugar — pero con 6 meses menos.',
-          'Los videos de TikTok no aplican a tu cuerpo real; tus amigos solo dicen "te ves bien" por compromiso: [b]ninguno te dice la verdad[/b].',
+          'TikTok no conoce tu cuerpo; tus amigos dicen "te ves bien" por compromiso: [b]nadie te dice la verdad[/b].',
         ]}
         contraste={{
           labelHoy: 'Hoy',
           hoy: '20-30 minutos de duda frente al armario, sin saber si vas a destacar.',
           labelFuturo: 'En 6 meses',
-          futuro: '¡Seguirás siendo invisible, mientras otros brillan!',
+          futuro: 'Sigues saliendo con la misma duda, y nadie te dice qué ajustar.',
         }}
       />
 
@@ -112,13 +116,13 @@ export default function LandingNiki() {
         mecanismo="el Check de Presencia"
         bigIdeaMarked="No te falta estilo — te faltaba una retroalimentación honesta a tiempo. El Check de Presencia te la da en 30 segundos, con [b]tono de coach, no de juez[/b]."
         pasos={[
-          { titulo: 'Subes tu foto', detalle: 'Elige la ocasión: entrevista de trabajo, primera cita, reunión de negocios, salida con amigos, cena formal o vacaciones.' },
+          { titulo: 'Subes tu foto', detalle: 'Elige la ocasión: entrevista, primera cita, reunión, salida con amigos, cena formal o vacaciones.' },
           { titulo: 'Niki analiza', detalle: 'Outfit, postura y actitud — los 3 ejes de tu presencia.' },
           { titulo: 'Recibes 3 ajustes', detalle: 'Concretos, accionables, listos para aplicar hoy.' },
         ]}
         antesDespues={{
           labelAntes: 'Antes',
-          antes: 'Dudas frente al espejo sin saber si vas a destacar.',
+          antes: 'Te enteras de que algo no funcionaba cuando ya estás en la cita.',
           labelDespues: 'Después',
           despues: 'Sabes exactamente qué ajustar — y sales con certeza.',
         }}
@@ -138,7 +142,7 @@ export default function LandingNiki() {
 
       {/* 6. OFERTA — un plan (VIP Pro), anual y mensual; trial de 3 días SOLO en el Anual (igual que el paywall) */}
       <Oferta
-        tituloMarked="Empieza gratis. Sigue por [acento]menos de $0.30 al día[/acento]"
+        tituloMarked="Empieza gratis. Luego, [acento]menos de $0.30 al día[/acento]"
         trialDias={3}
         trialEnMensual={false}
         stack={{
@@ -148,22 +152,22 @@ export default function LandingNiki() {
             { resultado: 'Racha Glow-Up de 21 días', valor: '$27' },
           ],
           totalTachado: '$186',
-          nota: 'Hoy: $8.99/mes (se cobra $107.88/año)',
+          nota: 'Hoy: $8.99/mes',
+          notaSub: 'Se cobra $107.88 al año',
         }}
         anual={{
           nombre: 'Anual',
           badge: 'MÁS POPULAR',
           precioMes: '$8.99',
-          totalAnual: 'Se cobra $107.88/año',
+          totalAnual: 'Se cobra $107.88 al año',
           ahorro: '~5 meses gratis',
-          descomposicionDia: 'menos de $0.30 al día',
-          ctaLabel: 'Empezar mi prueba gratis de 3 días',
+          ctaLabel: 'Hacer mi Check gratis',
           ctaHref: CTA_HREF,
           features: [
             'Hasta 3 Checks de Presencia al día',
             'Modo Alto Impacto para tus eventos',
             'Racha Glow-Up y seguimiento de hábitos',
-            'Historial completo de tus Scans',
+            'Historial completo de tus Checks',
           ],
         }}
         mensual={{
@@ -183,7 +187,7 @@ export default function LandingNiki() {
 
       {/* 7. GARANTÍA */}
       <Garantia
-        nombre="la Garantía del Primer Ajuste Honesto"
+        nombre="Garantía del Primer Ajuste Honesto"
         condicionMarked="Si tu primer Check de Presencia no te da al menos [b]1 ajuste concreto que puedas aplicar hoy[/b], escribes un correo y te devolvemos todo. Sin preguntas."
         pisoLegal="Respaldada por la garantía Hotmart de 7 días"
       />
@@ -207,9 +211,9 @@ export default function LandingNiki() {
               'Nunca. Ves tu puntaje de presencia, pero siempre con lo que ya te funciona y [b]ajustes concretos con tono de coach[/b]. Y jamás opina de tu cuerpo o tu cara: solo de lo que puedes cambiar hoy.',
           },
           {
-            pregunta: 'Ya gasté plata en ropa antes y no cambió nada, ¿por qué esto sí?',
+            pregunta: 'Ya gasté dinero en ropa antes y no cambió nada, ¿por qué esto sí?',
             respuestaMarked:
-              'Porque el problema no era tu ropa: era no saber leer tu postura y tu actitud a tiempo. Eso es lo que Niki te muestra.',
+              'Porque el problema no era tu ropa: era no saber leer tu postura y tu actitud a tiempo. Y aquí arriesgas poco: [b]3 días gratis[/b], luego menos de $0.30 al día, con la Garantía del Primer Ajuste Honesto.',
           },
           {
             pregunta: '¿Es seguro pagar?',
@@ -225,13 +229,14 @@ export default function LandingNiki() {
         futurePacingMarked="Subes tu foto antes de salir, ves tus 3 ajustes en 30 segundos, y cruzas la puerta sabiendo que vas a destacar."
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
-        recap="Trial VIP de 3 días · Garantía del Primer Ajuste Honesto · Sin críticas crueles, nunca"
+        recap="Prueba VIP gratis de 3 días · Garantía del Primer Ajuste Honesto · Sin críticas crueles, nunca"
         psMarked="PS: Niki analiza tu outfit, postura y actitud en 30 segundos con el Check de Presencia — honesto, pero sin crueldad. Hoy entras con 3 días de prueba gratis y la Garantía del Primer Ajuste Honesto: si no te sirve, te devolvemos todo."
       />
 
       {/* 10. FOOTER LEGAL */}
       <FooterLegal
         appName="niki"
+        logo={<LogoAnillo lado={22} />}
         soporteEmail="hola@holaniki.com"
         enlaces={[
           { label: 'Privacidad', href: '/privacidad' },

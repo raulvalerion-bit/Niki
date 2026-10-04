@@ -133,3 +133,15 @@ outfit, su postura y su actitud antes de que sea tarde. El **Check de Presencia*
   (/reembolsos) · Aviso de IA (/aviso-ia) — contenido real con 47-LEGAL-FISCAL-Y-PRIVACIDAD.md
 - Soporte: hola@niki.app (⚠️ dominio placeholder hasta comprar el dominio real — pendiente en
   ESTADO.md)
+
+## Revisión 2026-10-04 — presupuesto de palabras (52) + anglicismos (VIGENTE: manda sobre lo de arriba)
+Recortes para cumplir la tabla de 52 sin perder el dolor/deseo trazado; el texto en producción vive en app/page.tsx.
+- H1 (10): `Revisa si tu outfit e imagen brillan en [acento]30 segundos[/acento]` — deseo #1 (destacar)
+- Prueba social / recap: "Trial VIP" → "Prueba VIP gratis de 3 días" (glosario: sin anglicismos)
+- Problema: 1) "¿Algo no te queda y nadie te lo dice por pena?" (dolor #1★) · 2) "¿No sabes cómo combinar tu ropa ni qué le favorece a tu cuerpo?" (dolor #2) · 3) "¿Te aterra arruinar una cita o entrevista por cómo te ves?" (dolor #3) · 4) "¿Tu mirada y tu postura transmiten debilidad y no sabes corregirlo?" (dolor #4)
+- Agitación: 1) "Pierdes horas dudando frente al espejo — y oportunidades por una presencia que no refleja lo que vales." · 3) "TikTok no conoce tu cuerpo; tus amigos dicen "te ves bien" por compromiso: nadie te dice la verdad." (objeción alternativas)
+- Solución paso 1: "Elige la ocasión: entrevista, primera cita, reunión, salida con amigos, cena formal o vacaciones."
+- Oferta título: "Empieza gratis. Luego, menos de $0.30 al día"
+- Features: "Historial completo de tus Checks" (antes "Scans")
+- "Glow-Up" SE QUEDA: es el nombre de la Racha Glow-Up dentro de la app y viene del lenguaje del avatar (FICHA-AVATAR deseo #5 "transformación Glow-Up").
+- Solución "Antes" (2026-10-04, pedido del revisor: no repetir la escena de "Hoy"): "Te enteras de que algo no funcionaba cuando ya estás en la cita." (dolor #3: arruinar el momento). Tarjeta Anual sin "menos de $0.30 al día" (ya está en el título y el desglose).

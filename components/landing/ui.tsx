@@ -6,9 +6,10 @@
 // alternancia base/elevado, reveal con reduced-motion): las secciones componen,
 // no re-estilan. Consume SOLO los tokens de tokens.css.
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type MouseEvent, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion, type Variants } from 'motion/react';
-import { Check } from 'lucide-react';
+import Link from 'next/link';
+import { Check, Loader2 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 /* ── <Accent> — la palabra que vende, en el acento del kit ─────────────────── */
@@ -145,27 +146,55 @@ export const VIEWPORT_ONCE = { once: true, amount: 0.2 } as const;
 /* ── <CtaButton> — el CTA vivo del kit: ≥52px, whileTap 0.97, sombra tintada.
    El texto sobre acento usa --bg: si tu FICHA-ARTE rompe el contraste AA ahí,
    ajusta los tokens, no el componente. ── */
+const MotionLink = motion.create(Link);
+
+/** Enlace de CTA con estado pendiente: en 3G la navegación tarda; el botón lo dice
+    (spinner + aria-busy) en vez de parecer colgado, y si a los 8 s no abrió, lo explica.
+    next/link precarga la ruta al entrar en vista. Los anclas (#oferta) no muestran carga. */
+export function EnlaceCta({ href, className, children }: { href: string; className: string; children: ReactNode }) {
+  const [estado, setEstado] = useState<'quieto' | 'yendo' | 'fallo'>('quieto');
+  useEffect(() => {
+    if (estado !== 'yendo') return;
+    const t = setTimeout(() => setEstado('fallo'), 8000);
+    return () => clearTimeout(t);
+  }, [estado]);
+  return (
+    <MotionLink
+      whileTap={{ scale: 0.97 }}
+      href={href}
+      aria-busy={estado === 'yendo' || undefined}
+      onClick={(e: MouseEvent) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0 || href.startsWith('#')) return;
+        setEstado('yendo');
+      }}
+      className={className}
+    >
+      {estado === 'yendo' && <Loader2 size={18} aria-hidden="true" className="mr-2 shrink-0 animate-spin" />}
+      {estado === 'fallo' ? <span role="status">Revisa tu conexión y vuelve a tocar</span> : children}
+    </MotionLink>
+  );
+}
+
 export function CtaButton({
   href,
   children,
-  alto = 52,
+  alto = 48,
   fullMobile = true,
 }: {
   href: string;
   children: ReactNode;
-  alto?: 52 | 56;
+  alto?: 48 | 56;
   fullMobile?: boolean;
 }) {
   return (
-    <motion.a
-      whileTap={{ scale: 0.97 }}
+    <EnlaceCta
       href={href}
-      className={`inline-flex items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] px-8 text-[17px] font-semibold text-[var(--bg)] shadow-[0_8px_30px_color-mix(in_oklab,var(--accent)_25%,transparent)] transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--accent)_88%,var(--text-primary))] [touch-action:manipulation] ${
-        alto === 56 ? 'h-14' : 'h-[52px]'
+      className={`inline-flex items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] px-5 text-center text-[16px] font-semibold leading-tight text-[var(--bg)] shadow-[0_8px_30px_color-mix(in_oklab,var(--accent)_25%,transparent)] transition-colors duration-150 hover:bg-[color-mix(in_oklab,var(--accent)_88%,var(--text-primary))] [touch-action:manipulation] ${
+        alto === 56 ? 'h-14' : 'h-12'
       } ${fullMobile ? 'w-full sm:w-auto' : ''}`}
     >
       {children}
-    </motion.a>
+    </EnlaceCta>
   );
 }
 
@@ -234,13 +263,12 @@ export function StickyCtaMobile({
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-x-0 bottom-0 z-40 border-t border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] bg-[var(--surface)] px-4 pt-2 pb-[max(12px,env(safe-area-inset-bottom))] md:hidden"
         >
-          <motion.a
-            whileTap={{ scale: 0.97 }}
+          <EnlaceCta
             href={ofertaVista ? href : `#${ofertaId}`}
             className="flex h-12 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] [touch-action:manipulation]"
           >
             {ofertaVista ? labelComercial : labelPre}
-          </motion.a>
+          </EnlaceCta>
         </motion.div>
       )}
     </AnimatePresence>

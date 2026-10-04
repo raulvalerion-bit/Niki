@@ -10,7 +10,7 @@
 
 import { motion } from 'motion/react';
 import { Star } from 'lucide-react';
-import { CheckCustom, CtaButton, Hairline, Kicker, SectionShell, useReveal, VIEWPORT_ONCE } from './ui';
+import { CheckCustom, CtaButton, EnlaceCta, Hairline, Kicker, SectionShell, useReveal, VIEWPORT_ONCE } from './ui';
 import { MarkedCopy, warnCopy, warnRango } from './MarkedCopy';
 
 export interface PlanOferta {
@@ -48,6 +48,8 @@ export interface OfertaProps {
     lineas: { resultado: string; valor: string }[];
     totalTachado: string;
     nota?: string;
+    /** Línea secundaria bajo la nota (p.ej. el cobro anual), 13px. */
+    notaSub?: string;
   };
   /** default 'oferta' — lo observa StickyCtaMobile. */
   id?: string;
@@ -141,6 +143,9 @@ export function Oferta({
               {stack.nota && (
                 <p className="mt-1 text-[16px] font-semibold text-[var(--text-primary)]">{stack.nota}</p>
               )}
+              {stack.notaSub && (
+                <p className="mt-0.5 text-[13px] text-[var(--text-secondary)]">{stack.notaSub}</p>
+              )}
             </div>
           </motion.div>
         )}
@@ -155,7 +160,7 @@ export function Oferta({
               </span>
             )}
             <Hairline emphasis surface="surface" className="shadow-[0_12px_36px_color-mix(in_oklab,var(--accent)_16%,transparent)]">
-              <div className="rounded-[var(--radius-card)] bg-[color-mix(in_oklab,var(--accent)_5%,transparent)] p-6 md:p-7">
+              <div className="rounded-[var(--radius-card)] bg-[color-mix(in_oklab,var(--accent)_5%,transparent)] p-5 md:p-7">
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="text-[18px] font-semibold text-[var(--text-primary)]">{anual.nombre}</h3>
                   {trialDias !== undefined && <TrialBadge dias={trialDias} />}
@@ -163,8 +168,9 @@ export function Oferta({
                 <div className="mt-4">
                   <Precio plan={anual} />
                   {/* El total anual SIEMPRE visible — regla de oro de 02C */}
-                  <p className="mt-1 text-[12px] text-[var(--text-secondary)]">{anual.totalAnual}</p>
-                  <p className="mt-2 text-[15px] font-semibold text-[var(--accent)]">{anual.ahorro}</p>
+                  <p className="mt-1 text-[13px] text-[var(--text-secondary)]">
+                    {anual.totalAnual} · <span className="font-semibold text-[var(--accent)]">{anual.ahorro}</span>
+                  </p>
                 </div>
                 <Features items={anual.features} origen="Oferta → anual" />
                 <div className="mt-6">
@@ -179,7 +185,7 @@ export function Oferta({
           {/* ── MENSUAL: card base, CTA outline — menos peso visual ── */}
           <motion.div
             variants={item}
-            className="rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--surface)] p-6 shadow-[var(--shadow-1)] md:p-7"
+            className="rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_28%,transparent)] bg-[var(--surface)] p-5 shadow-[var(--shadow-1)] md:p-7"
           >
             <div className="flex items-center justify-between gap-3">
               <h3 className="text-[18px] font-semibold text-[var(--text-primary)]">{mensual.nombre}</h3>
@@ -189,13 +195,12 @@ export function Oferta({
               <Precio plan={mensual} />
             </div>
             <Features items={mensual.features} origen="Oferta → mensual" />
-            <motion.a
-              whileTap={{ scale: 0.97 }}
+            <EnlaceCta
               href={mensual.ctaHref}
               className="mt-6 flex h-12 w-full items-center justify-center rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--accent)_45%,transparent)] text-[16px] font-semibold text-[var(--accent)] transition-colors duration-150 hover:bg-[var(--chip-bg)] [touch-action:manipulation]"
             >
               {mensual.ctaLabel}
-            </motion.a>
+            </EnlaceCta>
           </motion.div>
         </div>
       </motion.div>

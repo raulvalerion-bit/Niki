@@ -55,8 +55,8 @@ export function Garantia({ nombre, condicionMarked, pisoLegal, icon: Icono = Shi
                 <MarkedCopy text={condicionMarked} />
               </p>
               {pisoLegal && (
-                <p className="flex items-center gap-1.5 text-[13px] text-[var(--text-tertiary)]">
-                  <Lock size={14} aria-hidden="true" />
+                <p className="flex items-start gap-1.5 text-left text-[13px] leading-snug text-[var(--text-tertiary)]">
+                  <Lock size={14} aria-hidden="true" className="mt-[2px] shrink-0" />
                   {pisoLegal}
                 </p>
               )}

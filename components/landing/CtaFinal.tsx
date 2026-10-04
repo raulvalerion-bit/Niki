@@ -9,7 +9,7 @@
 // segundo texto más leído de la página (19 §9). Nada se interpone entre el PS
 // y el footer.
 
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { CtaButton, useReveal, VIEWPORT_ONCE } from './ui';
 import { MarkedCopy, warnCopy } from './MarkedCopy';
 
@@ -45,6 +45,7 @@ export function CtaFinal({
   warnCopy('CtaFinal → future pacing', futurePacingMarked, 24);
   if (psMarked !== undefined) warnCopy('CtaFinal → PS', psMarked, 55);
   const { contenedor, item } = useReveal();
+  const reduce = useReducedMotion();
 
   return (
     <section
@@ -73,7 +74,10 @@ export function CtaFinal({
       >
         {mascotaSrc && (
           <motion.img
-            variants={item}
+            initial={reduce ? false : { scale: 0.6, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={VIEWPORT_ONCE}
+            transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 240, damping: 16, delay: 0.15 }}
             src={mascotaSrc}
             alt=""
             aria-hidden="true"
@@ -109,8 +113,8 @@ export function CtaFinal({
         {recap && (
           <motion.p
             variants={item}
-            className="mt-3 text-[13px]"
-            style={{ color: 'color-mix(in oklab, var(--gold-text) 70%, transparent)' }}
+            className="mt-3 text-[13px] font-medium"
+            style={{ color: 'var(--gold-text)' }}
           >
             {recap}
           </motion.p>

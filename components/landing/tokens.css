@@ -41,6 +41,8 @@
                                    sólido en bloques celebratorios/aspiracionales puntuales
                                    (contraste "en 6 meses", "después", CTA final) */
   --gold-text: #3c2412;        /* texto oscuro sobre --gold, AA garantizado */
+  --captura-fondo: linear-gradient(180deg, #ffa15c 0%, #ffae64 100%); /* fondo de la app tras el anillo de
+                                   /capturas/resultado.jpg — tapa el anillo estático para animarlo (AnilloCaptura) */
   --error: #b3261e;            /* semántico de error (FICHA-ARTE no lo fijó al cerrar — "se
                                    definen en Sesión 3 con estados reales"; primer uso real:
                                    mensaje de código inválido en /login) */
