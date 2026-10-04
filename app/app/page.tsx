@@ -420,8 +420,8 @@ export default function Hoy() {
         <p className="mt-3 max-w-xs text-[15px] leading-[1.5] text-[var(--text-secondary)]">
           Mañana tienes 3 nuevos. Mientras, repasa tu último resultado y aplica tu ajuste clave antes de salir.
         </p>
-        <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={() => router.push('/app/historial')} className={`mt-8 max-w-xs ${BOTON_PRIMARIO}`}>
-          Ver mi historial
+        <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={() => router.push('/app/progreso')} className={`mt-8 max-w-xs ${BOTON_PRIMARIO}`}>
+          Ver mi progreso
         </motion.button>
         <motion.button type="button" whileTap={{ scale: 0.97 }} onClick={volverAlInicio} className="mt-3 h-11 px-4 text-[15px] font-semibold text-[var(--accent)]">
           Volver a Hoy

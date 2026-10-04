@@ -9,6 +9,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Camera, ChevronRight, Target, WifiOff } from 'lucide-react';
 import { AnilloPuntaje } from '@/components/app/ResultadoCheck';
 import { RachaGlowUp, type EstadoRacha } from '@/components/app/RachaGlowUp';
+import { MisionSemana } from '@/components/app/MisionSemana';
 import { LIMITE_CHECKS_DIA, type ResultadoCheck as Resultado } from '@/lib/ia/resultado';
 
 export type UltimoCheck = {
@@ -173,6 +174,11 @@ export function HoyInicio({
           <p className="text-[15px] leading-[1.45] text-[var(--text-primary)]">
             Con tu primer Check, Niki empieza a conocer tu estilo: cada foto afina un poco más tus consejos.
           </p>
+        </motion.div>
+      )}
+      {ultimo && (
+        <motion.div {...aparece(4)} className="mt-4 w-full">
+          <MisionSemana hoy={hoy} />
         </motion.div>
       )}
       {racha && (

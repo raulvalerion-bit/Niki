@@ -160,9 +160,9 @@ export async function POST(req: NextRequest) {
     }
 
     const resultado: ResultadoCheck = {
-      outfit: { nota: normalizarNota(r.outfit.nota), comentario: r.outfit.comentario },
-      postura: { nota: normalizarNota(r.postura.nota), comentario: r.postura.comentario },
-      actitud: { nota: normalizarNota(r.actitud.nota), comentario: r.actitud.comentario },
+      outfit: { nota: normalizarNota(r.outfit.nota), comentario: r.outfit.comentario, tema: r.outfit.tema },
+      postura: { nota: normalizarNota(r.postura.nota), comentario: r.postura.comentario, tema: r.postura.tema },
+      actitud: { nota: normalizarNota(r.actitud.nota), comentario: r.actitud.comentario, tema: r.actitud.tema },
       ajuste_clave: r.ajuste_clave,
       frase_cierre: r.frase_cierre,
       plan_alto_impacto: OCASIONES_ALTO_IMPACTO.includes(ocasion) ? r.plan_alto_impacto : null,

@@ -1,7 +1,8 @@
 'use client';
 
 // APP INTERNA DE NIKI — Paso 5 de la secuencia maestra (ESTADO.md).
-// 4 secciones (aprobadas en el Tour, vista-previa-app.html): Hoy / Historial /
+// 4 secciones (aprobadas en el Tour, vista-previa-app.html): Hoy / Progreso (antes Historial,
+// Ruta de Presencia 2026-10-04) /
 // Hábitos / Perfil. Este layout comparte el fondo degradé y la barra de
 // pestañas de abajo entre las 4 pantallas — mismo patrón de tokens que
 // onboarding/paywall/login.
@@ -12,12 +13,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, History, ListChecks, User } from 'lucide-react';
+import { ChartColumn, Home, ListChecks, User } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 const TABS: { href: string; label: string; icon: LucideIcon }[] = [
   { href: '/app', label: 'Hoy', icon: Home },
-  { href: '/app/historial', label: 'Historial', icon: History },
+  { href: '/app/progreso', label: 'Progreso', icon: ChartColumn },
   { href: '/app/habitos', label: 'Hábitos', icon: ListChecks },
   { href: '/app/perfil', label: 'Perfil', icon: User },
 ];
@@ -62,7 +63,10 @@ function BarraPestanas() {
       className="sticky bottom-0 mt-auto -mx-5 flex items-center justify-around border-t border-[color-mix(in_oklab,var(--text-tertiary)_15%,transparent)] bg-[var(--surface)] px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2"
     >
       {TABS.map(({ href, label, icon: Icono }) => {
-        const activa = href === '/app' ? pathname === '/app' : pathname.startsWith(href);
+        const activa =
+          href === '/app'
+            ? pathname === '/app'
+            : pathname.startsWith(href) || (href === '/app/progreso' && pathname.startsWith('/app/historial'));
         return (
           <Link
             key={href}

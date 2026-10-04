@@ -4,12 +4,28 @@ import { z } from 'zod';
 // exige a la IA como salida estructurada) y las pantallas (lo muestran).
 // Sin imports de servidor: se puede usar desde componentes 'use client'.
 
-const Eje = z.object({
-  nota: z.number().describe('Nota de 1 a 10 (entero).'),
-  comentario: z
-    .string()
-    .describe('1 frase corta, máx. 80 caracteres (2 renglones en el celular): lo que funciona + el ajuste concreto. Tuteo, cálido.'),
-});
+/** Tipo de ajuste que pide cada comentario (Ruta de Presencia, 2026-10-04): permite contar
+    qué le marca Niki más seguido a cada persona y convertirlo en recomendaciones y misiones. */
+export const TEMAS = {
+  outfit: ['talla', 'colores', 'formalidad', 'calzado', 'capas', 'accesorios', 'cuidado', 'ninguno'],
+  postura: ['hombros', 'cabeza', 'apoyo', 'brazos', 'espalda', 'ninguno'],
+  actitud: ['sonrisa', 'mirada', 'tension', 'energia', 'apertura', 'ninguno'],
+} as const;
+
+export type ClaveEje = keyof typeof TEMAS;
+export type TemaDe<E extends ClaveEje> = (typeof TEMAS)[E][number];
+
+function eje<E extends ClaveEje>(clave: E) {
+  return z.object({
+    nota: z.number().describe('Nota de 1 a 10 (entero).'),
+    comentario: z
+      .string()
+      .describe('1 frase corta, máx. 80 caracteres (2 renglones en el celular): lo que funciona + el ajuste concreto. Tuteo, cálido.'),
+    tema: z
+      .enum(TEMAS[clave] as unknown as [TemaDe<E>, ...TemaDe<E>[]])
+      .describe('Tipo del ajuste concreto que pide el comentario; "ninguno" si no pide ajuste.'),
+  });
+}
 
 export const MOTIVOS_FOTO = ['sin_persona', 'no_cuerpo_entero', 'muy_oscura', 'inapropiada', 'menor_de_edad'] as const;
 
@@ -18,9 +34,9 @@ export const ResultadoIA = z.object({
     .boolean()
     .describe('true solo si se ve a UNA persona adulta, de cuerpo entero o casi, con luz suficiente.'),
   motivo_invalida: z.enum(MOTIVOS_FOTO).nullable().describe('null si foto_valida es true.'),
-  outfit: Eje,
-  postura: Eje,
-  actitud: Eje,
+  outfit: eje('outfit'),
+  postura: eje('postura'),
+  actitud: eje('actitud'),
   ajuste_clave: z
     .string()
     .describe('EL cambio concreto que más sube su presencia hoy. Imperativo, máx. 90 caracteres.'),
@@ -40,7 +56,13 @@ export const ResultadoIA = z.object({
 export type ResultadoIA = z.infer<typeof ResultadoIA>;
 
 /** Lo que se guarda en `checks.resultado` y ve la pantalla. */
-export type ResultadoCheck = Pick<ResultadoIA, 'outfit' | 'postura' | 'actitud' | 'ajuste_clave' | 'frase_cierre'> & {
+/** Un eje tal como se guarda: `tema` falta en los Checks anteriores al 2026-10-04. */
+type EjeGuardado<E extends ClaveEje> = { nota: number; comentario: string; tema?: TemaDe<E> };
+
+export type ResultadoCheck = Pick<ResultadoIA, 'ajuste_clave' | 'frase_cierre'> & {
+  outfit: EjeGuardado<'outfit'>;
+  postura: EjeGuardado<'postura'>;
+  actitud: EjeGuardado<'actitud'>;
   /** Solo en ocasiones de Alto Impacto (y en Checks hechos desde el 2026-09-28). */
   plan_alto_impacto?: ResultadoIA['plan_alto_impacto'];
 };
