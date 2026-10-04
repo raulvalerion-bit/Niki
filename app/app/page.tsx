@@ -335,7 +335,7 @@ export default function Hoy() {
             <img src={preview} alt="" aria-hidden="true" className="size-full object-cover" />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src="/iconos/icono-4-esperando.gif" alt="" aria-hidden="true" className="size-10" />
+            <img src="/iconos/niki-pensando.png" alt="" aria-hidden="true" className="size-14" />
           )}
         </motion.span>
         <h1 className="mt-6 text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]">

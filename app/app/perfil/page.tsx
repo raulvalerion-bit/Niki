@@ -216,7 +216,7 @@ export default function Perfil() {
         className="mx-auto mt-6 w-full max-w-[360px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
       />
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/iconos/carita-ok.png" alt="" aria-hidden="true" className="mx-auto mt-3 h-24 w-auto" />
+      <img src="/iconos/niki-ok.png" alt="" aria-hidden="true" className="mx-auto mt-3 h-24 w-auto" />
     </div>
   );
 }
