@@ -37,4 +37,10 @@
 - Wordmark: "niki" en minúscula, Unbounded 700
 - Assets pendientes de generar en alta resolución: ícono de app (maskable 512×512), favicon, OG image — usar el prompt guardado en `propuestas-logo.html` (raíz del proyecto) con un generador de imágenes (ChatGPT/Gemini); mientras tanto el SVG plano de `propuestas-logo.html` sirve como asset real (cumple la receta: flat, sin sombras/degradé en el trazo, legible a 16px)
 
+## Mascota "Niki" 3D (aprobada por el dueño 2026-10-04 — reemplaza las caritas/emojis genéricos)
+- Base aprobada: generada en ChatGPT con el prompt A (tierno, vinil brillante) → original en `Z Rentas Inteligentes/Imagenes Emojis/Niki Emoji 1.png`; versión sin fondo 480px: `public/iconos/niki-feliz.png` (estado neutro/feliz)
+- Descripción canónica (código fuente del personaje): esfera brillante tipo vinil con degradé `#FF9457`→`#FFE9B0`, rodeada por aro grueso marrón chocolate `#3C2412` ABIERTO arriba a la derecha con un punto de luz dorado en el hueco; ojos grandes ovalados marrón oscuro con 2 brillos blancos, mejillas durazno, sonrisa abierta pequeña; vista frontal, sin texto
+- Estados pendientes (generar pasando `Niki Emoji 1.png` como referencia: "este mismo personaje, idéntico, ahora…"): OK (despedida Perfil), esperando (análisis), celebrando (racha/gemas), saludando (bienvenida), preocupado suave, dormido
+- Regla: logo pequeño/favicon/ícono de app siguen con el Anillo Niki plano; la mascota va en tamaños ≥40px
+
 ## Idioma UI: Español (LATAM, tuteo) · Fecha de cierre de la ficha: 2026-09-17 · Aprobada por el usuario: SÍ

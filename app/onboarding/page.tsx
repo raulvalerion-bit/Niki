@@ -432,7 +432,7 @@ function PantallaApertura({
 ¡Tu <span className="text-[var(--accent)]">Check de Presencia</span> antes de salir!
       </h1>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/iconos/icono-7-carita-apertura.gif" alt="" aria-hidden="true" className="mt-4 size-20" />
+      <img src="/iconos/niki-feliz.png" alt="" aria-hidden="true" className="mt-4 size-20 drop-shadow-[0_4px_8px_rgba(60,36,18,0.18)]" />
       <p className="mt-4 max-w-[320px] text-balance text-[16px] leading-[1.5] text-[var(--text-primary)]">
         Nadie te dice la verdad por pena. En 4 preguntas armamos tu Check; después, cada foto te dice en 30 segundos qué ajustar.
       </p>
@@ -703,12 +703,12 @@ function PantallaResultado({
       <h1 className="mt-4 text-balance text-[28px] font-bold leading-[1.15] text-[var(--text-primary)] [font-family:var(--font-display)]">
         ¡Tu <span className="text-[var(--accent)]">Check de Presencia</span> está listo!
       </h1>
-      {/* Celebración del hito (baseline #7): la carita entra con un rebote único. */}
+      {/* Celebración del hito (baseline #7): Niki entra con un rebote único. */}
       <motion.img
-        src="/iconos/carita-resultado.png"
+        src="/iconos/niki-feliz.png"
         alt=""
         aria-hidden="true"
-        className="mx-auto mt-2 size-12"
+        className="mx-auto mt-2 size-12 drop-shadow-[0_3px_6px_rgba(60,36,18,0.18)]"
         initial={reduce ? false : { scale: 0.5, rotate: -12, opacity: 0 }}
         animate={{ scale: 1, rotate: 0, opacity: 1 }}
         transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 320, damping: 14, delay: 0.15 }}
