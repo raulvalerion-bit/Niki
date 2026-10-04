@@ -141,7 +141,7 @@ export default function LandingNiki() {
 
       {/* 6. OFERTA — un plan (VIP Pro), anual y mensual; trial de 3 días SOLO en el Anual (igual que el paywall) */}
       <Oferta
-        tituloMarked="Empieza gratis. Luego, [acento]menos de $0.30 al día[/acento]"
+        tituloMarked="Empieza gratis. Luego, [acento]menos de $0.17 al día[/acento]"
         trialDias={3}
         trialEnMensual={false}
         stack={{
@@ -151,15 +151,15 @@ export default function LandingNiki() {
             { resultado: 'Racha Glow-Up de 21 días', valor: '$27' },
           ],
           totalTachado: '$186',
-          nota: 'Hoy: $8.99/mes',
-          notaSub: 'Se cobra $107.88 al año',
+          nota: 'Hoy: $4.99/mes',
+          notaSub: 'Se cobra $59.99 al año',
         }}
         anual={{
           nombre: 'Anual',
           badge: 'MÁS POPULAR',
-          precioMes: '$8.99',
-          totalAnual: 'Se cobra $107.88 al año',
-          ahorro: '~5 meses gratis',
+          precioMes: '$4.99',
+          totalAnual: 'Se cobra $59.99 al año',
+          ahorro: '~8 meses gratis',
           ctaLabel: 'Hacer mi Check gratis',
           ctaHref: '/onboarding?plan=anual',
           features: [
@@ -212,7 +212,7 @@ export default function LandingNiki() {
           {
             pregunta: 'Ya gasté dinero en ropa antes y no cambió nada, ¿por qué esto sí?',
             respuestaMarked:
-              'Porque el problema no era tu ropa: era no saber leer tu postura y tu actitud a tiempo. Y aquí arriesgas poco: [b]3 días gratis[/b], luego menos de $0.30 al día, con la Garantía del Primer Ajuste Honesto.',
+              'Porque el problema no era tu ropa: era no saber leer tu postura y tu actitud a tiempo. Y aquí arriesgas poco: [b]3 días gratis[/b], luego menos de $0.17 al día, con la Garantía del Primer Ajuste Honesto.',
           },
           {
             pregunta: '¿Es seguro pagar?',

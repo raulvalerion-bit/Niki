@@ -12,7 +12,7 @@ const COLOR = {
   borde: '#F3D9B5',
 };
 
-const PRECIO_ANUAL = '$107.88 USD';
+const PRECIO_ANUAL = '$59.99 USD';
 const URL_APP = 'https://holaniki.com/app';
 const URL_CANCELAR = 'https://consumer.hotmart.com';
 

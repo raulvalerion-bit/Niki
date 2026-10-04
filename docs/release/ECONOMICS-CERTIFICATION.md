@@ -20,10 +20,10 @@ Comisión Hotmart **[estimado: ~10% + tarifa fija ≈ US$0.50 por cobro, doc 18 
 
 | Plan | Precio lista | Neto estimado/mes | IA p95 | IA heavy | Margen p95 | Margen heavy |
 |---|---|---|---|---|---|---|
-| Anual US$107.88 (US$8.99/mes efectivo) | 8.99 | ≈ 8.05 | 0.91 | 1.45 | ≈ US$7.14 (89%) | ≈ US$6.60 (82%) |
+| Anual US$59.99 (US$4.99/mes efectivo, desde 2026-10-04; antes US$107.88) | 4.99 | ≈ 4.45 | 0.91 | 1.45 | ≈ US$3.54 (71%) | ≈ US$3.00 (60%) |
 | Mensual US$14.99 | 14.99 | ≈ 12.99 | 0.91 | 1.45 | ≈ US$12.08 (93%) | ≈ US$11.54 (89%) |
 
-Regla 30/02C (IA ≤ 20% del precio): **cumple** — p95 = 10% del Anual, 6% del Mensual.
+Regla 30/02C (IA ≤ 20% del precio): **cumple** — p95 = 18% del Anual, 6% del Mensual.
 
 ## Costos fijos (no por usuario)
 | Servicio | Plan hoy | Nota |
@@ -34,7 +34,7 @@ Regla 30/02C (IA ≤ 20% del precio): **cumple** — p95 = 10% del Anual, 6% del
 | Dominio | US$11.48/año | pagado |
 | Anthropic | prepago US$5 + límite US$20/mes | topes en la app: US$5/día, US$50/mes |
 
-Punto de equilibrio con Supabase Pro + Vercel Pro (US$45/mes): **≈ 6 suscriptores anuales** (US$7.14 de margen cada uno).
+Punto de equilibrio con Supabase Pro + Vercel Pro (US$45/mes): **≈ 13 suscriptores anuales** (US$3.54 de margen cada uno; antes 6 con el anual de US$107.88).
 
 ## Monedas
 El ledger guarda `amount_minor` + `currency` tal como llega (MXN, USD…). El panel no mezcla monedas. **Sin conciliación con el extracto de Hotmart todavía** (no hay ventas reales).

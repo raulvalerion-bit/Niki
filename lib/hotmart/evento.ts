@@ -167,7 +167,8 @@ export function decidir(p: PayloadHotmart, ahora = new Date()): Decision {
   const plan =
     planDesdeNombre(d.subscription?.plan?.name) ??
     (precioOferta?.currency_value === 'USD' && typeof precioOferta.value === 'number'
-      ? precioOferta.value >= 100
+      ? // Mensual $14.99; Anual $59.99 (desde 2026-10-04) o $107.88 (antes): de $30 para arriba es anual.
+        precioOferta.value >= 30
         ? 'anual'
         : precioOferta.value > 0
           ? 'mensual'

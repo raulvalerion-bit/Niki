@@ -52,6 +52,30 @@ describe('webhook de Hotmart → decisión', () => {
     expect(d.ledger).toEqual({ kind: 'sale', amountMinor: 233624, currency: 'MXN' });
   });
 
+  it('el anual de $59.99 (precio desde 2026-10-04) se reconoce como anual aunque falte el nombre del plan', () => {
+    const d = decidir(
+      evento('PURCHASE_APPROVED', {
+        price: { value: 1253.0, currency_value: 'MXN' },
+        original_offer_price: { value: 59.99, currency_value: 'USD' },
+      }),
+      AHORA
+    );
+    if (d.tipo !== 'aplicar') throw new Error('debía aplicarse');
+    expect(d.plan).toBe('anual');
+  });
+
+  it('el mensual de $14.99 sigue siendo mensual', () => {
+    const d = decidir(
+      evento('PURCHASE_APPROVED', {
+        price: { value: 330.0, currency_value: 'MXN' },
+        original_offer_price: { value: 14.99, currency_value: 'USD' },
+      }),
+      AHORA
+    );
+    if (d.tipo !== 'aplicar') throw new Error('debía aplicarse');
+    expect(d.plan).toBe('mensual');
+  });
+
   it('compra completa no cambia el acceso (mismo transaction_id que la aprobada)', () => {
     const d = decidir(evento('PURCHASE_COMPLETE', { price: { value: 14.99, currency_value: 'USD' } }), AHORA);
     if (d.tipo !== 'aplicar') throw new Error('debía aplicarse');
