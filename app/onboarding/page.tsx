@@ -424,9 +424,9 @@ function PantallaApertura({
     <div className="flex min-h-[85vh] flex-col items-center justify-center pt-8 text-center">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/iconos/banner-bienvenidos.png"
+        src="/iconos/banner-bienvenidos-v2.png"
         alt="¡Bienvenidos!"
-        className="w-full max-w-[280px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
+        className="w-full max-w-[360px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
       />
       <h1 className="mt-6 text-balance text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] [font-family:var(--font-display)]">
 ¡Tu <span className="text-[var(--accent)]">Check de Presencia</span> antes de salir!
