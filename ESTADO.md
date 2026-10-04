@@ -1,5 +1,5 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-10-04 (mascota Niki 3D, landing pulida, Ruta de Presencia construida) | Siguiente sesión: REDES SOCIALES para publicar Niki (el dueño trae lo que avanzó y sus dudas → 34-ADQUISICION / /adquisicion, /contenido-semanal). Pendientes antes de vender en serio: re-correr /pre-lanzamiento (estaba 57/100, varios bloqueantes ya cerrados el 2026-09-28 y 2026-10-03), velocidad (LCP 3.9 s > 2.5 s), puente D1-D7 y correos de pago fallido (dunning).
+Última actualización: 2026-10-04 (cierre de sesión) | Siguiente sesión: (1) Facebook: usuario holaniki_app + vincular Instagram; (2) publicar semana 1 (carrusel listo + guiar el 1er video en CapCut con contenido/semana-01/GUIONES.md); (3) AFILIADOS Hotmart (guía paso a paso + kit, archivo 34). Pendientes antes de vender en serio: re-correr /pre-lanzamiento, velocidad (LCP 3.9 s), puente D1-D7, dunning. Hecho hoy: mascota Niki 3D, landing pulida (33/40), Ruta de Presencia, precio anual $59.99, medición por red (?src=), 3 redes abiertas (@holaniki_app).
 
 ▶️ CIERRE DE SESIÓN 2026-09-22 — TODO GUARDADO Y SUBIDO (working tree limpio, `git push` al día,
 último commit `1abcc6d`). Resumen de lo que se hizo hoy:
