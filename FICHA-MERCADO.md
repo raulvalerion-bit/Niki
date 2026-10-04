@@ -12,6 +12,8 @@
 - **Precio elegido para esta app:** VIP Pro anual $8.99/mes ($107.88/año) · mensual $14.99/mes
 - **Desvío respecto al líder (Umax):** más barato — Umax cobra semanal ($3.99/sem ≈ $17.3/mes equivalente) sin trial; Niki cobra mensual/anual con trial de 3 días, lo que reduce fricción de entrada a cambio de un precio efectivo similar o menor
 - Razón del desvío: diferenciación explícita de Umax (queja #1: paywall antes de mostrar resultado, cobro semanal agresivo — ver FICHA-MODELO.md §5) — Niki ofrece más transparencia y trial
+- Competencia directa revisada 2026-10-04 (lista del dueño desde Google Play MX; rangos "por elemento" de Play = MXN): Facera AI $59-$399 MXN (App Store: Lite 5.99 €, Pro Max 44.99 €; facial, masculino) · Mogged $35-$639 MXN ($3.99-4.99/sem, $49.99-79.99/año USD; facial + hábitos 30 días; suscripción obligatoria) · UCHAD $16-$2,149 MXN ($5/sem o $30/año USD; facial masculino, "potencial"; quejas de paywall tras la experiencia gratis) | fuentes: apps.apple.com (UCHAD id6751680266, Facera id6770491352, Mogged id6748418458), realworldappeal.com/en/blog/mogged-app-review | fecha: 2026-10-04
+- Lectura: anuales de la competencia $30-80 USD (≈ MXN 540-1,440) vs Niki $107.88 (MXN 2,336 con IVA en Hotmart) → Niki anual MUY ARRIBA (1.4-3.6x); mensual Niki $14.99 ≈ semanal de ellos ($4-5/sem ≈ $17-21/mes) → punto medio. Decisión de precio PENDIENTE del dueño (propuesta en conversación 2026-10-04).
 
 ## 2. CICLO DE DECISIÓN
 - ¿Se compra el mismo día o se piensa? NO ENCONTRADO — se asume compra impulsiva (categoría de imagen/autoestima, tráfico de TikTok/Reels) por criterio, se revisa el 2027-03-17
