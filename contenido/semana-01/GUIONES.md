@@ -10,6 +10,8 @@
 pantalla → en "Texto a voz" elige una voz en español → música del catálogo en volumen bajo (10-20 %).
 Duración ideal: 15-25 segundos. Cada escena dura lo que tarda en leerse su texto.
 
+**Usuario en las 3 redes:** @holaniki_app · Nombre visible: "Niki · Check de Presencia"
+
 **Links para la biografía (uno por red, para saber de dónde vienen las ventas):**
 - TikTok: `holaniki.com/?src=tiktok`
 - Instagram: `holaniki.com/?src=ig`
