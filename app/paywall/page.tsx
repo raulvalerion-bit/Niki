@@ -15,7 +15,7 @@
 // Copy trazado a FICHA-AVATAR.md: titular = deseo #1 ("saber con 100% de
 // certeza que me veo impecable"); beneficios = deseos #1, #3 y #5; nota bajo
 // el CTA = objeciones #5 (garantía) y #6 (pago seguro). El monto anual real
-// ($107.88) se muestra SIEMPRE — nunca solo el precio mensualizado.
+// ($59.99) se muestra SIEMPRE — nunca solo el precio mensualizado.
 // Garantía: mismo nombre y condición que la landing; 7 días confirmados en el
 // panel de Hotmart (2026-09-27, FICHA-MERCADO.md §4) — sin fijar desde cuándo
 // cuentan, porque eso no está confirmado.
@@ -38,9 +38,9 @@ type PlanId = 'anual' | 'mensual';
 const PLANES: Record<PlanId, { nombre: string; precio: string; valor: number; detalle: string; badge?: string }> = {
   anual: {
     nombre: 'VIP Pro Anual',
-    precio: '$8.99',
-    valor: 8.99,
-    detalle: '$107.88/año · $0.30/día · ~5 meses gratis',
+    precio: '$4.99',
+    valor: 4.99,
+    detalle: '$59.99/año · $0.17/día · ~8 meses gratis',
     badge: '3 días gratis',
   },
   mensual: {
@@ -58,7 +58,7 @@ const PASOS_TRIAL = [
   // viene marcada, pero Hotmart muestra abajo el precio del año: se aclara aquí.
   { dia: 'Hoy', texto: 'Acceso completo por $0 (la prueba ya viene activada en Hotmart)', icon: Unlock },
   { dia: 'Hasta el final del Día 3', texto: 'Si no te convence, cancelas gratis desde Hotmart', icon: ShieldCheck },
-  { dia: 'Al terminar el Día 3', texto: 'Se cobran $107.88, solo si te quedas', icon: CreditCard },
+  { dia: 'Al terminar el Día 3', texto: 'Se cobran $59.99, solo si te quedas', icon: CreditCard },
 ];
 
 const BENEFICIOS = [

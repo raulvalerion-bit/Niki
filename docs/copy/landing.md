@@ -145,3 +145,4 @@ Recortes para cumplir la tabla de 52 sin perder el dolor/deseo trazado; el texto
 - Features: "Historial completo de tus Checks" (antes "Scans")
 - "Glow-Up" SE QUEDA: es el nombre de la Racha Glow-Up dentro de la app y viene del lenguaje del avatar (FICHA-AVATAR deseo #5 "transformación Glow-Up").
 - Solución "Antes" (2026-10-04, pedido del revisor: no repetir la escena de "Hoy"): "Te enteras de que algo no funcionaba cuando ya estás en la cita." (dolor #3: arruinar el momento). Tarjeta Anual sin "menos de $0.30 al día" (ya está en el título y el desglose).
+- PRECIO (2026-10-04, decisión del dueño tras comparar 8 competidores): Anual $4.99/mes · "Se cobra $59.99 al año" · ahorro "~8 meses gratis" · título "Empieza gratis. Luego, menos de $0.17 al día" (manda sobre lo de arriba).

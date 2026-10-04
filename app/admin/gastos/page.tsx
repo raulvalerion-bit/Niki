@@ -20,9 +20,9 @@ type Costo = {
   notas: string | null;
 };
 
-// Margen por cliente del plan Anual (US$8.99/mes menos comisión estimada de
+// Margen por cliente del plan Anual (US$4.99/mes desde 2026-10-04, menos comisión estimada de
 // Hotmart y el uso de IA p95) — docs/release/ECONOMICS-CERTIFICATION.md.
-const MARGEN_CLIENTE_ANUAL = 7.14;
+const MARGEN_CLIENTE_ANUAL = 3.54;
 
 const FRECUENCIA: Record<Costo['frecuencia'], string> = { unico: 'Una vez', mensual: 'Cada mes', anual: 'Cada año' };
 
