@@ -31,6 +31,7 @@ import { X, Sparkles, CalendarClock, Flame, Unlock, CreditCard, ShieldCheck, Che
 import { Hairline } from '@/components/landing/ui';
 import { crearClienteSupabase } from '@/lib/supabase/client';
 import { urlCheckout } from '@/lib/hotmart/checkout';
+import { leerOrigen } from '@/lib/origen';
 import { tieneAcceso } from '@/lib/acceso';
 
 type PlanId = 'anual' | 'mensual';
@@ -193,6 +194,8 @@ export default function Paywall() {
   const [planTocado, setPlan] = useState<PlanId | null>(null);
   const preferido = useSyncExternalStore(sinSuscripcion, leerPlanPreferido, () => null);
   const plan: PlanId = planTocado ?? preferido ?? 'anual';
+  // Red de origen (?src= de la biografía) para que Hotmart registre de dónde vino la venta.
+  const origen = useSyncExternalStore(sinSuscripcion, leerOrigen, () => null);
   const [yendo, setYendo] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
   const [sinPlan, setSinPlan] = useState(false);
@@ -378,7 +381,7 @@ export default function Paywall() {
       <div className="fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-[480px] bg-[linear-gradient(to_top,var(--bg)_72%,transparent)] px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-6">
         <motion.div whileTap={{ scale: 0.97 }}>
           <a
-            href={urlCheckout(plan, email)}
+            href={urlCheckout(plan, email, origen)}
             onClick={() => setYendo(true)}
             aria-busy={yendo}
             className="flex h-14 w-full items-center justify-center gap-2 rounded-[var(--radius-button)] bg-[var(--accent)] text-center text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)]"

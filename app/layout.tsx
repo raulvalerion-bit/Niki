@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Unbounded, Manrope } from "next/font/google";
 import "./globals.css";
+import { CapturaOrigen } from "@/components/CapturaOrigen";
 
 const unbounded = Unbounded({
   variable: "--font-unbounded",
@@ -43,7 +44,10 @@ export default function RootLayout({
       lang="es"
       className={`${unbounded.variable} ${manrope.variable} h-full antialiased`}
     >
-      <body className="min-h-dvh flex flex-col">{children}</body>
+      <body className="min-h-dvh flex flex-col">
+        <CapturaOrigen />
+        {children}
+      </body>
     </html>
   );
 }

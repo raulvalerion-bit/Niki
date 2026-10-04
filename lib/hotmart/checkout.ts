@@ -10,10 +10,11 @@ const OFERTA_POR_PLAN: Record<'anual' | 'mensual', string> = {
   mensual: 'f7q8q4tt',
 };
 
-export function urlCheckout(plan: 'anual' | 'mensual', email?: string | null): string {
+export function urlCheckout(plan: 'anual' | 'mensual', email?: string | null, origen?: string | null): string {
   const url = new URL(HOTMART_CHECKOUT_URL);
   url.searchParams.set('off', OFERTA_POR_PLAN[plan]);
-  url.searchParams.set('sck', `paywall_${plan}`);
+  // Con red de origen: "tiktok_paywall_anual"; sin ella: "paywall_anual".
+  url.searchParams.set('sck', origen ? `${origen}_paywall_${plan}` : `paywall_${plan}`);
   // Si ya tiene cuenta, se precarga su correo para que la compra quede en ESA
   // cuenta y no cree una segunda (18: el match es por correo).
   if (email) url.searchParams.set('email', email);
