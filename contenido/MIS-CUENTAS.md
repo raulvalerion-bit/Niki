@@ -14,7 +14,7 @@ guardarlas solo) o en una libreta física.
 | Red | Usuario | Cómo entras | Notas |
 |---|---|---|---|
 | Instagram | holaniki_app | Desde tu Instagram personal → "Cambiar de cuenta" → holaniki_app | Correo agregado: hola@holaniki.com |
-| Facebook | holanikiapp (facebook.com/holanikiapp) · Página "Niki - Check de Presencia" | Con tu Facebook personal → "Ver todos los perfiles" → Niki | Tú eres el administrador de la página |
+| Facebook | holanikiapp (facebook.com/holanikiapp) · Página "Niki - Check de Presencia" | Con tu Facebook personal → "Ver todos los perfiles" → Niki | Tú eres el administrador de la página · Instagram vinculado (publica en IG y marca "Compartir en Facebook") |
 | TikTok | holaniki_app | Usuario holaniki_app + su contraseña propia (o código QR desde el celular con la cuenta de Niki activa) | Nombre visible editable hasta el 11-oct-2026 |
 
 ## Servicios de la app (todos con tu Gmail personal salvo que se indique)
