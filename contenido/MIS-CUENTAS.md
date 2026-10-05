@@ -10,11 +10,11 @@ guardarlas solo) o en una libreta física.
 | hola@holaniki.com | Correo público de Niki: redes, soporte, garantía | Se reenvía a tu Gmail personal |
 | acceso@mail.holaniki.com | Remitente de los correos automáticos de la app (acceso, aviso de fin de prueba) | Solo envía, no recibe |
 
-## Redes sociales (usuario: @holaniki_app en las 3)
+## Redes sociales (@holaniki_app en Instagram y TikTok · holanikiapp en Facebook, que no permite "_")
 | Red | Usuario | Cómo entras | Notas |
 |---|---|---|---|
 | Instagram | holaniki_app | Desde tu Instagram personal → "Cambiar de cuenta" → holaniki_app | Correo agregado: hola@holaniki.com |
-| Facebook | Página "Niki - Check de Presencia" | Con tu Facebook personal → "Ver todos los perfiles" → Niki | Tú eres el administrador de la página |
+| Facebook | holanikiapp (facebook.com/holanikiapp) · Página "Niki - Check de Presencia" | Con tu Facebook personal → "Ver todos los perfiles" → Niki | Tú eres el administrador de la página |
 | TikTok | holaniki_app | Usuario holaniki_app + su contraseña propia (o código QR desde el celular con la cuenta de Niki activa) | Nombre visible editable hasta el 11-oct-2026 |
 
 ## Servicios de la app (todos con tu Gmail personal salvo que se indique)
