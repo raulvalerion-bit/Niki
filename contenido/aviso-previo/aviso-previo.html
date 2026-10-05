@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Aviso previo · Niki llega</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --text: #3C2412; --text-2: #6B4A32; --accent: #7A3E1D; --surface: #FFF3DE; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #222; font-family: 'Manrope', monospace; }
+  .slide { width: 1080px; height: 1350px; position: relative; overflow: hidden; color: var(--text);
+           background: linear-gradient(180deg, #FF9457 0%, #FFB768 42%, #FFD98A 78%, #FFE9B0 100%);
+           padding: 96px 88px; display: flex; flex-direction: column; margin-bottom: 24px; }
+  .slide.vertical { height: 1920px; padding: 220px 88px 96px; }
+  .slide::before, .slide::after { content: ''; position: absolute; border-radius: 50%; border: 6px solid rgb(122 62 29 / .14); }
+  .slide::before { width: 620px; height: 620px; top: -260px; right: -240px; }
+  .slide::after { width: 620px; height: 620px; top: -340px; right: -320px; border-color: rgb(122 62 29 / .08); }
+  .marca { display: flex; align-items: center; gap: 16px; font-family: 'Unbounded', monospace; font-weight: 700; font-size: 36px; position: relative; }
+  .chip { width: 64px; height: 64px; border-radius: 18px; background: linear-gradient(160deg,#FF9457,#FFD98A); display: grid; place-items: center; box-shadow: 0 6px 16px rgb(140 60 20 / .2); }
+  .etiqueta { margin-top: 64px; width: fit-content; background: var(--surface); color: var(--accent); border-radius: 999px;
+              padding: 14px 28px; font-size: 28px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+              box-shadow: 0 10px 24px -12px rgb(140 60 20 / .4); position: relative; }
+  h1 { font-family: 'Unbounded', monospace; font-weight: 800; font-size: 96px; line-height: 1.04; letter-spacing: -0.02em; margin-top: 40px; position: relative; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .sub { font-size: 42px; line-height: 1.35; margin-top: 32px; font-weight: 600; color: var(--text-2); position: relative; max-width: 860px; }
+  .sub b { color: var(--text); font-weight: 700; }
+  .niki { position: absolute; right: 40px; bottom: 40px; width: 520px; filter: drop-shadow(0 16px 24px rgb(60 36 18 / .25)); }
+  .vertical .niki { width: 640px; right: 220px; bottom: 300px; }
+  .pie { position: absolute; left: 88px; bottom: 88px; font-size: 32px; font-weight: 700; color: var(--text-2); }
+  .vertical .pie { bottom: 200px; }
+  .cta { margin-top: 56px; background: var(--accent); color: #FFF3DE; border-radius: 32px; padding: 36px 48px; font-size: 44px; font-weight: 700; width: fit-content; position: relative; }
+  .url { font-family: 'Unbounded', monospace; font-size: 40px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- ============ PUBLICACIONES 4:5 (1080x1350) ============ -->
+
+<section class="slide" id="dia1">
+  <div class="marca"><span class="chip"><svg width="32" height="32" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="19" stroke="#3C2412" stroke-width="7" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="28" transform="rotate(-90 26 26)"/><circle cx="26" cy="7.2" r="5" fill="#3C2412"/></svg></span>niki</div>
+  <span class="etiqueta">Algo se viene</span>
+  <h1>Muy pronto estaré <em>contigo.</em></h1>
+  <p class="sub">Te voy a decir <b>cómo te ves de verdad</b>… y cómo verte aún mejor.</p>
+  <img class="niki" src="niki/niki-saludando.png" alt="">
+  <p class="pie">¡Prepárate! · @holaniki_app</p>
+</section>
+
+<section class="slide" id="dia2">
+  <div class="marca"><span class="chip"><svg width="32" height="32" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="19" stroke="#3C2412" stroke-width="7" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="28" transform="rotate(-90 26 26)"/><circle cx="26" cy="7.2" r="5" fill="#3C2412"/></svg></span>niki</div>
+  <span class="etiqueta">Llego mañana</span>
+  <h1>¿Alguna vez saliste <em>sin saber</em> si te veías bien?</h1>
+  <p class="sub">Yo te lo digo <b>antes de salir</b>. Con la verdad, sin críticas crueles.</p>
+  <img class="niki" src="niki/niki-pensando.png" alt="" style="width:460px">
+  <p class="pie">Mañana llego · @holaniki_app</p>
+</section>
+
+<section class="slide" id="dia3">
+  <div class="marca"><span class="chip"><svg width="32" height="32" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="19" stroke="#3C2412" stroke-width="7" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="28" transform="rotate(-90 26 26)"/><circle cx="26" cy="7.2" r="5" fill="#3C2412"/></svg></span>niki</div>
+  <span class="etiqueta">Ya estoy aquí</span>
+  <h1>¡Ya <em>llegué!</em></h1>
+  <p class="sub">Sube tu foto, dime a dónde vas y en <b>30 segundos</b> te digo qué ajustar.</p>
+  <div class="cta">Haz tu Check gratis</div>
+  <img class="niki" src="niki/niki-celebrando.png" alt="" style="width:480px">
+  <p class="pie url" style="color:var(--text)">holaniki.com</p>
+</section>
+
+<!-- ============ HISTORIAS 9:16 (1080x1920) ============ -->
+
+<section class="slide vertical" id="historia1">
+  <div class="marca"><span class="chip"><svg width="32" height="32" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="19" stroke="#3C2412" stroke-width="7" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="28" transform="rotate(-90 26 26)"/><circle cx="26" cy="7.2" r="5" fill="#3C2412"/></svg></span>niki</div>
+  <span class="etiqueta">Algo se viene</span>
+  <h1>Muy pronto estaré <em>contigo.</em></h1>
+  <p class="sub">Te voy a decir <b>cómo te ves de verdad</b>… y cómo verte aún mejor.</p>
+  <img class="niki" src="niki/niki-saludando.png" alt="">
+  <p class="pie">¡Prepárate!</p>
+</section>
+
+<section class="slide vertical" id="historia2">
+  <div class="marca"><span class="chip"><svg width="32" height="32" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="19" stroke="#3C2412" stroke-width="7" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="28" transform="rotate(-90 26 26)"/><circle cx="26" cy="7.2" r="5" fill="#3C2412"/></svg></span>niki</div>
+  <span class="etiqueta">Llego mañana</span>
+  <h1>¿Alguna vez saliste <em>sin saber</em> si te veías bien?</h1>
+  <p class="sub">Yo te lo digo <b>antes de salir</b>. Con la verdad, sin críticas crueles.</p>
+  <img class="niki" src="niki/niki-pensando.png" alt="">
+  <p class="pie">Mañana llego</p>
+</section>
+
+<section class="slide vertical" id="historia3">
+  <div class="marca"><span class="chip"><svg width="32" height="32" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="19" stroke="#3C2412" stroke-width="7" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="28" transform="rotate(-90 26 26)"/><circle cx="26" cy="7.2" r="5" fill="#3C2412"/></svg></span>niki</div>
+  <span class="etiqueta">Ya estoy aquí</span>
+  <h1>¡Ya <em>llegué!</em></h1>
+  <p class="sub">Sube tu foto, dime a dónde vas y en <b>30 segundos</b> te digo qué ajustar.</p>
+  <div class="cta">Haz tu Check gratis</div>
+  <img class="niki" src="niki/niki-celebrando.png" alt="">
+  <p class="pie url" style="color:var(--text)">holaniki.com</p>
+</section>
+
+</body>
+</html>
