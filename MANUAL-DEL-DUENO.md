@@ -1,6 +1,6 @@
 # Manual del dueño — Niki
 
-Todo lo que necesitas para operar tu app sin depender de nadie. Escrito el 2026-09-28.
+Todo lo que necesitas para operar tu app sin depender de nadie. Escrito el 2026-09-28 · actualizado el 2026-10-06.
 
 ## 1. Tus cuentas (dónde vive cada pieza)
 | Servicio | Para qué sirve | Dónde entras |
@@ -28,6 +28,7 @@ Entra a **holaniki.com/admin** con tu correo. Ahí ves:
 - **Un cliente quiere borrar su cuenta** → él mismo puede: Perfil → "Eliminar mi cuenta". Recuérdale cancelar primero en Hotmart.
 - **Cambiar el límite de Checks al día** → es un número en el código (`LIMITE_CHECKS_DIA` en `lib/ia/resultado.ts`) y en los textos de la página de ventas y de planes. Pídeselo al agente con `/precios`.
 - **Subir el tope de gasto de IA** → Vercel → Settings → Environment Variables → `AI_DAILY_BUDGET_USD` (hoy 5) y `AI_MONTHLY_BUDGET_USD` (hoy 50) → luego vuelve a publicar (Deployments → Redeploy).
+- **Apagar los análisis de IA de emergencia** (por ejemplo, si ves un gasto raro) → pon `AI_DAILY_BUDGET_USD` en **0** y vuelve a publicar. Los clientes ven un aviso amable de pausa y no se gasta un centavo más. Para reactivar, regrésalo a 5.
 
 ## 4. Si algo sale mal (mini manual de emergencias)
 | Qué ves | Qué significa | Qué haces |
@@ -39,8 +40,8 @@ Entra a **holaniki.com/admin** con tu correo. Ahí ves:
 | Un cliente reclama un cobro | Disputa | Hotmart → la venta; si procede, reembolsa |
 
 ## 5. Costos mensuales hoy
-- IA: ~1 centavo de dólar por Check (medido). Máximo por cliente: ~US$0.91 al mes.
-- Supabase y Vercel: gratis hoy. **Antes de vender en serio conviene Supabase Pro (US$25/mes, con respaldos) y Vercel Pro (US$20/mes; el plan gratis no permite uso comercial).**
+- IA: ~1.1 centavos de dólar por Check (medido en 3 análisis reales). Máximo por cliente (3 Checks al día todo el mes): ~US$1.13 al mes.
+- Supabase Pro (US$25/mes, con respaldos diarios) y Vercel Pro (US$20/mes): activos desde el 2026-09-28.
 - Dominio: US$11.48 al año.
 
 ## 6. Qué NO tocar

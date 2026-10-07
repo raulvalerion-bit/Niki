@@ -24,8 +24,13 @@ const Body = z.object({
 
 const MAX_INTENTOS_DIA = 6; // incluye fotos que no sirvieron (anti-abuso)
 const COSTO_RESERVA_USD = 0.05; // techo por análisis (~2x el costo esperado)
-const TOPE_DIA_USD = Number(process.env.AI_DAILY_BUDGET_USD) || 5;
-const TOPE_MES_USD = Number(process.env.AI_MONTHLY_BUDGET_USD) || TOPE_DIA_USD * 10;
+// "0" es válido: es el interruptor para pausar todos los análisis (kill-switch).
+function topeUsd(valor: string | undefined, porDefecto: number): number {
+  const n = Number(valor);
+  return valor?.trim() && Number.isFinite(n) && n >= 0 ? n : porDefecto;
+}
+const TOPE_DIA_USD = topeUsd(process.env.AI_DAILY_BUDGET_USD, 5);
+const TOPE_MES_USD = topeUsd(process.env.AI_MONTHLY_BUDGET_USD, TOPE_DIA_USD * 10);
 const MAX_BYTES_FOTO = 5 * 1024 * 1024;
 
 function zonaValida(z: string | undefined | null): string | null {
