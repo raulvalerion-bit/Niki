@@ -32,6 +32,7 @@ import { Hairline } from '@/components/landing/ui';
 import { crearClienteSupabase } from '@/lib/supabase/client';
 import { urlCheckout } from '@/lib/hotmart/checkout';
 import { leerOrigen } from '@/lib/origen';
+import { eventoEmbudo } from '@/lib/analitica';
 import { tieneAcceso } from '@/lib/acceso';
 
 type PlanId = 'anual' | 'mensual';
@@ -41,7 +42,7 @@ const PLANES: Record<PlanId, { nombre: string; precio: string; valor: number; de
     nombre: 'VIP Pro Anual',
     precio: '$4.99',
     valor: 4.99,
-    detalle: '$59.99/año · $0.17/día · ~8 meses gratis',
+    detalle: '$59.99/año · menos de $0.17/día · ~8 meses gratis',
     badge: '3 días gratis',
   },
   mensual: {
@@ -253,7 +254,7 @@ export default function Paywall() {
 
   return (
     <main
-      className="relative mx-auto flex min-h-dvh w-full max-w-[480px] flex-col overflow-x-hidden px-5 pb-[calc(152px+env(safe-area-inset-bottom))] text-[var(--text-primary)] [font-family:var(--font-body)]"
+      className="relative mx-auto flex min-h-dvh w-full max-w-[480px] flex-col overflow-x-hidden px-5 pb-[calc(160px+env(safe-area-inset-bottom))] text-[var(--text-primary)] [font-family:var(--font-body)]"
       style={{ background: 'var(--bg-gradient)' }}
     >
       <div className="flex items-center justify-between">
@@ -378,11 +379,14 @@ export default function Paywall() {
       </nav>
 
       {/* CTA fijo abajo: siempre visible sin importar el scroll (safe-area incluida). */}
-      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-[480px] bg-[linear-gradient(to_top,var(--bg)_72%,transparent)] px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-6">
+      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-[480px] bg-[linear-gradient(to_top,var(--bg)_85%,transparent)] px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-8">
         <motion.div whileTap={{ scale: 0.97 }}>
           <a
             href={urlCheckout(plan, email, origen)}
-            onClick={() => setYendo(true)}
+            onClick={() => {
+              eventoEmbudo('paywall_pago_click', { plan, origen: origen ?? 'directo' });
+              setYendo(true);
+            }}
             aria-busy={yendo}
             className="flex h-14 w-full items-center justify-center gap-2 rounded-[var(--radius-button)] bg-[var(--accent)] text-center text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)]"
           >
@@ -398,14 +402,18 @@ export default function Paywall() {
             )}
           </a>
         </motion.div>
-        {plan === 'anual' && (
-          <p className="mt-3 text-center text-[13px] leading-[1.4] text-[var(--text-primary)]">
-            <span className="font-semibold">Hoy pagas $0</span> (Hotmart muestra el precio anual)
-          </p>
-        )}
-        <p className={`${plan === 'anual' ? 'mt-1' : 'mt-3'} text-center text-[13px] leading-[1.4] text-[var(--text-primary)]`}>
+        <p className="mt-3 text-center text-[13px] leading-[1.4] text-[var(--text-primary)]">
+          {plan === 'anual' ? (
+            <>
+              <span className="font-semibold">Hoy pagas $0</span> · Pago seguro con Hotmart
+            </>
+          ) : (
+            'Se renueva cada mes · cancelas cuando quieras'
+          )}
+        </p>
+        <p className="mt-1 text-center text-[13px] leading-[1.4] text-[var(--text-primary)]">
           <ShieldCheck size={14} color="var(--text-primary)" aria-hidden="true" className="mr-1 inline-block align-[-2px]" />
-          <span className="font-semibold">Garantía Ajuste Honesto de 7 días</span> · Pago seguro
+          <span className="font-semibold">Garantía del Primer Ajuste Honesto · 7 días</span>
         </p>
       </div>
     </main>

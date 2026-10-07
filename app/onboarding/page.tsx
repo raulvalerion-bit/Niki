@@ -36,7 +36,8 @@
 
 import { useMemo, useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import Link from 'next/link';
-import { Hairline } from '@/components/landing/ui';
+import { EnlaceCta, Hairline } from '@/components/landing/ui';
+import { eventoEmbudo } from '@/lib/analitica';
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react';
 import {
   ArrowLeft,
@@ -696,7 +697,7 @@ function PantallaResultado({
   const tiempoLabel = TIEMPO_LABEL_CORTO[tiempoValor] ?? 'tu ritmo';
   const reduce = useReducedMotion();
   return (
-    <div className="pb-24 pt-2 text-center">
+    <div className="pb-32 pt-2 text-center">
       <span className="inline-block rounded-full bg-[var(--chip-bg)] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--accent)]">
         Hecho con tus 4 respuestas
       </span>
@@ -708,7 +709,7 @@ function PantallaResultado({
         src="/iconos/niki-celebrando.webp"
         alt=""
         aria-hidden="true"
-        className="mx-auto mt-2 size-12 drop-shadow-[0_3px_6px_rgba(60,36,18,0.18)]"
+        className="mx-auto mt-4 size-20 drop-shadow-[0_3px_6px_rgba(60,36,18,0.18)]"
         initial={reduce ? false : { scale: 0.5, rotate: -12, opacity: 0 }}
         animate={{ scale: 1, rotate: 0, opacity: 1 }}
         transition={reduce ? { duration: 0 } : { type: 'spring', stiffness: 320, damping: 14, delay: 0.15 }}
@@ -728,26 +729,6 @@ function PantallaResultado({
         </Hairline>
       </motion.div>
 
-      <p className="mt-6 text-[14px] font-semibold text-[var(--text-primary)]">
-        Lo que Niki va a revisar en tu foto:
-      </p>
-      <ul className="mt-3 grid grid-cols-3 gap-2">
-        {['Outfit', 'Postura', 'Actitud'].map((eje) => {
-          return (
-            <li
-              key={eje}
-              className="flex flex-col items-center gap-2 px-2 py-1"
-            >
-              <span className="flex items-center gap-1.5 text-[13px] font-medium text-[var(--text-primary)]">
-                {eje}
-              </span>
-              <span className="flex size-8 items-center justify-center rounded-full bg-[color-mix(in_oklab,var(--accent)_12%,transparent)]">
-                <Lock size={14} color="var(--accent)" aria-label="Se desbloquea al activar tu plan" />
-              </span>
-            </li>
-          );
-        })}
-      </ul>
       <p className="mt-4 text-center text-[13px] text-[var(--text-primary)]">
         <Flame size={14} color="var(--accent)" aria-hidden="true" className="mr-1 inline-block align-[-2px]" />
         <span>
@@ -755,12 +736,25 @@ function PantallaResultado({
         </span>
       </p>
 
+      <p className="mt-6 text-[14px] font-semibold text-[var(--text-primary)]">
+        Lo que Niki va a revisar en tu foto:
+      </p>
+      <ul className="mt-2 flex justify-center gap-2" aria-label="Se desbloquea al activar tu plan">
+        {['Outfit', 'Postura', 'Actitud'].map((eje) => (
+          <li
+            key={eje}
+            className="flex items-center gap-1 rounded-full bg-[color-mix(in_oklab,var(--accent)_12%,transparent)] px-3 py-1 text-[13px] font-medium text-[var(--text-primary)]"
+          >
+            <Lock size={12} color="var(--accent)" aria-hidden="true" />
+            {eje}
+          </li>
+        ))}
+      </ul>
       {/* CTA fijo abajo: el paso al plan siempre visible, también en pantallas de 667px. */}
-      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-[480px] bg-[linear-gradient(to_top,color-mix(in_oklab,var(--sunset-2)_40%,var(--bg))_55%,transparent)] px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-6">
-      <motion.div whileTap={{ scale: 0.97 }}>
-        <Link
+      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto w-full max-w-[480px] bg-[linear-gradient(to_top,color-mix(in_oklab,var(--sunset-2)_40%,var(--bg))_30%,transparent)] px-5 pb-[max(16px,env(safe-area-inset-bottom))] pt-6">
+        <EnlaceCta
           href="/paywall"
-          onClick={() => {
+          alNavegar={() => {
             try {
               localStorage.removeItem(CLAVE_BORRADOR);
             } catch {
@@ -770,8 +764,7 @@ function PantallaResultado({
           className="flex h-14 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)] text-[16px] font-semibold text-[var(--bg)] shadow-[var(--shadow-2)]"
         >
           Desbloquear mi Check de Presencia
-        </Link>
-      </motion.div>
+        </EnlaceCta>
       </div>
     </div>
   );
@@ -855,6 +848,7 @@ export default function Onboarding() {
       : `Retomar mi Check · ${PREGUNTAS.filter((q) => ORDEN.indexOf(q) < borrador.pasoIdx).length} de 4 respondidas`;
 
   function iniciar() {
+    eventoEmbudo('onboarding_inicio', { retoma: borrador ? 'si' : 'no' });
     if (borrador) {
       setRespuestas(borrador.respuestas);
       setPasoIdx(borrador.pasoIdx);
@@ -887,6 +881,7 @@ export default function Onboarding() {
   // justo después del primer inicio de sesión (ver app/login/page.tsx).
   useEffect(() => {
     if (paso !== 'resultado') return;
+    eventoEmbudo('onboarding_resultado', { ocasion: String(respuestas.ocasion ?? '') });
     try {
       localStorage.setItem('niki_onboarding_respuestas', JSON.stringify(respuestas));
     } catch {
@@ -992,7 +987,7 @@ export default function Onboarding() {
           {paso === 'ocasion' && (
             <PantallaPregunta
               pregunta="¿Para qué momento necesitas a Niki?"
-              microCopy="Así ajustamos tus tres ejes de presencia e imagen."
+              microCopy="Así Niki adapta tu outfit, postura y actitud a ese momento."
               icon={Compass}
               opciones={OCASIONES}
               columnas={2}

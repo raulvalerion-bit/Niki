@@ -151,7 +151,7 @@ const MotionLink = motion.create(Link);
 /** Enlace de CTA con estado pendiente: en 3G la navegación tarda; el botón lo dice
     (spinner + aria-busy) en vez de parecer colgado, y si a los 8 s no abrió, lo explica.
     next/link precarga la ruta al entrar en vista. Los anclas (#oferta) no muestran carga. */
-export function EnlaceCta({ href, className, children }: { href: string; className: string; children: ReactNode }) {
+export function EnlaceCta({ href, className, children, alNavegar }: { href: string; className: string; children: ReactNode; alNavegar?: () => void }) {
   const [estado, setEstado] = useState<'quieto' | 'yendo' | 'fallo'>('quieto');
   useEffect(() => {
     if (estado !== 'yendo') return;
@@ -165,6 +165,7 @@ export function EnlaceCta({ href, className, children }: { href: string; classNa
       aria-busy={estado === 'yendo' || undefined}
       onClick={(e: MouseEvent) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0 || href.startsWith('#')) return;
+        alNavegar?.();
         setEstado('yendo');
       }}
       className={className}

@@ -1,47 +1,44 @@
 # VEREDICTO revisor-visual — paywall
-Fecha: 2026-09-27 16:00
+Fecha: 2026-10-06 13:00
 Screenshot: docs/revisiones/paywall-375.png
 Usabilidad: 36/40
 Craft: 16/20
-Copy (si vende): 18/20
+Copy (si vende): 17/20
 Fidelidad (si hubo referencia): N-A
 Veredicto: LISTA
 Top defectos: ver lista
 
 Detalle usabilidad: h1:4 h2:3 h3:4 h4:4 h5:4 h6:4 h7:3 h8:3 h9:3 h10:4
+Detalle copy: idea:3 especificidad:3 emoción:4 oferta:3 acción:4
 Detalle craft: jerarquía:3 profundidad:4 identidad:3 movimiento:3 encaje:3
-Detalle copy: idea:3 especificidad:3 emoción:4 oferta:4 acción:4
-Otros screenshots revisados: docs/revisiones/paywall-375-scroll1.png, docs/revisiones/paywall-375-scroll2.png, docs/revisiones/paywall-375-mensual.png
-Código revisado: app/paywall/page.tsx, app/page.tsx y app/onboarding/page.tsx (nombres de la garantía y del desafío)
-Tipo de pasada: tercera pasada de hoy, tras corregir los defectos 1-4 de la segunda.
+Otros screenshots revisados: docs/revisiones/repaso-2026-10-06/paywall-pliegue-375.png, docs/revisiones/repaso-2026-10-06/paywall-mensual-375.png
+Código revisado: app/paywall/page.tsx (líneas 44, 256, 381, 408)
+Tipo de pasada: segunda pasada de hoy, tras corregir los defectos 1-4 de la primera.
 
-## TOP DEFECTOS (ninguno bloquea; pasa el gate por el mínimo exacto)
-1. [Escala tipográfica] Hay 4 tamaños (28/20/16/13) y el máximo son 3. Se acepta la razón (a 28px se parte "VIP Pro Mensual"), pero jerarquía se queda en 3. → Fix: si se rediseña la tarjeta, probar el precio a 16px bold display.
-2. [Primer pliegue, borde inferior] Detrás del degradé de la franja fija asoma el borde vacío de la tarjeta de prueba, y se ve como un corte (encaje 3). → Fix: subir el tramo opaco del degradé de la franja (p. ej. `var(--bg)_85%`) o dejar un espacio de 24px más antes de la tarjeta.
-3. [Garantía: nota bajo el botón frente a la tarjeta, page.tsx:380 frente a :341] Dos variantes del nombre: "Garantía Ajuste Honesto" y "Garantía del Primer Ajuste Honesto" (la landing usa la segunda). Solo lo nota quien revisa con lupa. → Fix: "Garantía Primer Ajuste Honesto · 7 días" bajo el botón, si cabe en 1 línea a 13px.
-4. [Tarjetas de plan] No hay ancla de valor: la landing muestra un stack tachado de $186 y el paywall no lo recuerda (especificidad 3). → Fix: añadir bajo el Anual, en 13px, "Valor $186 · hoy $107.88/año".
-5. ["$0" dicho dos veces: paso "Hoy" de la tarjeta de prueba y línea bajo el botón] Redundancia leve (h8 3). → Fix: dejar el paso "Hoy" en "Acceso completo, sin cobro" y el "$0" solo junto al botón.
+## TOP DEFECTOS (ninguno baja el gate; pasa en el mínimo exacto: 36/40 y 16/20)
+1. [Nota bajo el botón, page.tsx:408] Al cambiar el nombre de la garantía se perdió el plazo: ahora dice "Garantía del Primer Ajuste Honesto · Pago seguro", sin "7 días". El sub-check binario "garantía con nombre Y plazo cerca del CTA" FALLA: el plazo solo aparece en la tarjeta de abajo, fuera del pliegue (oferta 4→3). Es una regresión de esta pasada. → Fix: "Garantía del Primer Ajuste Honesto · 7 días" y pasar "Pago seguro" a la línea de arriba, o bajar a 12px si no cabe.
+2. [Plan Mensual elegido, primer pliegue] La nota de renovación ya no se ve lavada: ahora queda tapada del todo por la franja opaca. Quien elige Mensual paga sin ver "se renueva cada mes · cancelas cuando quieras" (en Anual sí aparece "Hoy pagas $0" bajo el botón). → Fix: en Mensual, poner bajo el botón la línea equivalente "Se renueva cada mes · cancelas cuando quieras" (page.tsx:401, rama `plan === 'mensual'`).
+3. [Primer pliegue en estado Anual, borde inferior de la tarjeta Mensual] Con el degradé al 85% ya no asoma la tarjeta de prueba, pero el borde inferior de la tarjeta Mensual se funde en la franja: tarjeta cortada (lupa → encaje 3). → Fix: `gap-3` entre planes, o aceptar el corte y dejarlo en el borde (no está a mitad de texto).
+4. [Tarjeta Anual, page.tsx:42 y :44] Sigue "$4.99/mes", aunque $4.99 × 12 = $59.88 y no $59.99. La coherencia con la landing no lo vuelve exacto, solo replica el error en 2 sitios (especificidad 3). Además, "gratis" queda sola en la 2ª línea del detalle. → Fix: "$5/mes" en la landing y en el paywall a la vez, y acortar el detalle a "$59.99/año · <$0.17/día · ~8 meses gratis".
+5. [Escala tipográfica, page.tsx:281/162/160/167] Siguen 4 tamaños (28/20/16/13), uno más que el máximo de 3 (jerarquía 3). → Fix: precio de la tarjeta a 16px bold display.
 
 ## Notas de verificación
-- Corregido y visible en los renders:
-  - Bajo el botón: "Garantía Ajuste Honesto de 7 días · Pago seguro". El sub-check de nombre + plazo junto al botón PASA.
-  - El desafío se llama "Racha Glow-Up" en paywall, landing (app/page.tsx:105/120/137/150) y onboarding:754, así que h4 sube a 4.
-  - Paso "Hoy": "Acceso completo por $0 (la prueba ya viene activada en Hotmart)".
-  - La cabecera ya no tiene la línea bajo "niki": "Check de Presencia" aparece 2 veces en el pliegue.
+- Corregidos y visibles en los renders:
+  - Ya no asoma la tarjeta de prueba en el pliegue Anual.
+  - Mismo nombre de garantía en tarjeta, landing, /reembolsos y bajo el botón (h4 vuelve a 4).
+  - "menos de $0.17/día" en el detalle del Anual.
+  - Franja al 85% con pt-8 (:381) y pb del main a 160px (:256).
 - Gate de carga cognitiva: 0 fallas.
 - CTA héroe vivo: cumple los 4.
-  - #FFF3DE sobre #7A3E1D ≈ 7.6:1.
+  - Contraste ≈7.6:1.
   - whileTap 0.97.
-  - Nunca deshabilitado, y se recupera con pageshow + timeout de 8 s.
+  - Nunca deshabilitado. Se recupera con pageshow y un timeout de 8 s.
   - h-14 a ancho completo, fijo y con safe-area.
-- Contraste: la línea de impuestos en text-primary cumple AA. El texto secundario sobre la superficie da ≈4.8:1.
-- Estado Mensual: botón "Empezar mi mes VIP Pro", nota de renovación y hairline en la tarjeta elegida. Sin la línea de "$0". Correcto.
-- FICHA-ARTE: coinciden el degradé atardecer, el acento #7A3E1D, Unbounded/Manrope y los radios del kit. Anti-clon: no aplica.
-- Movimiento: stagger, conteo del precio, whileTap, AnimatePresence al cambiar de plan y reduced-motion. No hay anillo ni barra que se dibuje.
-- Copy trazado a FICHA-AVATAR:
-  - Titular: deseo #1.
-  - $0.30/día y garantía: objeción #5.
-  - Pago seguro y moneda local: objeción #6.
+- FICHA-ARTE:
+  - Coinciden el degradé atardecer, la superficie #FFF3DE, el acento #7A3E1D y Unbounded/Manrope.
+  - Radios: los del kit.
+- Copy:
+  - Trazado a FICHA-AVATAR: deseo #1, dolor #1 y objeciones #5 y #6.
   - Message-match: no verificable.
-- Casilla de prueba de Hotmart marcada por defecto: dato del constructor (compra real + webhook de $0). No lo verifiqué yo.
-- Pasa exacto en 36/40 y 16/20. Cualquier regresión la devuelve a NO LISTA.
+  - Sub-check de garantía junto al botón: FALLA (defecto 1).
+- Margen cero: cualquier regresión devuelve la pantalla a NO LISTA. Los defectos 1 y 2 son de 1 línea cada uno y conviene corregirlos antes de lanzar tráfico pagado.
