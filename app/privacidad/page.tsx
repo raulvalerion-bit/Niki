@@ -12,7 +12,7 @@ export default function Privacidad() {
         Política de Privacidad
       </h1>
       <p className="mt-2 text-sm text-[var(--text-tertiary)]">
-        Última actualización: 17 de septiembre de 2026 · v1
+        Última actualización: 6 de octubre de 2026 · v2
       </p>
 
       <div className="mt-8 space-y-6 text-base leading-relaxed text-[var(--text-secondary)]">
@@ -51,7 +51,7 @@ export default function Privacidad() {
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li><strong className="text-[var(--text-primary)]">Anthropic (Estados Unidos)</strong> — su IA (Claude) procesa tu foto para generar el análisis. Actúa como encargado del tratamiento y, por contrato, no usa tus fotos para entrenar sus modelos.</li>
             <li><strong className="text-[var(--text-primary)]">Supabase</strong> — base de datos y autenticación.</li>
-            <li><strong className="text-[var(--text-primary)]">Vercel</strong> — hosting de la aplicación.</li>
+            <li><strong className="text-[var(--text-primary)]">Vercel</strong> — hosting de la aplicación y medición anónima de visitas (Web Analytics: sin cookies, sin identificarte; solo cuenta qué páginas se visitan y en qué paso de la compra se queda la gente).</li>
             <li><strong className="text-[var(--text-primary)]">Resend</strong> — emails transaccionales (confirmación, recuperación de cuenta).</li>
             <li><strong className="text-[var(--text-primary)]">Hotmart</strong> — procesamiento de pagos y suscripción.</li>
           </ul>

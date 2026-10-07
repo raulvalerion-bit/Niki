@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Unbounded, Manrope } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 import { CapturaOrigen } from "@/components/CapturaOrigen";
 
 const unbounded = Unbounded({
@@ -47,6 +48,11 @@ export default function RootLayout({
       <body className="min-h-dvh flex flex-col">
         <CapturaOrigen />
         {children}
+        {/* Vercel Web Analytics (sin cookies): visitas por página + eventos del embudo (lib/analitica.ts). */}
+        <Script id="va-cola" strategy="afterInteractive">
+          {'window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };'}
+        </Script>
+        {process.env.VERCEL === '1' && <Script src="/_vercel/insights/script.js" strategy="afterInteractive" />}
       </body>
     </html>
   );
