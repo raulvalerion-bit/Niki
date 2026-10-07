@@ -1,6 +1,6 @@
 # PUBLICATION CERTIFICATE — Niki (61 Gate 9 + 62)
 
-Auditoría: 2026-09-28
+Auditoría: 2026-09-28 · re-auditado 2026-10-06 (producción = `461f48e` en `/api/version`)
 
 | Punto | Estado | Evidencia |
 |---|---|---|
@@ -16,5 +16,7 @@ Auditoría: 2026-09-28
 | Historial de migraciones remoto = local | ⚠️ | desfase documentado en `RELEASE-MANIFEST.json` |
 | Clean-room (clon limpio + proyecto vacío) | ⛔ NO VERIFICADO | requiere un proyecto de Supabase nuevo |
 | Ambientes separados (Preview/Development con otra base) | ⚠️ | Preview y local usan la base de producción |
-| Respaldos y restauración cronometrada | ❌ | Supabase Free no tiene respaldos automáticos |
+| Respaldos y restauración cronometrada | ⚠️ | Supabase Pro desde 2026-09-28 → respaldos diarios automáticos; restauración cronometrada NO probada |
+| Plan de hosting comercial | ✅ | Vercel Pro desde 2026-09-28 |
+| Dependencias sin vulnerabilidades | ✅ | Next.js 16.3.5 tenía una falla CRÍTICA (RCE en next/og) → 16.4.0; `npm audit --omit=dev` = 0 (2026-10-06) |
 | Secretos fuera del repo | ✅ | `.env.local` en `.gitignore`; claves marcadas Sensitive en Vercel |

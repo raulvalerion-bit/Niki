@@ -1,23 +1,39 @@
 {
   "app": "niki",
-  "audited_at": "2026-09-28",
-  "git_sha": "de50a9ee60502b45965a7f5184482d0bff9ca4fe",
+  "audited_at": "2026-10-06",
+  "git_sha": "461f48ea5a9c1570d195e7acb7680c064530c75e",
   "vercel_project": "prj_4sginvELVjRwcqKRKACly36blcrh",
-  "vercel_deployment_id": "dpl_FkaJqWxc1MFR3Qk2BUffAeMjRhym",
+  "vercel_deployment_id": "dpl_CsEy5GR7WuCWhzTSN8YqYpzjAbVK",
   "production_url": "https://holaniki.com",
   "version_endpoint": "https://holaniki.com/api/version",
   "supabase_project_ref": "yniyllfhoydkdqowiunr",
-  "db_migration_local_latest": "20260928000000_ia_check_presencia.sql",
-  "db_migration_remote_latest": "20260928182159_ia_check_presencia",
+  "db_migration_local_latest": "20261006000000_error_log_user_id_idx.sql",
+  "db_migration_remote_latest": "error_log_user_id_idx (aplicada 2026-10-06 vía MCP)",
   "db_migration_note": "El historial remoto no incluye las 3 primeras migraciones locales (aplicadas a mano el 2026-09-19/21) y usa otros números de versión: NO correr `supabase db push` contra producción sin reconciliar el historial primero.",
   "required_env": {
-    "public": ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY"],
-    "server": ["SUPABASE_URL", "SUPABASE_SECRET_KEY", "ANTHROPIC_API_KEY", "ANTHROPIC_WORKSPACE_ID", "AI_MODEL", "AI_DAILY_BUDGET_USD", "AI_MONTHLY_BUDGET_USD", "RESEND_API_KEY", "HOTMART_HOTTOK", "CRON_SECRET"]
+    "public": [
+      "NEXT_PUBLIC_SUPABASE_URL",
+      "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY"
+    ],
+    "server": [
+      "SUPABASE_URL",
+      "SUPABASE_SECRET_KEY",
+      "ANTHROPIC_API_KEY",
+      "ANTHROPIC_WORKSPACE_ID",
+      "AI_MODEL",
+      "AI_DAILY_BUDGET_USD",
+      "AI_MONTHLY_BUDGET_USD",
+      "RESEND_API_KEY",
+      "HOTMART_HOTTOK",
+      "CRON_SECRET"
+    ]
   },
   "ci": {
     "workflow": ".github/workflows/ci.yml",
     "last_run_sha": "5477556b1789b8ced4a2ff126cbd9574698356fa",
     "last_run_conclusion": "success"
   },
-  "evidence_commit": "de50a9ee60502b45965a7f5184482d0bff9ca4fe"
+  "evidence_commit": "461f48ea5a9c1570d195e7acb7680c064530c75e",
+  "next_version": "16.4.0",
+  "npm_audit_prod": "0 vulnerabilidades (2026-10-06)"
 }

@@ -7,6 +7,12 @@ Auditoría: 2026-09-28. Supuestos rotulados como **[estimado]**; medidos como **
 - Precio del proveedor: Claude Sonnet 5 US$2 / US$10 por millón de tokens (entrada/salida) — referencia de la documentación de Anthropic vigente al 2026-09-28.
 - Fotos inválidas también cuestan (~US$0.006) pero no descuentan Check; tope anti-abuso de 6 intentos/día.
 
+## Re-medición 2026-10-06
+- **[medido]** 3 análisis reales en `ai_calls` (2026-09-28 → 10-03): promedio US$0.0114, p95 US$0.0125, 0 fallas, 5.5 s.
+- Heavy user en el tope (3 Checks/día × 30) = 90 × 0.0125 ≈ **US$1.13/mes = 22.6% del Anual (US$4.99/mes)** → ⚠️ pasa la regla del 20% solo en el caso extremo; mediana (~25 Checks) ≈ US$0.29 = 6%. Vigilar en el panel con clientes reales; si la mediana real supera ~60 Checks/mes, revisar el tope.
+- Supabase Pro + Vercel Pro activos desde 2026-09-28 (fijo ≈ US$45/mes).
+- Kill-switch: `AI_DAILY_BUDGET_USD=0` pausa todos los análisis (antes un 0 se cambiaba por 5 sin avisar; corregido 2026-10-06).
+
 ## Uso por usuario (mes de 30 días)
 | Escenario | Checks/mes | Costo IA/mes |
 |---|---|---|
