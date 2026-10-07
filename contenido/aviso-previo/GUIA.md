@@ -56,7 +56,7 @@ protagonista.
 > ¡Ya llegué! 🎉
 > Sube tu foto, dime a dónde vas y en 30 segundos te digo qué ajustar en tu outfit, tu postura
 > y tu actitud.
-> Haz tu primer Check gratis: link en mi perfil 🧡
+> Pruébalo 3 días gratis con el plan Anual: link en mi perfil 🧡
 
 **Hashtags:** #glowup #outfit #appdemoda #imagenpersonal #queponerme
 

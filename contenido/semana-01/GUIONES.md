@@ -33,7 +33,7 @@ videos esta semana (por ejemplo lunes, miércoles y viernes) + el carrusel el do
 | 3 | Captura `resultado.jpg` (zoom al 7.3) | 7.3 de 10 para una cita | "Te da tu puntaje para esa ocasión…" |
 | 4 | Captura `resultado-ejes.jpg` | Outfit · Postura · Actitud | "…y te dice qué ajustar en tu outfit, tu postura y tu actitud." |
 | 5 | Niki celebrando | 3 ajustes. Cero críticas crueles. | "Sincero, pero sin destruirte." |
-| 6 | Niki ok + "holaniki.com" | Haz tu Check gratis · link en bio | "Pruébalo gratis, el link está en mi perfil." |
+| 6 | Niki ok + "holaniki.com" | 3 días gratis · link en bio | "Pruébalo 3 días gratis, el link está en mi perfil." |
 
 **Texto de la publicación:** ¿Tu outfit pasa el vibe check? 👀 Niki califica tu outfit, postura y
 actitud en 30 segundos, según a dónde vas. Sincero, pero sin críticas crueles. Pruébalo gratis:
@@ -52,7 +52,7 @@ link en bio.
 | 2 | Niki pensando | Tú: …¿en serio? | "Pero nadie te dice la verdad sobre cómo te ves, por pena." |
 | 3 | Captura `resultado.jpg` | Hasta que alguien te lo dice en privado | "Yo sí te la digo. En privado, en 30 segundos." |
 | 4 | Captura `resultado-ejes.jpg` | Honesto, sin juzgar tu cara ni tu cuerpo | "Solo lo que puedes cambiar hoy: tu outfit, tu postura y tu actitud." |
-| 5 | Niki saludando + "holaniki.com" | Soy Niki · link en bio | "Soy Niki. Haz tu primer Check gratis, link en mi perfil." |
+| 5 | Niki saludando + "holaniki.com" | Soy Niki · link en bio | "Soy Niki. Pruébame 3 días gratis, link en mi perfil." |
 
 **Texto de la publicación:** Nadie te dice la verdad por pena. Niki sí: en privado, en 30 segundos
 y sin críticas crueles. Solo lo que puedes ajustar hoy. Link en bio.
@@ -74,7 +74,7 @@ Este video está hecho para que te encuentren cuando lo buscan: dura semanas rec
 | 3 | Slide 3 del carrusel | 2 · Hombros atrás al entrar | "Dos: hombros atrás y barbilla nivelada al cruzar la puerta." |
 | 4 | Slide 6 del carrusel | 3 · Primero la formalidad | "Tres: primero la formalidad del lugar, después tu estilo." |
 | 5 | Captura `resultado.jpg` | ¿No sabes si tu look funciona? | "¿No sabes si tu look funciona? Sube tu foto y Niki te lo dice en 30 segundos." |
-| 6 | Niki ok + "holaniki.com" | Check gratis · link en bio | "Link en mi perfil." |
+| 6 | Niki ok + "holaniki.com" | 3 días gratis · link en bio | "Link en mi perfil." |
 
 **Texto de la publicación:** Cómo vestirte para una entrevista de trabajo: 3 ajustes que sí
 cambian cómo te ven. ¿Quieres saber cómo va el tuyo? Niki te lo dice en 30 segundos, link en bio.
