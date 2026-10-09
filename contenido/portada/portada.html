@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Portada Facebook · Niki</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Portada de Facebook 1640x624. Zona segura en celular: el centro ~1100px (x 270-1370). */
+  :root { --text: #3C2412; --text-2: #6B4A32; --accent: #7A3E1D; --surface: #FFF3DE; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #222; font-family: 'Manrope', monospace; }
+  #portada { width: 1640px; height: 624px; position: relative; overflow: hidden; color: var(--text);
+             background: linear-gradient(100deg, #FF9457 0%, #FFB768 40%, #FFD98A 75%, #FFE9B0 100%); }
+  #portada::before, #portada::after { content: ''; position: absolute; border-radius: 50%; border: 6px solid rgb(122 62 29 / .14); }
+  #portada::before { width: 620px; height: 620px; top: -300px; right: -180px; }
+  #portada::after { width: 620px; height: 620px; bottom: -380px; left: -200px; border-color: rgb(122 62 29 / .10); }
+  .texto { position: absolute; left: 300px; top: 50%; transform: translateY(-50%); width: 720px; }
+  .etiqueta { display: inline-block; background: var(--surface); color: var(--accent); border-radius: 999px;
+              padding: 10px 22px; font-size: 20px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+              box-shadow: 0 10px 24px -12px rgb(140 60 20 / .4); }
+  h1 { font-family: 'Unbounded', monospace; font-weight: 800; font-size: 60px; line-height: 1.06; letter-spacing: -0.02em; margin-top: 24px; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .ejes { display: flex; gap: 12px; margin-top: 28px; }
+  .eje { display: flex; align-items: center; gap: 10px; background: rgb(255 243 222 / .7); border-radius: 999px;
+         padding: 10px 20px 10px 10px; font-size: 22px; font-weight: 700; }
+  .eje i { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; }
+  .pie { margin-top: 28px; font-size: 24px; font-weight: 600; color: var(--text-2); }
+  .pie b { font-family: 'Unbounded', monospace; color: var(--text); font-weight: 700; }
+  .niki { position: absolute; left: 970px; bottom: -10px; width: 380px; filter: drop-shadow(0 16px 24px rgb(60 36 18 / .25)); }
+</style>
+</head>
+<body>
+<section id="portada">
+  <div class="texto">
+    <span class="etiqueta">Tu Check de Presencia</span>
+    <h1>Sal de casa <em>sabiendo</em> que te ves bien.</h1>
+    <div class="ejes">
+      <span class="eje"><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFF3DE" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></i>Outfit</span>
+      <span class="eje"><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFF3DE" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></i>Postura</span>
+      <span class="eje"><i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFF3DE" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></i>Actitud</span>
+    </div>
+    <p class="pie">En 30 segundos, sin críticas crueles · <b>holaniki.com</b></p>
+  </div>
+  <img class="niki" src="../aviso-previo/niki/niki-ok.png" alt="">
+</section>
+</body>
+</html>
