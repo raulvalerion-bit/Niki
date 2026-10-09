@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Video 1 · Escenas</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Escenas 9:16 (1080x1920). Zona segura TikTok/Reels: texto entre y 200-1450 y x 80-940. */
+  :root { --text: #3C2412; --text-2: #6B4A32; --accent: #7A3E1D; --surface: #FFF3DE; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #222; font-family: 'Manrope', monospace; }
+  .esc { width: 1080px; height: 1920px; position: relative; overflow: hidden; color: var(--text); margin-bottom: 24px;
+         background: linear-gradient(180deg, #FF9457 0%, #FFB768 42%, #FFD98A 78%, #FFE9B0 100%);
+         padding: 230px 96px 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .esc::before, .esc::after { content: ''; position: absolute; border-radius: 50%; border: 6px solid rgb(122 62 29 / .14); }
+  .esc::before { width: 620px; height: 620px; top: -260px; right: -240px; }
+  .esc::after { width: 620px; height: 620px; bottom: -300px; left: -300px; border-color: rgb(122 62 29 / .08); }
+  .num { font-size: 26px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent);
+         background: var(--surface); border-radius: 999px; padding: 12px 26px; position: relative; }
+  h1 { font-family: 'Unbounded', monospace; font-weight: 800; font-size: 92px; line-height: 1.05; letter-spacing: -0.02em; margin-top: 32px; position: relative; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .niki { position: relative; margin-top: 60px; width: 760px; filter: drop-shadow(0 20px 30px rgb(60 36 18 / .28)); }
+  .tel { position: relative; margin-top: 56px; width: 640px; height: 1000px; border-radius: 64px; overflow: hidden;
+         border: 14px solid #3C2412; box-shadow: 0 40px 80px -30px rgb(60 36 18 / .55); background: #FFB768; }
+  .tel img { width: 100%; display: block; }
+  .zoom { position: relative; margin-top: 56px; width: 840px; height: 1000px; border-radius: 56px; overflow: hidden;
+          box-shadow: 0 40px 80px -30px rgb(60 36 18 / .55); border: 6px solid rgb(255 243 222 / .8); }
+  .zoom img { position: absolute; }
+  .cta { position: relative; margin-top: 40px; background: var(--accent); color: var(--surface); border-radius: 36px; padding: 34px 56px; font-size: 50px; font-weight: 700; }
+  .url { position: relative; margin-top: 28px; font-family: 'Unbounded', monospace; font-size: 58px; font-weight: 700; }
+  .sub { position: relative; margin-top: 12px; font-size: 38px; font-weight: 600; color: var(--text-2); }
+</style>
+</head>
+<body>
+
+<section class="esc" id="e1">
+  <span class="num">Vibe check</span>
+  <h1>¿Tu outfit pasa el <em>vibe check?</em></h1>
+  <img class="niki" src="../niki/niki-pensando.png" alt="">
+</section>
+
+<section class="esc" id="e2">
+  <span class="num">Paso 1</span>
+  <h1>Eliges la ocasión y subes <em>tu foto</em></h1>
+  <div class="tel"><img src="../capturas/ocasion.jpg" alt=""></div>
+</section>
+
+<section class="esc" id="e3">
+  <span class="num">Paso 2</span>
+  <h1><em>7.3</em> de 10 para una cita</h1>
+  <div class="zoom"><img src="../capturas/resultado.jpg" alt="" style="width:1260px; left:-210px; top:-200px"></div>
+</section>
+
+<section class="esc" id="e4">
+  <span class="num">Paso 3</span>
+  <h1 style="font-size:80px">Outfit, Postura<br>y <em>Actitud</em></h1>
+  <div class="zoom"><img src="../capturas/resultado-ejes.jpg" alt="" style="width:828px; left:0; top:-310px"></div>
+</section>
+
+<section class="esc" id="e5">
+  <span class="num">Sincero, pero amable</span>
+  <h1>3 ajustes. <em>Cero</em> críticas crueles.</h1>
+  <img class="niki" src="../niki/niki-celebrando.png" alt="">
+</section>
+
+<section class="esc" id="e6">
+  <h1>Pruébalo <em>3 días gratis</em></h1>
+  <img class="niki" src="../niki/niki-ok.png" alt="" style="width:600px; margin-top:40px">
+  <div class="cta">holaniki.com</div>
+  <p class="sub">Link en mi perfil</p>
+</section>
+
+</body>
+</html>
