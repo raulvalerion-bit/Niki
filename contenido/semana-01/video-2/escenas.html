@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Video 2 · Escenas</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Escenas 9:16 (1080x1920). Zona segura TikTok/Reels: texto entre y 200-1450 y x 80-940. */
+  :root { --text: #3C2412; --text-2: #6B4A32; --accent: #7A3E1D; --surface: #FFF3DE; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #222; font-family: 'Manrope', monospace; }
+  .esc { width: 1080px; height: 1920px; position: relative; overflow: hidden; color: var(--text); margin-bottom: 24px;
+         background: linear-gradient(180deg, #FF9457 0%, #FFB768 42%, #FFD98A 78%, #FFE9B0 100%);
+         padding: 230px 96px 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .esc::before, .esc::after { content: ''; position: absolute; border-radius: 50%; border: 6px solid rgb(122 62 29 / .14); }
+  .esc::before { width: 620px; height: 620px; top: -260px; right: -240px; }
+  .esc::after { width: 620px; height: 620px; bottom: -300px; left: -300px; border-color: rgb(122 62 29 / .08); }
+  .num { font-size: 26px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent);
+         background: var(--surface); border-radius: 999px; padding: 12px 26px; position: relative; }
+  h1 { font-family: 'Unbounded', monospace; font-weight: 800; font-size: 92px; line-height: 1.05; letter-spacing: -0.02em; margin-top: 32px; position: relative; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .niki { position: relative; margin-top: 60px; width: 760px; filter: drop-shadow(0 20px 30px rgb(60 36 18 / .28)); }
+  .tel { position: relative; margin-top: 56px; width: 640px; height: 1000px; border-radius: 64px; overflow: hidden;
+         border: 14px solid #3C2412; box-shadow: 0 40px 80px -30px rgb(60 36 18 / .55); background: #FFB768; }
+  .tel img { width: 100%; display: block; }
+  .zoom { position: relative; margin-top: 56px; width: 840px; height: 1000px; border-radius: 56px; overflow: hidden;
+          box-shadow: 0 40px 80px -30px rgb(60 36 18 / .55); border: 6px solid rgb(255 243 222 / .8); }
+  .zoom img { position: absolute; }
+  .cta { position: relative; margin-top: 40px; background: var(--accent); color: var(--surface); border-radius: 36px; padding: 34px 56px; font-size: 50px; font-weight: 700; }
+  .url { position: relative; margin-top: 28px; font-family: 'Unbounded', monospace; font-size: 58px; font-weight: 700; }
+  .sub { position: relative; margin-top: 12px; font-size: 38px; font-weight: 600; color: var(--text-2); }
+  .chat { position: relative; margin-top: 90px; display: flex; flex-direction: column; gap: 28px; width: 860px; text-align: left; }
+  .burbuja { max-width: 700px; padding: 34px 44px; border-radius: 48px; font-size: 52px; font-weight: 600; line-height: 1.3; box-shadow: 0 20px 40px -20px rgb(60 36 18 / .4); }
+  .ellos { background: #FFF3DE; border-bottom-left-radius: 12px; align-self: flex-start; }
+  .yo { background: #7A3E1D; color: #FFF3DE; border-bottom-right-radius: 12px; align-self: flex-end; }
+  .quien { font-size: 26px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-2); margin-bottom: -16px; }
+  .quien.der { align-self: flex-end; }
+</style>
+</head>
+<body>
+
+<section class="esc" id="e1">
+  <span class="num">Pasa siempre</span>
+  <h1>Tus amigos siempre dicen <em>"te ves bien"</em></h1>
+  <div class="chat">
+    <span class="quien">Tus amigos</span>
+    <div class="burbuja ellos">¡Te ves bien! 🙂</div>
+    <div class="burbuja ellos">Sí, sí, así está perfecto</div>
+  </div>
+  <img class="niki" src="../niki/niki-feliz.png" alt="" style="width:520px; margin-top:70px">
+</section>
+
+<section class="esc" id="e2">
+  <span class="num">Tú</span>
+  <h1>…¿en <em>serio?</em></h1>
+  <div class="chat" style="margin-top:40px">
+    <span class="quien der">Tú, por dentro</span>
+    <div class="burbuja yo">¿O me lo dicen por pena?</div>
+  </div>
+  <img class="niki" src="../niki/niki-pensando.png" alt="" style="width:640px; margin-top:40px">
+</section>
+
+<section class="esc" id="e3">
+  <span class="num">En privado</span>
+  <h1>Yo sí te digo <em>la verdad</em></h1>
+  <div class="zoom"><img src="../capturas/resultado.jpg" alt="" style="width:1260px; left:-210px; top:-200px"></div>
+</section>
+
+<section class="esc" id="e4">
+  <span class="num">Sin juzgarte</span>
+  <h1 style="font-size:80px">Nunca tu cara ni tu cuerpo. <em>Solo lo que cambias hoy.</em></h1>
+  <div class="zoom" style="height:860px"><img src="../capturas/resultado-ejes.jpg" alt="" style="width:828px; left:0; top:-310px"></div>
+</section>
+
+<section class="esc" id="e5">
+  <h1>Soy <em>Niki</em></h1>
+  <img class="niki" src="../niki/niki-saludando.png" alt="" style="width:620px; margin-top:40px">
+  <div class="cta">Pruébame 3 días gratis</div>
+  <p class="url">holaniki.com</p>
+</section>
+
+</body>
+</html>
