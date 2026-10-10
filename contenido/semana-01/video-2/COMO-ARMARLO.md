@@ -1,7 +1,7 @@
 # Video 2 — "Nadie te dice la verdad por pena" · Sábado 10-oct
 
 ## ✅ YA ARMADO DESDE LA LAPTOP (2026-10-10): `VIDEO-2-LISTO.mp4`
-25 s, 1080x1920, 5 escenas con zoom suave + voz en español de México (voz neural "Dalia", generada en la laptop).
+25 s, 1080x1920, 5 escenas con zoom suave + voz en español de México (voz neural "Dalia" en versión alegre: más rápida +14%, tono +7% y frases con exclamación — elegida por el dueño entre 3 muestras).
 Solo hay que subirlo:
 - TikTok: tiktok.com/upload (TikTok Studio) → subir VIDEO-2-LISTO.mp4 → pegar el Texto TikTok de abajo → Publicar.
 - Instagram + Facebook: business.facebook.com → Crear reel → subir el mismo archivo → marcar Instagram y Facebook → pegar el Texto Instagram → Publicar.
