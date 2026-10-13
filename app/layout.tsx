@@ -3,6 +3,7 @@ import { Unbounded, Manrope } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { CapturaOrigen } from "@/components/CapturaOrigen";
+import { AvisoCookies } from "@/components/AvisoCookies";
 
 const unbounded = Unbounded({
   variable: "--font-unbounded",
@@ -48,6 +49,7 @@ export default function RootLayout({
       <body className="min-h-dvh flex flex-col">
         <CapturaOrigen />
         {children}
+        <AvisoCookies />
         {/* Vercel Web Analytics (sin cookies): visitas por página + eventos del embudo (lib/analitica.ts). */}
         <Script id="va-cola" strategy="afterInteractive">
           {'window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };'}

@@ -4,16 +4,19 @@ import type { NextConfig } from "next";
 // app usa de verdad: su propio dominio y el proyecto de Supabase (datos,
 // fotos privadas y sesión). Hotmart y Resend no cargan nada en el navegador
 // (Hotmart es una navegación de salida; Resend se llama desde el servidor).
+// Meta: el píxel (lib/pixel.ts) solo se carga en páginas de venta y tras aceptar cookies.
 const SUPABASE = "https://yniyllfhoydkdqowiunr.supabase.co";
+const META_SCRIPT = "https://connect.facebook.net";
+const META_ENVIO = "https://www.facebook.com";
 
 const csp = [
   "default-src 'self'",
   // Next.js inyecta scripts inline para hidratar la página.
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline' ${META_SCRIPT}`,
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: blob: ${SUPABASE}`,
+  `img-src 'self' data: blob: ${SUPABASE} ${META_ENVIO}`,
   "font-src 'self' data:",
-  `connect-src 'self' ${SUPABASE} wss://yniyllfhoydkdqowiunr.supabase.co`,
+  `connect-src 'self' ${SUPABASE} wss://yniyllfhoydkdqowiunr.supabase.co ${META_SCRIPT} ${META_ENVIO}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

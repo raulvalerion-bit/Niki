@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CambiarCookies } from '@/components/CambiarCookies';
 
 export const metadata = { title: 'Privacidad — niki' };
 
@@ -12,7 +13,7 @@ export default function Privacidad() {
         Política de Privacidad
       </h1>
       <p className="mt-2 text-sm text-[var(--text-tertiary)]">
-        Última actualización: 6 de octubre de 2026 · v2
+        Última actualización: 13 de octubre de 2026 · v3
       </p>
 
       <div className="mt-8 space-y-6 text-base leading-relaxed text-[var(--text-secondary)]">
@@ -54,7 +55,22 @@ export default function Privacidad() {
             <li><strong className="text-[var(--text-primary)]">Vercel</strong> — hosting de la aplicación y medición anónima de visitas (Web Analytics: sin cookies, sin identificarte; solo cuenta qué páginas se visitan y en qué paso de la compra se queda la gente).</li>
             <li><strong className="text-[var(--text-primary)]">Resend</strong> — emails transaccionales (confirmación, recuperación de cuenta).</li>
             <li><strong className="text-[var(--text-primary)]">Hotmart</strong> — procesamiento de pagos y suscripción.</li>
+            <li><strong className="text-[var(--text-primary)]">Meta (Facebook e Instagram)</strong> — solo si aceptas cookies: medición de anuncios con el píxel de Meta (ver abajo).</li>
           </ul>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold text-[var(--text-primary)]">Cookies y medición de anuncios</h2>
+          <p className="mt-2">
+            En la página principal, el recorrido de inicio y la pantalla de planes te preguntamos si aceptas
+            cookies de Meta. Si aceptas, el píxel de Meta registra qué páginas visitas, si llegas a tu
+            resultado y si vas a la página de pago, para saber qué publicaciones y anuncios funcionan y
+            mostrarle Niki a más gente. No le enviamos a Meta tus fotos, tu nombre, tu email ni tus
+            resultados, y el píxel no se usa dentro de la app una vez que inicias sesión. Si rechazas, no se
+            carga nada de Meta y Niki funciona igual. La compra la registra Hotmart en su propia página de
+            pago, según su política de privacidad.
+          </p>
+          <CambiarCookies />
         </section>
 
         <section>
