@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChartColumn, Home, ListChecks, User } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { AvisoCobro } from '@/components/app/AvisoCobro';
 
 const TABS: { href: string; label: string; icon: LucideIcon }[] = [
   { href: '/app', label: 'Hoy', icon: Home },
@@ -107,6 +108,7 @@ export default function AppInternaLayout({ children }: { children: React.ReactNo
       />
 
       <MarcaNiki />
+      <AvisoCobro />
 
       <div className="flex flex-1 flex-col pb-6 pt-4">{children}</div>
 

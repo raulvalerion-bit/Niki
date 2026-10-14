@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { DIAS_GRACIA_ATRASO } from '@/lib/dunning';
 
 // Traduce un evento del webhook de Hotmart (versión 2.0.0) a una DECISIÓN:
 // qué estado de suscripción aplica, hasta cuándo hay acceso, qué va al ledger.
@@ -14,8 +15,6 @@ const DIAS_PRUEBA = 3;
 /** Margen tras la fecha de cobro para que un aviso de Hotmart que llega tarde
     no le corte el acceso a alguien que sí pagó. */
 const DIAS_GRACIA_COBRO = 3;
-/** Gracia de dunning: pago atrasado → sigue usando la app mientras reintenta. */
-const DIAS_GRACIA_ATRASO = 5;
 /** Anti-replay: un evento con fecha de hace más de esto no se aplica. Holgado a
     propósito — Hotmart reintenta durante días y el dedupe ya frena el doble uso. */
 const MAX_ANTIGUEDAD_MS = 30 * DIA_MS;
@@ -94,6 +93,9 @@ export type Decision =
       /** Solo prueba/compra abren una cuenta nueva; lo demás actúa sobre una existente. */
       creaCuenta: boolean;
       ledger: { kind: 'sale' | 'refund' | 'chargeback'; amountMinor: number; currency: string } | null;
+      /** Tipo de pago tal como lo nombra Hotmart (CREDIT_CARD, BILLET, PIX…): separa los correos
+          de cobro fallido entre "actualiza tu tarjeta" y "paga tu ficha". */
+      pagoMetodo: string | null;
       productId: string;
       ocurrio: Date | null;
     };
@@ -160,6 +162,8 @@ export function decidir(p: PayloadHotmart, ahora = new Date()): Decision {
   const subscriberCode = d.subscription?.subscriber?.code ?? d.subscriber?.code ?? d.subscription?.subscriber_code ?? null;
   const transaction = compra.transaction ?? null;
   const sck = compra.origin?.sck?.slice(0, 120) ?? null;
+  const tipoPago = (compra.payment?.type ?? '').trim().toUpperCase();
+  const pagoMetodo = /^[A-Z_]{2,30}$/.test(tipoPago) ? tipoPago : null;
 
   const precio = compra.price?.value;
   const moneda = (compra.price?.currency_value ?? '').toUpperCase();
@@ -193,6 +197,7 @@ export function decidir(p: PayloadHotmart, ahora = new Date()): Decision {
     transaction,
     sck,
     plan,
+    pagoMetodo,
     productId,
     ocurrio: fecha(compra.approved_date) ?? creado,
   };

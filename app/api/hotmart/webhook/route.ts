@@ -108,6 +108,12 @@ export async function POST(req: NextRequest) {
       if (!userId) throw new Error('no_se_pudo_crear_la_cuenta');
     }
 
+    // Antes de la RPC: así el registro de inicio de atraso (trigger dunning_marcar) ya ve con qué
+    // paga — tarjeta y ficha en efectivo reciben correos de recuperación distintos (58).
+    if (userId && decision.pagoMetodo) {
+      await admin.from('profiles').update({ pago_metodo: decision.pagoMetodo }).eq('id', userId);
+    }
+
     const { data, error } = await admin.rpc('apply_hotmart_event', {
       p_event_id: decision.eventId,
       p_event_type: decision.evento,
