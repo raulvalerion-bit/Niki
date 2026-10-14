@@ -3,6 +3,8 @@
 // cobro, sin culpa si decide irse. Colores de FICHA-ARTE.md escritos en hex
 // porque los clientes de correo no entienden variables CSS.
 
+import { PRECIO_ANUAL } from '@/lib/prueba';
+
 const COLOR = {
   fondo: '#FFF3DE',
   tarjeta: '#FFFFFF',
@@ -12,7 +14,6 @@ const COLOR = {
   borde: '#F3D9B5',
 };
 
-const PRECIO_ANUAL = '$59.99 USD';
 const URL_APP = 'https://holaniki.com/app';
 const URL_CANCELAR = 'https://consumer.hotmart.com';
 

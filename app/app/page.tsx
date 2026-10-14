@@ -25,6 +25,7 @@ import {
 } from '@/lib/ia/resultado';
 import { ResultadoCheck } from '@/components/app/ResultadoCheck';
 import { HoyInicio, type UltimoCheck } from '@/components/app/HoyInicio';
+import { EstadoPlan } from '@/components/app/EstadoPlan';
 import { type EstadoRacha } from '@/components/app/RachaGlowUp';
 
 type Paso = 'inicio' | 'foto' | 'analizando' | 'resultado' | 'limite' | 'error';
@@ -573,21 +574,24 @@ export default function Hoy() {
   }
 
   return (
-    <HoyInicio
-      cargado={cargado}
-      errorCarga={errorCarga}
-      reintentar={() => {
-        setErrorCarga(false);
-        setCargado(false);
-        setRecarga((n) => n + 1);
-      }}
-      usadosHoy={usadosHoy}
-      restantes={restantes}
-      ultimo={ultimo}
-      racha={racha}
-      hoy={fechaLocalHoy()}
-      empezarCheck={empezarCheck}
-      abrirCheck={(id) => router.push(`/app/historial/${id}`)}
-    />
+    <>
+      <EstadoPlan />
+      <HoyInicio
+        cargado={cargado}
+        errorCarga={errorCarga}
+        reintentar={() => {
+          setErrorCarga(false);
+          setCargado(false);
+          setRecarga((n) => n + 1);
+        }}
+        usadosHoy={usadosHoy}
+        restantes={restantes}
+        ultimo={ultimo}
+        racha={racha}
+        hoy={fechaLocalHoy()}
+        empezarCheck={empezarCheck}
+        abrirCheck={(id) => router.push(`/app/historial/${id}`)}
+      />
+    </>
   );
 }

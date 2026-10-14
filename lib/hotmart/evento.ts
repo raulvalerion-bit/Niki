@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { DIAS_GRACIA_ATRASO } from '@/lib/dunning';
+import { DIAS_PRUEBA } from '@/lib/prueba';
 
 // Traduce un evento del webhook de Hotmart (versión 2.0.0) a una DECISIÓN:
 // qué estado de suscripción aplica, hasta cuándo hay acceso, qué va al ledger.
@@ -11,7 +12,6 @@ import { DIAS_GRACIA_ATRASO } from '@/lib/dunning';
 export const HOTMART_PRODUCT_ID = '8595742';
 
 const DIA_MS = 24 * 60 * 60 * 1000;
-const DIAS_PRUEBA = 3;
 /** Margen tras la fecha de cobro para que un aviso de Hotmart que llega tarde
     no le corte el acceso a alguien que sí pagó. */
 const DIAS_GRACIA_COBRO = 3;
