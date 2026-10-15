@@ -29,7 +29,7 @@ import Link from 'next/link';
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react';
 import { X, Sparkles, CalendarClock, Flame, Unlock, CreditCard, ShieldCheck, Check, Loader2 } from 'lucide-react';
 import { Hairline } from '@/components/landing/ui';
-import { crearClienteSupabase } from '@/lib/supabase/client';
+import { clienteSupabaseDiferido } from '@/lib/supabase/diferido';
 import { urlCheckout } from '@/lib/hotmart/checkout';
 import { leerOrigen } from '@/lib/origen';
 import { eventoEmbudo } from '@/lib/analitica';
@@ -229,8 +229,8 @@ export default function Paywall() {
 
   // Con sesión: correo precargado en Hotmart y aviso si llegó aquí sin plan.
   useEffect(() => {
-    const supabase = crearClienteSupabase();
-    void supabase.auth.getUser().then(async ({ data }) => {
+    void clienteSupabaseDiferido().then(async (supabase) => {
+      const { data } = await supabase.auth.getUser();
       setEmail(data.user?.email ?? null);
       setSinPlan(!!data.user && new URLSearchParams(window.location.search).has('sin_plan'));
       if (!data.user) return;

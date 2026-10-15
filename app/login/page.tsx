@@ -17,7 +17,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import { Mail, ArrowLeft, X, LifeBuoy } from 'lucide-react';
-import { crearClienteSupabase } from '@/lib/supabase/client';
+import { clienteSupabaseDiferido } from '@/lib/supabase/diferido';
+import { correoValido } from '@/lib/correo';
 import { registrarEvento, registrarSesionDiaria } from '@/lib/eventos';
 
 type Paso = 'correo' | 'codigo' | 'rescate';
@@ -133,7 +134,10 @@ function CasillasCodigo({ onCompleto, deshabilitado }: { onCompleto: (codigo: st
 
 export default function Login() {
   const router = useRouter();
-  const supabase = crearClienteSupabase();
+  // Se empieza a descargar apenas la pantalla ya se ve, para que "Enviarme el acceso" no espere.
+  useEffect(() => {
+    void clienteSupabaseDiferido();
+  }, []);
   const [paso, setPaso] = useState<Paso>('correo');
   const [correo, setCorreo] = useState('');
   // Hotmart manda aquí al comprador después de pagar (página de agradecimiento: /login?compra=1).
@@ -152,12 +156,13 @@ export default function Login() {
 
   async function enviarCodigo() {
     // Nunca un botón mudo (regla de UX #11): si falta el correo, se dice.
-    if (!/^[^s@]+@[^s@]+.[^s@]+$/.test(correo.trim())) {
+    if (!correoValido(correo)) {
       setError('Escribe tu correo completo (por ejemplo, tu@gmail.com) para mandarte el código.');
       return;
     }
     setEnviando(true);
     setError(null);
+    const supabase = await clienteSupabaseDiferido();
     const { error: errorEnvio } = await supabase.auth.signInWithOtp({
       email: correo.trim(),
       options: { shouldCreateUser: true },
@@ -178,6 +183,7 @@ export default function Login() {
   async function verificarCodigo(codigo: string) {
     setVerificando(true);
     setError(null);
+    const supabase = await clienteSupabaseDiferido();
     const { error: errorVerificacion } = await supabase.auth.verifyOtp({
       email: correo.trim(),
       token: codigo,
@@ -213,6 +219,7 @@ export default function Login() {
         ocasion?: string;
         tiempo?: string;
       };
+      const supabase = await clienteSupabaseDiferido();
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -239,6 +246,7 @@ export default function Login() {
   /** `app_abierta` (una vez en la vida, primera sesión) + `sesion_iniciada`
       (una vez por día activo) — base de activación/retención (36-ANALITICA). */
   async function registrarAperturaYSesion() {
+    const supabase = await clienteSupabaseDiferido();
     const {
       data: { user },
     } = await supabase.auth.getUser();

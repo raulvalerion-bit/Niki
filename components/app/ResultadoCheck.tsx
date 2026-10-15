@@ -177,7 +177,7 @@ export function ResultadoCheck({
           className="mt-3 flex items-center gap-1.5 rounded-full bg-[var(--chip-bg)] px-3 py-1 text-[12px] font-semibold text-[var(--accent)]"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/iconos/icono-3-gema.gif" alt="" aria-hidden="true" className="size-5" />
+          <img src="/iconos/icono-3-gema.webp" alt="" aria-hidden="true" className="size-5" />
           +1 gema · ya llevas {gemasTotal}
         </motion.p>
       )}

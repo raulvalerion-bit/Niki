@@ -1,6 +1,6 @@
 'use client';
 
-// Anillo de Puntaje VIVO sobre la captura estática del hero (/capturas/resultado.jpg).
+// Anillo de Puntaje VIVO sobre la captura estática del hero (/capturas/resultado.webp).
 // Replica AnilloPuntaje de la app (160px, R 66, trazo 12) escalado a la captura y lo
 // posiciona exactamente sobre el anillo de la imagen: el aro se dibuja y el número
 // cuenta de 0 al puntaje al entrar en vista (baseline #2 y #3 de animación).

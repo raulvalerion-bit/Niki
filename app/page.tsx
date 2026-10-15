@@ -45,7 +45,7 @@ export default function LandingNiki() {
             {/* Captura real de la app (pantalla de resultado, datos de ejemplo) — 2026-09-28 */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/capturas/resultado.jpg"
+              src="/capturas/resultado.webp"
               alt="Así se ve tu Check de Presencia: puntaje 7.3 de 10, tu ajuste clave y tus notas de outfit, postura y actitud"
               width={250}
               height={542}
@@ -131,9 +131,9 @@ export default function LandingNiki() {
       <AppPorDentro
         tituloMarked="¡Así se ve tu [acento]Check de Presencia[/acento]!"
         frames={[
-          { src: '/capturas/ocasion.jpg', label: 'Eliges tu ocasión y subes tu foto' },
-          { src: '/capturas/resultado.jpg', label: 'Tu puntaje y tu ajuste clave' },
-          { src: '/capturas/resultado-ejes.jpg', label: 'Outfit, postura y actitud, explicados' },
+          { src: '/capturas/ocasion.webp', label: 'Eliges tu ocasión y subes tu foto' },
+          { src: '/capturas/resultado.webp', label: 'Tu puntaje y tu ajuste clave' },
+          { src: '/capturas/resultado-ejes.webp', label: 'Outfit, postura y actitud, explicados' },
         ]}
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}

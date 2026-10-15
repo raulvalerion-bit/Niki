@@ -211,7 +211,9 @@ export default function Perfil() {
 
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/iconos/banner-despedida-v2.png"
+        src="/iconos/banner-despedida-v2.webp"
+        width={720}
+        height={288}
         alt="¡Me complace haberte ayudado hoy, te espero pronto!"
         className="mx-auto mt-6 w-full max-w-[360px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
       />
