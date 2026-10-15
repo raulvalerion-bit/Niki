@@ -278,14 +278,16 @@ export default function Paywall() {
         </p>
       )}
 
-      <motion.div {...entrada(0)} className="mt-4 flex flex-col items-center text-center">
+      {/* El titular es el LCP: visible desde el HTML del servidor, sin esperar a JavaScript
+          (mismo criterio que el hero de la landing). El resto entra escalonado. */}
+      <div className="mt-4 flex flex-col items-center text-center">
         <h1 className="mt-4 text-balance text-[28px] font-bold leading-[1.12] text-[var(--text-primary)] [font-family:var(--font-display)]">
           Sal con la <span className="text-[var(--accent)]">certeza</span> de verte impecable
         </h1>
         <p className="mt-2 max-w-[320px] text-[16px] leading-[1.5] text-[var(--text-primary)]">
           ¿20 minutos frente al armario? Nadie te dice la verdad por pena. Tu <span className="font-semibold">Check de Presencia</span> sí, en 30 segundos.
         </p>
-      </motion.div>
+      </div>
 
       <motion.ul
         {...entrada(1)}

@@ -941,7 +941,9 @@ export default function Onboarding() {
       )}
       <AnimatePresence>{confirmarSalida && <HojaSalida onSeguir={() => setConfirmarSalida(false)} />}</AnimatePresence>
 
-      <AnimatePresence mode="wait">
+      {/* initial={false}: el primer paso se pinta visible desde el HTML del servidor (es
+          el LCP — antes esperaba a JavaScript para aparecer); entre pasos sí anima. */}
+      <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={paso}
           initial={{ opacity: 0, x: reduce ? 0 : 24 }}
