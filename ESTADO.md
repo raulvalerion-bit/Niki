@@ -1,5 +1,27 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-10-16 — PUNTO 1 DEL PLAN DEL VIERNES CERRADO: revisor-visual de landing,
+Última actualización: 2026-10-16 (tarde) — PUNTOS 2 Y 3 DEL PLAN DEL VIERNES: (2) ✅ el dueño
+apagó "Coincidencia avanzada automática" en Meta (ya estaba apagada de una sesión anterior,
+confirmado). (3) ✅ API de conversiones de Hotmart (CAPI) CONECTADA Y VERIFICADA — el dueño generó
+el token en Meta (Administrador de eventos → píxel …098022 → Configuración → API de conversiones →
+"Configurar sin Dataset Quality API" → Generar token de acceso) y lo pegó en Hotmart (Herramientas
+→ Píxeles de rastreo → Facebook+Instagram → Detalles de la configuración), verificado con palomita
+verde. ✅ Compra de prueba real hecha (plan Mensual, $14.99, checkout
+`pay.hotmart.com/G107766783O?off=f7q8q4tt`) y YA REEMBOLSADA desde Hotmart — webhook de Niki
+respondió 200/procesado, confirmado en la app: Perfil → "Aún no tienes un plan activo" (el acceso
+de la cuenta del dueño a /app NO se corta nunca pese al reembolso porque es la cuenta `role=admin`,
+que siempre entra — comportamiento esperado, no es bug, ver `lib/acceso.ts:16`). ⚠️ PENDIENTE DE
+VERIFICAR: en Meta (Administrador de eventos → píxel → Resumen → "Últimos 7 días") SÍ llegaron
+`ViewContent` e `InitiateCheckout` por la API de conversiones (confirma que el envío automático
+funciona), pero el evento **"Compra"/"Purchase"** de esta transacción TODAVÍA NO aparecía ~40 min
+después de la compra — sin error visible en Diagnóstico. Según la investigación (sin documentación
+oficial de Hotmart sobre el tiempo exacto), este tipo de aviso servidor-a-servidor puede tardar
+varias horas en plataformas similares. Revisar de nuevo más tarde hoy o mañana: Administrador de
+eventos → píxel …098022 → Resumen → "Últimos 7 días" → buscar "Compra". Si sigue sin aparecer
+después de varias horas, ahí sí investigar más a fondo (podría ser un paso de Hotmart sin completar,
+no algo de nuestro código — el webhook propio de Niki SÍ funcionó, es un sistema aparte del de
+Meta). El punto 4 (re-certificar) se deja para cuando se confirme esto, o para la próxima sesión.
+
+Última actualización anterior (misma fecha, antes): PUNTO 1 DEL PLAN DEL VIERNES CERRADO: revisor-visual de landing,
 onboarding, paywall y Hoy (las 4 pantallas del dinero) corrido de cero sobre el código real, con 2
 rondas de corrección y re-publicación (commits ec364f0, 261358e, 358ae1e, 87e4f36 — todos en
 producción, tsc+vitest 62/62 limpios en cada ronda). Resultado por pantalla (detalle completo y
