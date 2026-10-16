@@ -82,7 +82,7 @@ export function MisionSemana({ hoy }: { hoy: string }) {
   const faltan = mision.objetivo - mision.hechos;
 
   return (
-    <div className="w-full rounded-[var(--radius-card)] border-2 border-[var(--accent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
+    <div className="w-full rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--accent)_28%,transparent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
       <div className="flex items-start gap-3">
         <span className="flex size-10 shrink-0 items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)]">
           {mision.reclamada ? (

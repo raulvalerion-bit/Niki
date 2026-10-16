@@ -1,5 +1,8 @@
-// Uso: node scripts/captura-sesion-prod.mjs "/app=docs/revisiones/x-375.png" ...
+// Uso: MSYS_NO_PATHCONV=1 node scripts/captura-sesion-prod.mjs "/app=docs/revisiones/x-375.png" ...
 // Captura en PRODUCCION con sesion real del dueno (sin correo, sin secretos impresos).
+// Viewport se agranda a la altura real del contenido ANTES de capturar (sin fullPage): evita que
+// Playwright "apile" los elementos position:fixed (bottom nav, CTA fijo) a mitad de la imagen,
+// que es lo que pasa con fullPage:true cuando la pagina mide mas que 1 viewport.
 import fs from 'node:fs';
 import { createClient } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
@@ -24,8 +27,11 @@ for (const r of rutas) {
   const [ruta, archivo] = r.split('=');
   await p.goto('https://holaniki.com' + ruta, { waitUntil: 'networkidle' });
   await p.waitForTimeout(1500);
-  await p.screenshot({ path: archivo, fullPage: true });
-  console.log('OK', ruta, '->', archivo, p.url());
+  const alto = await p.evaluate(() => document.body.scrollHeight);
+  await p.setViewportSize({ width: 375, height: alto });
+  await p.waitForTimeout(300);
+  await p.screenshot({ path: archivo });
+  console.log('OK', ruta, '->', archivo, p.url(), 'alto', alto);
 }
 console.log('errores', errs.length, errs.slice(0, 3));
 await b.close();

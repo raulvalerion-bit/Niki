@@ -319,7 +319,7 @@ function Encabezado({
         type="button"
         onClick={onAtras}
         aria-label="Volver a la pregunta anterior"
-        className={`flex size-11 shrink-0 items-center justify-center rounded-full text-[var(--text-primary)] ${
+        className={`flex size-12 shrink-0 items-center justify-center rounded-full text-[var(--text-primary)] ${
           mostrarAtras ? '' : 'invisible'
         }`}
       >
@@ -330,7 +330,7 @@ function Encabezado({
         type="button"
         onClick={onSalir}
         aria-label="Salir del Check de Presencia"
-        className="flex size-11 shrink-0 items-center justify-center rounded-full text-[var(--text-primary)]"
+        className="flex size-12 shrink-0 items-center justify-center rounded-full text-[var(--text-primary)]"
       >
         <X size={20} aria-hidden="true" />
       </button>
@@ -494,6 +494,7 @@ function PantallaPregunta({
   columnas = 1,
   icon: Icono,
   notaAyuda,
+  notaEnTarjeta = false,
 }: {
   pregunta: string;
   microCopy?: string;
@@ -506,6 +507,10 @@ function PantallaPregunta({
   /** Ayuda contextual bajo las opciones (heurística 10) — contenido real, no relleno,
       para las preguntas con pocas opciones (2-3) que dejan espacio libre debajo. */
   notaAyuda?: string;
+  /** true = notaAyuda en tarjeta (más peso visual) en vez de texto suelto — para las
+      preguntas de 2 opciones donde el texto plano no basta para llenar el vacío
+      (defecto del revisor-visual, 2026-10-16: "tiempo" quedaba con ~220px vacíos). */
+  notaEnTarjeta?: boolean;
 }) {
   const [elegido, setElegido] = useState<string | null>(null);
   const reduce = useReducedMotion();
@@ -576,7 +581,15 @@ function PantallaPregunta({
           </motion.div>
         ))}
       </div>
-      {notaAyuda && (
+      {notaAyuda && notaEnTarjeta && (
+        <div className="mt-8 w-full rounded-[var(--radius-card)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--text-secondary)]">
+            Por qué lo preguntamos
+          </p>
+          <p className="mt-2 text-[14px] leading-[1.5] text-[var(--text-primary)]">{notaAyuda}</p>
+        </div>
+      )}
+      {notaAyuda && !notaEnTarjeta && (
         <p className="mx-auto mt-8 max-w-[280px] text-center text-[13px] leading-[1.5] text-[var(--text-primary)]">
           {notaAyuda}
         </p>
@@ -689,7 +702,7 @@ function PantallaCargando({ lineas, onListo }: { lineas: string[]; onListo: () =
       <ul className="mt-8 flex w-full flex-col gap-3">
         {lineas.map((l, i) => (
           <li key={i} className={`flex items-center gap-3 text-[15px] ${i <= activo ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}>
-            {i < activo ? (
+            {i < activo || (i === activo && pct === 100) ? (
               <Check size={18} color="var(--accent)" aria-hidden="true" className="shrink-0" />
             ) : i === activo ? (
               <motion.span
@@ -1048,6 +1061,7 @@ export default function Onboarding() {
               pregunta="¿Cuánto tiempo quieres dedicar a tus hábitos de presencia e imagen?"
               icon={CalendarClock}
               notaAyuda="La constancia importa más que la duración: por eso elegimos ritmos cortos que sí se pueden cumplir."
+              notaEnTarjeta
               opciones={TIEMPOS}
               onElegir={(v) => {
                 setRespuestas((r) => ({ ...r, tiempo: v }));

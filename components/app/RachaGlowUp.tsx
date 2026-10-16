@@ -105,9 +105,15 @@ export function RachaGlowUp({ estado, hoy }: { estado: EstadoRacha; hoy: string 
         {completo && <Trophy size={20} color="var(--accent)" aria-label="Glow-Up completo" />}
       </div>
 
-      {/* 21 días: 3 filas de 7. Lleno = día cumplido. */}
-      <div className="mx-auto mt-3 grid w-fit grid-cols-7 gap-2.5" role="img" aria-label={`${llenos} de ${META_GLOWUP} días completados`}>
-        {Array.from({ length: META_GLOWUP }, (_, i) => {
+      {/* 21 días: 3 filas de 7. Lleno = día cumplido. Racha en 0 (nueva o recién
+          terminada): el grid completo solo mostraría 21 círculos vacíos — se
+          colapsa a 1 fila (defecto del revisor-visual, 2026-10-16). */}
+      <div
+        className="mx-auto mt-3 grid w-fit grid-cols-7 gap-2.5"
+        role="img"
+        aria-label={`${llenos} de ${META_GLOWUP} días completados`}
+      >
+        {Array.from({ length: llenos === 0 && indiceHoy === -1 ? META_GLOWUP / 3 : META_GLOWUP }, (_, i) => {
           const lleno = i < llenos;
           return (
             <motion.span
