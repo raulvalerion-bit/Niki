@@ -605,13 +605,14 @@ function PantallaReconocimiento({
   /** Contenido extra entre el texto y el botón (p. ej. el ejemplo de ajuste). */
   extra?: React.ReactNode;
   onContinuar: () => void;
-  /** false cuando el texto es corto y centrar deja demasiado aire muerto arriba/abajo
-      (defecto del revisor-visual, 2026-10-16): arranca pegado arriba en vez de flotar al medio. */
+  /** false cuando el texto es corto y centrar en flex-1 deja demasiado aire muerto
+      abajo (defecto del revisor-visual, 2026-10-16): fluye desde arriba como
+      PantallaPregunta, sin forzar la altura completa de la pantalla. */
   centrado?: boolean;
 }) {
   const reduce = useReducedMotion();
   return (
-    <div className={`flex flex-1 flex-col pb-16 ${centrado ? 'justify-center pt-8' : 'justify-start pt-16'}`}>
+    <div className={centrado ? 'flex flex-1 flex-col justify-center pb-16 pt-8' : 'pt-16'}>
       <div className="flex flex-col items-center text-center">
         <motion.span
           initial={reduce ? false : { scale: 0.4, opacity: 0 }}
