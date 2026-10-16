@@ -409,6 +409,27 @@ function ChipOpcion({
   );
 }
 
+/** Niki saludando en la apertura: entra con rebote + un único balanceo de mano
+    (baseline #7 de craft — antes era un <img> estático). Respeta reduced-motion. */
+function NikiSaludando() {
+  const reduce = useReducedMotion();
+  return (
+    <motion.img
+      src="/iconos/niki-saludando.webp"
+      alt=""
+      aria-hidden="true"
+      className="mt-4 size-20 drop-shadow-[0_4px_8px_rgba(60,36,18,0.18)]"
+      initial={reduce ? false : { scale: 0.5, rotate: -8, opacity: 0 }}
+      animate={reduce ? { rotate: 0 } : { scale: 1, rotate: [0, -10, 6, 0], opacity: 1 }}
+      transition={
+        reduce
+          ? { duration: 0 }
+          : { scale: { type: 'spring', stiffness: 300, damping: 16 }, opacity: { duration: 0.3 }, rotate: { duration: 0.6, times: [0, 0.4, 0.7, 1], delay: 0.2 } }
+      }
+    />
+  );
+}
+
 /** Pantalla de apertura (hook, peldaño 1 de LA ESCALERA — 02B): demuestra la
     promesa antes de pedir nada, mismo patrón que Cal AI. */
 function PantallaApertura({
@@ -423,20 +444,20 @@ function PantallaApertura({
 }) {
   return (
     <div className="flex min-h-[85vh] flex-col items-center justify-center pt-8 text-center">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/iconos/banner-bienvenidos-v2.webp"
-        width={720}
-        height={288}
-        alt="¡Bienvenidos!"
-        fetchPriority="high"
-        className="w-full max-w-[360px] rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
-      />
+      {/* Letrero de bienvenida: tokens de FICHA-ARTE (degradé Glow Atardecer + acento marrón),
+          no un asset suelto — así nunca queda fuera de la ficha. Singular: le habla a 1 persona. */}
+      <div
+        className="flex aspect-[5/2] w-full max-w-[360px] items-center justify-center rounded-[var(--radius-card)] shadow-[var(--shadow-2)]"
+        style={{ background: 'var(--bg-gradient)' }}
+      >
+        <span className="text-[40px] font-extrabold leading-none tracking-[-0.02em] text-[var(--accent)] [font-family:var(--font-display)]">
+          ¡Bienvenido!
+        </span>
+      </div>
       <h1 className="mt-6 text-balance text-[28px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)] [font-family:var(--font-display)]">
 ¡Tu <span className="text-[var(--accent)]">Check de Presencia</span> antes de salir!
       </h1>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/iconos/niki-saludando.webp" alt="" aria-hidden="true" className="mt-4 size-20 drop-shadow-[0_4px_8px_rgba(60,36,18,0.18)]" />
+      <NikiSaludando />
       <p className="mt-4 max-w-[320px] text-balance text-[16px] leading-[1.5] text-[var(--text-primary)]">
         Nadie te dice la verdad por pena. En 4 preguntas armamos tu Check; después, cada foto te dice en 30 segundos qué ajustar.
       </p>
@@ -573,6 +594,7 @@ function PantallaReconocimiento({
   ctaLabel = 'Seguir con mi Check',
   extra,
   onContinuar,
+  centrado = true,
 }: {
   icon: LucideIcon;
   /** Ícono propio del usuario (gif/png) — si se pasa, reemplaza al ícono de librería. */
@@ -583,10 +605,13 @@ function PantallaReconocimiento({
   /** Contenido extra entre el texto y el botón (p. ej. el ejemplo de ajuste). */
   extra?: React.ReactNode;
   onContinuar: () => void;
+  /** false cuando el texto es corto y centrar deja demasiado aire muerto arriba/abajo
+      (defecto del revisor-visual, 2026-10-16): arranca pegado arriba en vez de flotar al medio. */
+  centrado?: boolean;
 }) {
   const reduce = useReducedMotion();
   return (
-    <div className="flex flex-1 flex-col justify-center pb-16 pt-8">
+    <div className={`flex flex-1 flex-col pb-16 ${centrado ? 'justify-center pt-8' : 'justify-start pt-16'}`}>
       <div className="flex flex-col items-center text-center">
         <motion.span
           initial={reduce ? false : { scale: 0.4, opacity: 0 }}
@@ -935,7 +960,9 @@ export default function Onboarding() {
       </>
       )}
 
-      <MarcaNiki conLema={paso !== 'apertura'} />
+      {/* El lema completo ya vive en el H1 de apertura; repetirlo en cada paso
+          interno era ruido (defecto del revisor-visual, 2026-10-16). */}
+      <MarcaNiki conLema={false} />
       {mostrarEncabezado && (
         <Encabezado pct={pct} onAtras={retroceder} mostrarAtras={pasoIdx > 0} onSalir={() => setConfirmarSalida(true)} />
       )}
@@ -961,6 +988,7 @@ export default function Onboarding() {
               pregunta="¿Cuál es tu objetivo principal de presencia?"
               icon={Sparkles}
               opciones={OBJETIVOS}
+              notaAyuda="No hay respuesta incorrecta: con esto Niki prioriza qué ajustes mostrarte primero."
               onElegir={(v) => {
                 setRespuestas((r) => ({ ...r, objetivo: v }));
                 avanzar();
@@ -973,6 +1001,7 @@ export default function Onboarding() {
               pregunta="¿Qué te frustra más al vestirte?"
               icon={Search}
               opciones={DOLORES}
+              notaAyuda="Tu primer Check se enfoca justo ahí: lo que más te frena, no una lista genérica."
               onElegir={(v) => {
                 setRespuestas((r) => ({ ...r, dolor: v }));
                 avanzar();
@@ -986,6 +1015,7 @@ export default function Onboarding() {
               titulo="No es falta de estilo"
               texto={RECONOCIMIENTO_DOLOR[respuestas.dolor ?? 'todo']}
               onContinuar={avanzar}
+              centrado={false}
             />
           )}
 

@@ -140,24 +140,17 @@ export default function LandingNiki() {
       />
 
       {/* 6. OFERTA — un plan (VIP Pro), anual y mensual; trial de 3 días SOLO en el Anual (igual que el paywall) */}
+      {/* Sin stack de valor Hormozi: $120/$39/$27 no tenían fuente propia en
+          FICHA-MERCADO.md (regla cero del SO — número sin fuente = número
+          inventado). Quitado en vez de inventar una cifra (revisor-visual, 2026-10-16). */}
       <Oferta
         tituloMarked="Empieza gratis. Luego, [acento]menos de $0.17 al día[/acento]"
         trialDias={3}
         trialEnMensual={false}
-        stack={{
-          lineas: [
-            { resultado: '3 Checks de Presencia al día (12 meses)', valor: '$120' },
-            { resultado: 'Modo Alto Impacto para entrevistas, citas y reuniones', valor: '$39' },
-            { resultado: 'Racha Glow-Up de 21 días', valor: '$27' },
-          ],
-          totalTachado: '$186',
-          nota: 'Hoy: $4.99/mes',
-          notaSub: 'Se cobra $59.99 al año',
-        }}
         anual={{
           nombre: 'Anual',
           badge: 'MÁS POPULAR',
-          precioMes: '$4.99',
+          precioMes: '$5',
           totalAnual: 'Se cobra $59.99 al año',
           ahorro: '~8 meses gratis',
           ctaLabel: 'Hacer mi Check gratis',
@@ -187,7 +180,7 @@ export default function LandingNiki() {
       {/* 7. GARANTÍA */}
       <Garantia
         nombre="Garantía del Primer Ajuste Honesto"
-        condicionMarked="Si tu primer Check de Presencia no te da al menos [b]1 ajuste concreto que puedas aplicar hoy[/b], escribes un correo y te devolvemos todo. Sin preguntas."
+        condicionMarked="Si en tus primeros 7 días tu primer Check de Presencia no te da al menos [b]1 ajuste concreto que puedas aplicar hoy[/b], escribes un correo y te devolvemos todo. Sin preguntas."
         pisoLegal="Respaldada por la garantía Hotmart de 7 días"
       />
 

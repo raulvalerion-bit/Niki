@@ -37,12 +37,16 @@ import { tieneAcceso } from '@/lib/acceso';
 
 type PlanId = 'anual' | 'mensual';
 
-const PLANES: Record<PlanId, { nombre: string; precio: string; valor: number; detalle: string; badge?: string }> = {
+const PLANES: Record<PlanId, { nombre: string; precio: string; valor: number; decimales?: number; detalle: string; badge?: string }> = {
   anual: {
     nombre: 'VIP Pro Anual',
-    precio: '$4.99',
-    valor: 4.99,
-    detalle: '$59.99/año · menos de $0.17/día · ~8 meses gratis',
+    precio: '$5',
+    // $59.99/año redondeado: $4.99/mes (×12=$58.88) no cuadraba con el cobro real
+    // (defecto repetido del revisor-visual, 2026-10-06 y 2026-10-16) — 0 decimales
+    // evita mostrar un segundo número que tampoco cuadraría exacto.
+    valor: 5,
+    decimales: 0,
+    detalle: '$59.99/año · menos de $0.17/día · ~8 meses gratis',
     badge: '3 días gratis',
   },
   mensual: {
@@ -58,7 +62,7 @@ const ORDEN_PLANES: PlanId[] = ['anual', 'mensual'];
 const PASOS_TRIAL = [
   // En el checkout real (2026-09-27) la casilla "Quiero un periodo gratis" ya
   // viene marcada, pero Hotmart muestra abajo el precio del año: se aclara aquí.
-  { dia: 'Hoy', texto: 'Acceso completo por $0 (la prueba ya viene activada en Hotmart)', icon: Unlock },
+  { dia: 'Hoy', texto: 'Acceso completo, sin cobro (la prueba ya viene activada en Hotmart)', icon: Unlock },
   { dia: 'Hasta el final del Día 3', texto: 'Si no te convence, cancelas gratis desde Hotmart', icon: ShieldCheck },
   { dia: 'Al terminar el Día 3', texto: 'Se cobran $59.99, solo si te quedas', icon: CreditCard },
 ];
@@ -102,10 +106,10 @@ function MarcaNiki() {
 }
 
 /** Precio héroe que cuenta hasta su valor (baseline #2), respetando reduced-motion. */
-function ConteoPrecio({ valor }: { valor: number }) {
+function ConteoPrecio({ valor, decimales = 2 }: { valor: number; decimales?: number }) {
   const reduce = useReducedMotion();
   const mv = useMotionValue(reduce ? valor : 0);
-  const texto = useTransform(mv, (v) => `$${v.toFixed(2)}`);
+  const texto = useTransform(mv, (v) => `$${v.toFixed(decimales)}`);
   useEffect(() => {
     if (reduce) {
       mv.set(valor);
@@ -161,7 +165,7 @@ function TarjetaPlan({
           <span className="text-[16px] font-semibold text-[var(--text-primary)]">{plan.nombre}</span>
         </span>
         <span className="text-[20px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
-          <ConteoPrecio valor={plan.valor} />
+          <ConteoPrecio valor={plan.valor} decimales={plan.decimales} />
           <span className="text-[13px] font-medium text-[var(--text-secondary)] [font-family:var(--font-body)]">/mes</span>
         </span>
       </span>
