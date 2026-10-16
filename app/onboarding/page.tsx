@@ -1015,8 +1015,17 @@ export default function Onboarding() {
               icon={DOLOR_ICONO[respuestas.dolor ?? 'todo']}
               titulo="No es falta de estilo"
               texto={RECONOCIMIENTO_DOLOR[respuestas.dolor ?? 'todo']}
+              extra={
+                <div className="mt-6 w-full rounded-[var(--radius-card)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--text-secondary)]">
+                    Cómo es distinto
+                  </p>
+                  <p className="mt-2 text-[14px] leading-[1.5] text-[var(--text-primary)]">
+                    Nada de reglas genéricas de moda: cada ajuste sale de tu foto real, tu cuerpo y la ocasión que elijas.
+                  </p>
+                </div>
+              }
               onContinuar={avanzar}
-              centrado={false}
             />
           )}
 
