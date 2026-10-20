@@ -496,8 +496,41 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - App interna: construida y con datos reales conectados (gemas, checks con foto, hábito, perfil) —
   sin pasar por revisor-visual todavía
 - Servicios externos: en progreso, ya no bloqueados — ver detalle en la sección de arriba
-- Certificado /100 (RE-CERTIFICACIÓN 2026-10-17, producción = ec364f0 + hoy sin desplegar aún):
-  **84/100 → banda 80-89 "lista para vender" — APTO para tráfico pagado.** Las 3 condiciones del
+- Certificado /100 (RE-CERTIFICACIÓN 2026-10-20, producción = 06cfa14, verificado en vivo en
+  holaniki.com): **88/100 → banda 80-89 "lista para vender" — APTO para tráfico pagado** (sube de
+  84). Nada de seguridad/datos/pago cambió desde el 17-oct (confirmado: sin migraciones nuevas
+  desde el 20261014, `npm audit` 0, advisors de Supabase sin hallazgos nuevos — solo los 3 ya
+  conocidos e intencionales); lo único que subió es PRODUCTO, por el pulido de Hoy y Progreso de
+  hoy (ver "Problemas conocidos" → `veredicto:hoy`/`veredicto:progreso` para el detalle completo).
+  VENTA 19/20 (sin cambios) · FUNNEL 20/20 (sin cambios) ·
+  PRODUCTO 17/20 (sube de 13 — Resultado-check LISTA 37/40·16/20 sin cambios de fondo desde
+  2026-09-28 [único cambio: 1 línea de imagen .webp el 15-oct, cosmético] · Hoy 35/40·19/20
+  craft YA CRUZA el gate, usabilidad a 1 punto, APROBADA por el dueño viendo la captura en vivo ·
+  Progreso 29/40·15/20, mejora real desde 28/40·14/20, APROBADA por el dueño — 1 de 3 pantallas
+  pasa el gate automático limpio, pero las otras 2 tienen aprobación directa del dueño, que el SO
+  prioriza sobre el puntaje cuando el dueño ya vio la pantalla en vivo) ·
+  CONFIANZA 13/15 (sin cambios — RLS con `with check` en las 13 tablas intacto, advisors de
+  seguridad re-verificados hoy con la API de Supabase: solo WARN/INFO esperados [`processed_events`
+  sin políticas = solo servidor, `mision_semana`/`reclamar_mision` SECURITY DEFINER sobre
+  auth.uid(), contraseñas filtradas N/A]; −2 sin cambio: se confirmó por SQL que el único
+  `first_paid_at` real en `profiles` es la cuenta del DUEÑO (prueba del 16-oct, ya reembolsada) —
+  CERO clientes reales han completado prueba→cobro todavía; restauración de respaldo de Supabase
+  Pro sigue sin ensayarse en real) ·
+  VELOCIDAD 5/10 (sin re-medir — última medición 2026-10-15 sigue vigente; los cambios de hoy
+  [ícono de mascota ~12 KB webp, lógica de filtro/corte] no mueven el presupuesto de forma
+  relevante) ·
+  RETENCIÓN 14/15 (sin cambios: loop 5/5, analítica 5/5, dunning 4/5 — faltan cancelación
+  retentiva y win-back).
+  ⚠️ ÚNICO PILAR BAJO EL 80%: VELOCIDAD (50%) — es la prioridad real del primer mes según la banda
+  80-89 del certificado (mejorar los pilares <80%). Los otros 2 pendientes reales (restauración de
+  respaldo sin ensayar, primer cobro de un cliente real todavía no ocurre) no bajan puntaje más de
+  lo ya descontado, pero siguen abiertos — vigilar el panel de Hotmart/admin en los primeros días
+  de tráfico pagado real.
+  Smoke test de producción hoy (holaniki.com): `/` `/onboarding` `/paywall` `/login` → 200 ·
+  `/app` → 307 (redirige a login sin sesión, esperado) · `/api/check` y `/api/hotmart/webhook` →
+  405 en GET (esperado, son POST-only) — deploy del commit 06cfa14 confirmado sano.
+- Certificado anterior (2026-10-17, producción = ec364f0): **84/100 → banda 80-89 "lista para
+  vender" — APTO para tráfico pagado.** Las 3 condiciones del
   certificado anterior (10-15) YA ESTÁN CERRADAS: (a) landing re-revisada y LISTA 36/40·16/20·copy
   19/20 hoy, (b) API de conversiones de Hotmart conectada + Purchase confirmado en Meta hoy, (c)
   Coincidencia avanzada ya estaba apagada (confirmado). Mismo número total que el 10-15 (84), pero
