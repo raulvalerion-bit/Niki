@@ -843,10 +843,23 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - [ ] Próxima sesión: crear una cuenta con el proveedor de IA elegido (tiene un costo pequeño por
   análisis) — se le pedirá guiado, paso a paso, al empezar la conexión de la IA real
 - [ ] Más adelante: crear cuentas Hotmart/Resend, comprar dominio (se le pedirá guiado, paso a paso, en la Sesión de servicios externos)
+- [ ] 2026-10-20 (/adquisicion): activar la afiliación del producto `niki` en app.hotmart.com →
+  Afiliados → activar, aprobación MANUAL al inicio, comisión 35% RECURRENTE, subir el kit de
+  docs/copy/kit-afiliados.md al área de afiliados, activar aparición en el Marketplace.
 
 ## Notas para la próxima sesión
 - USUARIO EN REDES (2026-10-04): @holaniki_app — Instagram LISTO; TikTok creado (usuario ok; nombre visible "Niki - Check de Presencia" se puede cambiar hasta el 2026-10-11); Facebook: Página creada 2026-10-04 (tipo Empresa); usuario holanikiapp (FB no acepta "_") 2026-10-05; Instagram VINCULADO 2026-10-05. Las 3 redes abiertas en la laptop (IG vía cambio de cuenta desde la personal; TikTok con contraseña propia). Hoja de cuentas sin contraseñas: contenido/MIS-CUENTAS.md. Nombre visible: "Niki - Check de Presencia" (guion).
 - ADQUISICIÓN (2026-10-04, /adquisicion, PLAN APROBADO — formato 2: Niki protagonista, sin salir a cámara): ETAPA 0 (0 clientes, ~$0 en ads). HECHO: medición por red (?src= → localStorage niki_src 30 días → sck "tiktok_paywall_anual" en Hotmart; probado de punta a punta) + lote semana 1 en contenido/semana-01 (GUIONES.md con 3 videos + carrusel de 7 PNG 1080x1350 + Niki 1000px sin fondo + capturas). Bio: holaniki.com/?src=tiktok | ig | fb. Siguiente: afiliados Hotmart (kit) y semana 2 según el ganador. Canal principal propuesto: orgánico short-form (mismo video vertical en TikTok + IG Reels + FB Reels, 3 videos + 1 carrusel/semana, TikTok SEO) + afiliados Hotmart. Antes de publicar: medir canal (?src= en landing → sck del checkout) — PENDIENTE de construir. Cuentas: el dueño aún no las tiene; se crean con hola@holaniki.com (reenvía a su Gmail), mismo @usuario en las 3, TikTok empresa, IG profesional, FB como Página + Meta Business Suite, 2FA. Esperando: formato de video (a cámara / Niki protagonista / mezcla) = OK del plan.
+- ADQUISICIÓN (2026-10-20, /adquisicion): el dueño preguntó por arrancar tráfico PAGADO; se le
+  explicó el criterio del 34 (etapa 0 = 0 clientes reales todavía, confirmado por SQL — paid ads es
+  etapa 1, DESPUÉS de las primeras 10-30 ventas y testimonios) y eligió seguir con ETAPA 0: afiliados
+  + orgánico primero, paid se deja para cuando haya ventas reales que lo justifiquen. Comisión
+  decidida: 35% RECURRENTE (verificado contra el margen: con el plan Mensual $14.99, después de
+  comisión y costo de IA quedan ~$8-9/mes/cliente — pasa el gate del 40 con margen sano). KIT
+  COMPLETO generado en docs/copy/kit-afiliados.md (5 ángulos, 15 copys IG/TikTok, guion UGC de
+  30-45s, 5 stories, swipe de 4 correos, ideas de creativos, FAQ, reglas del programa) — fuente:
+  FICHA-AVATAR.md. Pendiente del dueño: activar la afiliación en Hotmart (ver "Pendientes del
+  usuario" arriba) y subir el kit. No se tocó código en esta tarea.
 - AVISO PREVIO (2026-10-05, pedido del dueño, opción 1 = solo expectativa, sin lista de espera ni premio): 3 días antes de la semana 1 — contenido/aviso-previo/ (GUIA.md + 3 publicaciones 4:5 + 3 historias 9:16, fuente aviso-previo.html): Día 1 "Muy pronto estaré contigo", Día 2 problema "¿saliste sin saber si te veías bien?", Día 3 "¡Ya llegué!" + link. Enlace del perfil sin cambios. Después arranca semana-01.
 - IDEA PARA DESPUÉS (2026-10-05): versión en inglés (botón "English version", pedido del dueño). Decisión: V2, NO ahora — todo el contenido de redes es en español, inglés exige i18n completa (UI, IA, correos, legales, checkout) + contenido en inglés + competencia directa con Umax/apps US. Reabrir tras primeras ventas en LATAM o si la analítica muestra tráfico angloparlante (archivo 39). Logo: se mantiene el Anillo plano en esquinas/favicon; la mascota 3D solo ≥40px (regla FICHA-ARTE, reconfirmada al dueño).
 - ✅ SEMANA 2 — Jue 15 carrusel "5 errores en tu primera cita" PUBLICADO. ✅ Sáb 17 video "Reunión
