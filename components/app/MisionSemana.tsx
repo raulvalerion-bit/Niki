@@ -84,7 +84,7 @@ export function MisionSemana({ hoy }: { hoy: string }) {
   return (
     <div className="w-full rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--accent)_28%,transparent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
       <div className="flex items-start gap-3">
-        <span className="flex size-10 shrink-0 items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)]">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-button)] bg-[var(--accent)]">
           {mision.reclamada ? (
             <Check size={20} color="var(--bg)" strokeWidth={2.5} aria-hidden="true" />
           ) : (
@@ -93,22 +93,24 @@ export function MisionSemana({ hoy }: { hoy: string }) {
         </span>
         <div className="min-w-0 flex-1">
           <p className="text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--accent)]">Misión de la semana · {eje}</p>
-          <p className="mt-1 text-[16px] font-semibold leading-[1.35] text-[var(--text-primary)]">
+          <p className="mt-1 text-[17px] font-semibold leading-[1.3] text-[var(--text-primary)]">
             {mision.reclamada ? `¡Cumplida! Tu ${eje.toLowerCase()} subió esta semana` : `Saca ${mision.meta}+ en ${eje.toLowerCase()} en 3 Checks`}
           </p>
         </div>
       </div>
 
-      <div className="mt-3 flex gap-2" role="img" aria-label={`${mision.hechos} de ${mision.objetivo} Checks logrados`}>
-        {Array.from({ length: mision.objetivo }, (_, i) => (
-          <motion.span
-            key={i}
-            initial={reduce ? false : { scale: 0.6, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: reduce ? 0 : 0.08 * i, type: 'spring', stiffness: 320, damping: 20 }}
-            className={`size-6 rounded-full ${i < mision.hechos ? 'bg-[var(--accent)]' : 'border-2 border-dashed border-[color-mix(in_oklab,var(--accent)_35%,transparent)]'}`}
+      <div className="mt-3 flex items-center gap-3" role="img" aria-label={`${mision.hechos} de ${mision.objetivo} Checks logrados`}>
+        <div className="h-2 flex-1 overflow-hidden rounded-full bg-[var(--surface-2)]">
+          <motion.div
+            className="h-full rounded-full bg-[var(--accent)]"
+            initial={{ width: reduce ? `${(mision.hechos / mision.objetivo) * 100}%` : '0%' }}
+            animate={{ width: `${(mision.hechos / mision.objetivo) * 100}%` }}
+            transition={{ duration: reduce ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
           />
-        ))}
+        </div>
+        <span className="shrink-0 text-[13px] font-bold tabular-nums text-[var(--text-secondary)]">
+          {mision.hechos}/{mision.objetivo}
+        </span>
       </div>
 
       {mision.reclamada ? (
@@ -142,7 +144,7 @@ export function MisionSemana({ hoy }: { hoy: string }) {
 
       <Link
         href={`/app/progreso/${mision.eje}`}
-        className="mt-2 -mb-2 flex items-center gap-1 py-2 text-[13px] font-semibold text-[var(--accent)]"
+        className="mt-2 -mb-2 flex min-h-11 items-center gap-1 text-[13px] font-semibold text-[var(--accent)]"
       >
         Ver mi ruta de {eje.toLowerCase()}
         <ChevronRight size={16} aria-hidden="true" />

@@ -58,10 +58,16 @@ function Cuenta({ valor }: { valor: number }) {
   return <>{reduce ? valor : mostrado}</>;
 }
 
+const CORTE_CHECKS = 15;
+const TECHO_CHIPS = 3; // gate de carga cognitiva: ≤4 opciones por decisión ("Todas" + 3 + "Otras").
+const OTRAS = '__otras__';
+
 export default function Progreso() {
   const reduce = useReducedMotion();
   const { checks, error, reintentar } = useChecksProgreso();
   const [mesActual] = useState(() => mesDe(new Date().toISOString()));
+  const [filtro, setFiltro] = useState<string | null>(null);
+  const [verTodos, setVerTodos] = useState(false);
 
   const ejes = useMemo(() => (checks ? EJES.map((e) => progresoEje(checks, e)) : []), [checks]);
   const foco = useMemo(() => ejeFoco(ejes), [ejes]);
@@ -72,6 +78,25 @@ export default function Progreso() {
     [checks, mesActual],
   );
   const delMes = checks?.filter((c) => mesDe(c.created_at) === mesActual).length ?? 0;
+  // Ocasiones que de verdad tiene este usuario (nunca las 6 completas si no las usó), ordenadas
+  // por frecuencia de uso (la más repetida primero — heurística "reconocer", más predecible) —
+  // regla de UX #14: toda lista de más de 8-10 ítems necesita filtro.
+  const ocasionesPresentes = useMemo(() => {
+    if (!checks) return [];
+    const conteo = new Map<string, number>();
+    for (const c of checks) if (OCASION[c.ocasion]) conteo.set(c.ocasion, (conteo.get(c.ocasion) ?? 0) + 1);
+    return [...conteo.entries()].sort((a, b) => b[1] - a[1]).map(([o]) => o);
+  }, [checks]);
+  // Gate de carga cognitiva (≤4 opciones por decisión): como máximo 3 chips propias + "Otras".
+  const ocasionesChip = ocasionesPresentes.slice(0, TECHO_CHIPS);
+  const ocasionesOtras = ocasionesPresentes.slice(TECHO_CHIPS);
+  const checksOrdenados = useMemo(() => (checks ? [...checks].reverse() : []), [checks]);
+  const checksFiltrados = useMemo(() => {
+    if (!filtro) return checksOrdenados;
+    if (filtro === OTRAS) return checksOrdenados.filter((c) => ocasionesOtras.includes(c.ocasion));
+    return checksOrdenados.filter((c) => c.ocasion === filtro);
+  }, [checksOrdenados, filtro, ocasionesOtras]);
+  const checksVisibles = verTodos ? checksFiltrados : checksFiltrados.slice(0, CORTE_CHECKS);
   // En el servidor se asume "visto" para no pintar un aviso que luego desaparece.
   const resumenVisto = useSyncExternalStore(sinSuscripcion, () => leerVisto(mesCerrado), () => true);
   const avisoNuevo = mesesConResumen[0] === mesCerrado && !resumenVisto;
@@ -117,7 +142,7 @@ export default function Progreso() {
         <h1 className="mt-5 max-w-72 text-[20px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
           Tu Ruta de Presencia empieza con tu primer Check
         </h1>
-        <p className="mt-2 max-w-72 text-[14px] leading-[1.5] text-[var(--text-secondary)]">
+        <p className="mt-2 max-w-72 text-[15px] leading-[1.5] text-[var(--text-secondary)]">
           Con cada foto, Niki mide tu outfit, tu postura y tu actitud, y te dice qué ajustar para subir de nivel.
         </p>
         <Link
@@ -138,7 +163,7 @@ export default function Progreso() {
       <motion.h1 {...aparece(0)} className="text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]">
         Tu Ruta de Presencia
       </motion.h1>
-      <motion.p {...aparece(0)} className="mt-1 text-[14px] text-[var(--text-secondary)]">
+      <motion.p {...aparece(0)} className="mt-1 text-[13px] text-[var(--text-secondary)]">
         {nombreMes(mesActual)} · {delMes === 1 ? '1 Check este mes' : `${delMes} Checks este mes`}
       </motion.p>
 
@@ -175,7 +200,15 @@ export default function Progreso() {
             className="mt-3 flex items-center gap-3 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--accent)_28%,transparent)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)] transition-transform duration-100 active:scale-[0.98]"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/iconos/niki-celebrando.webp" alt="" aria-hidden="true" className="size-12 shrink-0" />
+            <motion.img
+              src="/iconos/niki-celebrando.webp"
+              alt=""
+              aria-hidden="true"
+              className="size-12 shrink-0"
+              initial={reduce ? false : { scale: 0.5, rotate: -8, opacity: 0 }}
+              animate={{ scale: 1, rotate: 0, opacity: 1 }}
+              transition={{ delay: reduce ? 0 : 0.3, type: 'spring', stiffness: 260, damping: 14 }}
+            />
             <div className="min-w-0 flex-1">
               <p className="text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--accent)]">Nuevo · Tu mes con Niki</p>
               <p className="mt-1 text-[15px] font-semibold text-[var(--text-primary)]">Mira cómo te fue en {nombreMes(mesCerrado).toLowerCase()}</p>
@@ -210,7 +243,7 @@ export default function Progreso() {
               <Link
                 key={m}
                 href={`/app/progreso/mes/${m}`}
-                className="flex h-11 items-center gap-1 rounded-full border border-[color-mix(in_oklab,var(--accent)_28%,transparent)] bg-[var(--surface)] px-4 text-[14px] font-semibold text-[var(--accent)] transition-transform duration-100 active:scale-[0.97]"
+                className="flex h-11 items-center gap-1 rounded-full border border-[color-mix(in_oklab,var(--accent)_28%,transparent)] bg-[var(--surface)] px-4 text-[13px] font-semibold text-[var(--accent)] transition-transform duration-100 active:scale-[0.97]"
               >
                 {nombreMes(m)}
                 <ChevronRight size={16} aria-hidden="true" />
@@ -221,8 +254,49 @@ export default function Progreso() {
       )}
 
       <h2 className="mt-8 text-[17px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">Tus Checks</h2>
+
+      {ocasionesPresentes.length > 1 && (
+        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Filtrar por ocasión">
+          <button
+            type="button"
+            onClick={() => setFiltro(null)}
+            aria-pressed={filtro === null}
+            className={`h-11 rounded-full px-3 text-[13px] font-semibold transition-colors ${
+              filtro === null ? 'bg-[var(--accent)] text-[var(--bg)]' : 'bg-[var(--chip-bg)] text-[var(--text-secondary)]'
+            }`}
+          >
+            Todas
+          </button>
+          {ocasionesChip.map((key) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setFiltro(key)}
+              aria-pressed={filtro === key}
+              className={`h-11 rounded-full px-3 text-[13px] font-semibold transition-colors ${
+                filtro === key ? 'bg-[var(--accent)] text-[var(--bg)]' : 'bg-[var(--chip-bg)] text-[var(--text-secondary)]'
+              }`}
+            >
+              {OCASION[key].label}
+            </button>
+          ))}
+          {ocasionesOtras.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setFiltro(OTRAS)}
+              aria-pressed={filtro === OTRAS}
+              className={`h-11 rounded-full px-3 text-[13px] font-semibold transition-colors ${
+                filtro === OTRAS ? 'bg-[var(--accent)] text-[var(--bg)]' : 'bg-[var(--chip-bg)] text-[var(--text-secondary)]'
+              }`}
+            >
+              Otras
+            </button>
+          )}
+        </div>
+      )}
+
       <div className="mt-3 flex flex-col gap-2">
-        {[...checks].reverse().map((c) => {
+        {checksVisibles.map((c) => {
           const o = OCASION[c.ocasion];
           const Icono = o?.icon ?? Sparkles;
           return (
@@ -235,7 +309,7 @@ export default function Progreso() {
                 <Icono size={18} color="var(--accent)" aria-hidden="true" />
               </span>
               <div className="flex-1">
-                <p className="text-[14px] font-semibold text-[var(--text-primary)]">{o?.label ?? c.ocasion}</p>
+                <p className="text-[15px] font-semibold text-[var(--text-primary)]">{o?.label ?? c.ocasion}</p>
                 <p className="text-[13px] text-[var(--text-secondary)]">{fechaCorta(c.created_at)}</p>
               </div>
               {c.puntaje !== null && (
@@ -247,6 +321,15 @@ export default function Progreso() {
             </Link>
           );
         })}
+        {!verTodos && checksFiltrados.length > CORTE_CHECKS && (
+          <button
+            type="button"
+            onClick={() => setVerTodos(true)}
+            className="mt-1 flex h-11 w-full items-center justify-center rounded-[var(--radius-button)] bg-[var(--chip-bg)] text-[15px] font-semibold text-[var(--accent)]"
+          >
+            Ver los {checksFiltrados.length - CORTE_CHECKS} Checks restantes
+          </button>
+        )}
       </div>
     </div>
   );

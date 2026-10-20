@@ -31,7 +31,7 @@ export function AnilloNivel({ nivel, tam = 56 }: { nivel: number; tam?: number }
           transition={{ duration: reduce ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
         />
       </svg>
-      <span className="relative text-[18px] font-bold tabular-nums text-[var(--text-primary)] [font-family:var(--font-display)]">
+      <span className="relative text-[17px] font-bold tabular-nums text-[var(--text-primary)] [font-family:var(--font-display)]">
         {nivel}
       </span>
     </span>
@@ -80,7 +80,7 @@ export function TarjetaEje({ p, foco }: { p: ProgresoEje; foco: boolean }) {
           </p>
         </div>
       )}
-      <p className="mt-3 text-[14px] leading-[1.45] text-[var(--text-secondary)]">
+      <p className="mt-3 text-[15px] leading-[1.45] text-[var(--text-secondary)]">
         <b className="font-semibold text-[var(--text-primary)]">Siguiente paso:</b> {p.siguientePaso}
       </p>
     </Link>

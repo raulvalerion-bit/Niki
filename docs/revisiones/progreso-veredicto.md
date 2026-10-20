@@ -1,14 +1,9 @@
-# VEREDICTO revisor-visual — Progreso ("Tu Ruta de Presencia")
-Fecha: 2026-10-04 12:00
-Screenshot: docs/revisiones/progreso-375.png
+# VEREDICTO revisor-visual — Progreso (Tu Ruta de Presencia)
+Fecha: 2026-10-20 00:00
+Screenshot: docs/revisiones/repaso-2026-10-20/progreso-v3-375-00.png · docs/revisiones/repaso-2026-10-20/progreso-v3-375-01.png
 Usabilidad: 29/40
-Craft: 14/20
+Craft: 15/20
 Copy (si vende): N-A
 Fidelidad (si hubo referencia): N-A
 Veredicto: NO LISTA
-Top defectos: 
-1. [Aviso "Tu mes con Niki", arriba] Bloque relleno de --gold #D4A72C: la FICHA-ARTE lo restringe SOLO a "Después" y CTA final de la landing. Es un desvío de la ficha y además es el elemento más saturado de la pantalla, así que le roba el foco a la tarjeta "Tu foco". -> Usar superficie crema con hairline degradé y la mascota, o registrar el uso en la ficha con aprobación del dueño.
-2. [Anillos de nivel de las 3 tarjetas + puntajes de "Tus Checks"] Hay dos escalas /10 sin explicación: "Nivel 4" frente a Checks de 5.3/6.3. El usuario no sabe qué significa un 4 ni cuánto le falta para subir. -> Mostrar "4/10" y una línea de avance con los datos que ya se calculan (p.metaSiguiente/avance), por ejemplo "Promedio 6.0 · nivel 5 desde 6.0".
-3. [Pantalla completa] No hay una acción primaria: el "qué sigue" se queda en texto y la tarjeta "Tu foco" no lleva a hacer nada. -> Agregar en la tarjeta foco un CTA "Hacer un Check enfocado en Actitud" (h-12, acento) que lleve a /app.
-4. [Jerarquía general] No hay un dato héroe. Las 3 tarjetas pesan igual, el número del anillo mide 18px y el titular de 24px es lo más grande. Al entrecerrar los ojos no se lee un nivel 1. -> Subir el anillo de la tarjeta foco (o un resumen global) a 72-88px con número display de 28px+ y conteo animado (baseline #2, que hoy falta).
-5. [Aviso de resumen + lista "Tus Checks"] Cuando se abre el resumen, el aviso desaparece para siempre (localStorage) y no queda ninguna forma de volver a ver ese mes. Además, todos los Checks usan el mismo ícono Sparkles genérico, aunque la ocasión sea distinta. -> Agregar un enlace persistente "Resúmenes de meses anteriores" bajo el titular y un ícono por ocasión (Briefcase/Heart/Users…).
+Top defectos: 1) RESUELTO PARCIAL: page.tsx y RutaPresencia.tsx ya no tienen 18px (anillo a 17px) ni 14px en la vista con datos (ahora 7 tamaños: 40/24/17/16/15/13/12, antes 9) — pero app/app/progreso/page.tsx línea 145 (estado vacío, 0 Checks) sigue en text-[14px] ("Con cada foto, Niki mide tu outfit..."), un tamaño huérfano que un usuario nuevo SÍ ve en su primera visita a Progreso → fusionar a 15px o 13px. 2) RESUELTO: los chips de ocasión ahora respetan el techo (máx 3 propias + "Otras", 5 en total con "Todas") y se ordenan por frecuencia real (confirmado en el screenshot 01: "Amigos" con 2 Checks aparece antes que "Entrevista" con 1) — gate de carga cognitiva y heurística 6 (reconocer, no recordar) correctos en esta sección. 3) NUEVO (código, no visible en estas capturas con 1 solo mes): "Tus meses con Niki" (línea 238-254) renderiza TODOS los meses con resumen sin techo ni "ver más" — con 6+ meses de uso esa fila de chips rompe el mismo gate de ≤4-5 ítems por grupo que ya se corrigió para las ocasiones → aplicar el mismo patrón (top 3-4 + "Ver todos"). 4) Los chips de filtro por ocasión miden h-9 (36px) mientras los chips de "Tus meses con Niki" miden h-11 (44px) en la misma pantalla — el filtro de ocasión queda por debajo del mínimo táctil de 44px → subir a h-10/h-11. 5) Confirmados pendientes a propósito (fuera de alcance de esta pasada, no bloqueantes nuevos): sigue sin ayuda contextual para "Nivel X al promediar Y · vas en Z" y el tagline del header ("Tu presencia, lista para salir") sigue fijo sin adaptarse al contexto.

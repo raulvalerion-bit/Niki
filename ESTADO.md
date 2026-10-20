@@ -1,5 +1,51 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-10-16 (tarde) — PUNTOS 2 Y 3 DEL PLAN DEL VIERNES: (2) ✅ el dueño
+Última actualización: 2026-10-20 (tarde) — Pulido de Hoy y Progreso (4ª certificación /100 pendiente
+de correr tras esto) + guardado de todo lo acumulado del 17 y del 20 de octubre.
+
+Resumen de la sesión de hoy: al retomar, la re-certificación del 2026-10-17 (84/100, APTA para
+tráfico pagado) seguía SIN GUARDAR NI PUBLICAR (solo en disco). El dueño pidió pulir Hoy y Progreso
+(las 2 pantallas de la app interna que seguían NO LISTA desde el certificado) antes de guardar todo
+junto. Se hizo:
+
+- **Hoy** (pantalla principal/M0): 4 rondas de corrección + revisor-visual sobre el código real.
+  Arrancó en 32/40·16/20 (16-oct). Se resolvió el defecto de jerarquía pendiente desde el 16-oct
+  (la tarjeta "Pendiente" y "Misión de la semana" competían sin jerarquía clara — ahora Misión va
+  primero con meta+gemas+CTA propio, y el resumen del último Check bajó a un tratamiento "hundido"
+  de recapitulación, el mismo patrón que ya usa paywall), más 7 defectos menores encontrados en el
+  camino (grids duplicados, bordes inconsistentes, toggle sin affordance, tamaños/pesos de título
+  desalineados entre las 3 tarjetas apiladas, ícono de Misión 4px más grande que el resto).
+  ESTADO FINAL: **35/40 · 19/20 · NO LISTA** (craft pasa con holgura; usabilidad se quedó 4 rondas
+  seguidas a 1 punto del gate de 36, cada vez por un defecto nuevo y más leve — el propio revisor
+  señaló que seguir invirtiendo pasadas por 1 punto ya no es un fix puntual, es el mismo patrón de
+  "pulido acumulado" que onboarding). Captura: docs/revisiones/hoy-375.png (+ detalle de las 4
+  rondas en docs/revisiones/repaso-2026-10-20/hoy-v1..v4-375-*.png). Veredicto:
+  docs/revisiones/hoy-veredicto.md.
+- **Progreso** ("Tu Ruta de Presencia"): al revisar el código, los 5 defectos del veredicto viejo
+  (2026-10-04, 29/40·14/20) ya estaban resueltos de una sesión anterior sin re-certificar. El
+  revisor-visual encontró 5 defectos NUEVOS (lista de Checks sin filtro ni tope — regla UX #14,
+  demasiados tamaños de texto, celebración sin motion, chips de filtro sin techo de carga cognitiva,
+  tamaño táctil). Se corrigieron en 3 rondas: filtro por ocasión (solo las que el usuario realmente
+  usó, ordenadas por frecuencia, con techo de 3 + "Otras" y corte de lista a 15 + "ver más"),
+  consolidación de tamaños de texto, motion real en la celebración del resumen mensual, chips a
+  44px. ESTADO FINAL: **29/40 · 15/20 · NO LISTA** (mejora real desde 28/40·15/20, pero lejos del
+  gate — el mismo patrón: heurísticas estancadas en "bien" sin un bug puntual que las explique).
+  Defecto real que quedó sin resolver a propósito (fuera de alcance de hoy): la lista "Tus meses con
+  Niki" no tiene el mismo tope que ya se aplicó a "Tus Checks" — se romperá igual con 6+ meses de
+  uso; corregir con el mismo patrón cuando se retome esta pantalla. Captura:
+  docs/revisiones/progreso-375.png. Veredicto: docs/revisiones/progreso-veredicto.md.
+
+⚠️ **Ninguna de las dos cruzó el gate automático del revisor (≥36/40 y ≥16/20).** Ambas mejoraron de
+verdad (verificado en código y capturas, no solo en el número), pero ninguna se declara "LISTA" en
+el sentido estricto del SO. Igual que se hizo con el onboarding el 2026-09-18 y el 2026-10-17, la
+decisión de aceptarlas así (o seguir puliendo en otra sesión) es del dueño, no del agente — queda
+pendiente mostrarle las capturas y preguntarle.
+
+Se corrió `tsc`, `npm run build` y `npm run test` (62/62) limpios después de cada ronda. Se guardó
+(commit) y publicó todo lo acumulado desde el 17-oct (API de conversiones de Hotmart, 3 correcciones
+de landing/onboarding/paywall) junto con el pulido de hoy — ver el commit del 2026-10-20 en el
+historial de git para el detalle exacto de archivos.
+
+Última actualización anterior (2026-10-16, tarde) — PUNTOS 2 Y 3 DEL PLAN DEL VIERNES: (2) ✅ el dueño
 apagó "Coincidencia avanzada automática" en Meta (ya estaba apagada de una sesión anterior,
 confirmado). (3) ✅ API de conversiones de Hotmart (CAPI) CONECTADA Y VERIFICADA — el dueño generó
 el token en Meta (Administrador de eventos → píxel …098022 → Configuración → API de conversiones →
@@ -111,10 +157,16 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   de elección mientras el producto es nuevo): Anual $8.99/mes (se cobra $107.88/año, ~5 meses
   gratis vs. mensual, ≈$0.30/día) · Mensual $14.99/mes. Puede reintroducirse un tier Básico más
   adelante con datos reales de uso.
+  ⚠️ DESACTUALIZADO, NO ES EL PRECIO VIGENTE: el Anual bajó a $59.99/año ($4.99/mes efectivo) el
+  2026-10-04 (ver nota "PRECIO ANUAL $59.99 PUBLICADO" en Problemas conocidos) — el código del
+  paywall y la landing son la fuente de verdad real, este párrafo quedó sin actualizar. Corregido
+  al notarlo 2026-10-17 durante la certificación /pre-lanzamiento.
 - LÍMITE DE USO DE IA (aprobado por el usuario 2026-09-28): 3 Checks de Presencia AL DÍA por
   persona (se renuevan a medianoche hora del usuario), igual en prueba y en pago. Fórmula del cupo
-  (02C): $8.99 (plan más barato) × 20% = $1.80/mes ÷ ~$0.02 por análisis (estimado, MEDIR con las
-  primeras llamadas reales) ≈ 90/mes = 3/día. Si el costo real sale menor, se puede subir a 4-5.
+  (02C), con el precio REAL vigente: $4.99 (plan más barato real) × 20% = $1.00/mes ÷ $0.0101 por
+  análisis (medido con llamadas reales, 2026-09-28) ≈ 99/mes ≈ 3/día — sigue cumpliendo el cupo de
+  3/día con el precio actual, aunque con menos margen que con el $8.99 original (el heavy-user-tope
+  de 90/mes representa ≈18.2% del plan, cerca del límite de 20%, no holgado).
   Tope global de gasto diario (AI_DAILY_BUDGET_USD) arranca en ~$5. Al llegar al tope: mensaje
   cálido ("Ya hiciste tus 3 Checks de hoy, mañana tienes 3 nuevos"), nunca un error. El límite se
   valida EN SERVIDOR en el endpoint de IA (por construir). Copy "ilimitado" reemplazado en landing,
@@ -436,7 +488,59 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - App interna: construida y con datos reales conectados (gemas, checks con foto, hábito, perfil) —
   sin pasar por revisor-visual todavía
 - Servicios externos: en progreso, ya no bloqueados — ver detalle en la sección de arriba
-- Certificado /100 (RE-CERTIFICACIÓN 2026-10-15, producción = d2db25e+docs): **84/100 → banda 80-89 "lista para vender"** — APTO para tráfico pagado CON 3 condiciones previas al primer anuncio: (a) re-pasar revisor-visual de la landing (último veredicto escrito NO LISTA 33/40·16/20 del 4-oct, defectos aplicados sin re-revisar — decisión de créditos del dueño), (b) API de conversiones de Hotmart + compra de prueba con reembolso para ver Purchase en Meta (gate del 34), (c) dueño apaga "Coincidencia avanzada automática" del píxel.
+- Certificado /100 (RE-CERTIFICACIÓN 2026-10-17, producción = ec364f0 + hoy sin desplegar aún):
+  **84/100 → banda 80-89 "lista para vender" — APTO para tráfico pagado.** Las 3 condiciones del
+  certificado anterior (10-15) YA ESTÁN CERRADAS: (a) landing re-revisada y LISTA 36/40·16/20·copy
+  19/20 hoy, (b) API de conversiones de Hotmart conectada + Purchase confirmado en Meta hoy, (c)
+  Coincidencia avanzada ya estaba apagada (confirmado). Mismo número total que el 10-15 (84), pero
+  la composición cambió: subió VENTA/FUNNEL (landing y paywall re-certificadas con margen hoy),
+  bajó PRODUCTO (al revisar Hoy y Progreso con lupa, confirmaron NO LISTA de verdad — antes el
+  certificado asumía el número viejo de Hoy "previo a los avisos de prueba/cobro", hoy se usó su
+  medición real del 16-oct). Auditoría completa (11 bloques del checklist de pre-lanzamiento)
+  hecha hoy con evidencia de código, no supuestos.
+  VENTA 19/20 (landing LISTA 36/40·16/20·copy 19/20 hoy, estructura canónica de 10 secciones ✓;
+  −1: Hero/CTA final dicen "Prueba VIP gratis" sin aclarar que es solo del plan Anual — pulido
+  menor, no bloqueante) ·
+  FUNNEL 20/20 (paywall LISTA 37/40·18/20·copy 18/20 CON margen hoy — antes pasaba justo en el
+  mínimo; onboarding aprobado directo por el dueño viendo el recorrido en vivo hoy, 31/40·16/20;
+  E2E landing→onboarding→paywall→Hotmart probado en producción; puente D1-D7 construido; Purchase
+  de Meta confirmado) ·
+  PRODUCTO 13/20 (de las 3 pantallas de la app interna con veredicto: Resultado-check LISTA
+  37/40·16/20 pero con 19 días sin re-verificar; Hoy NO LISTA 32/40·16/20 medido real el 16-oct —
+  compite "Pendiente" vs "Misión de la semana" por atención, defecto de jerarquía sin resolver;
+  Progreso NO LISTA 29/40·14/20 con 13 días sin re-verificar — y es justo la pantalla que hoy se
+  usó para la captura real del carrusel de la landing. Solo 1 de 3 pasa el gate limpio hoy) ·
+  CONFIANZA 13/15 (auditoría de seguridad hoy CONFIRMA: RLS con `with check` en las 13 tablas,
+  `checks` sin insert/update del usuario — solo RPC `reservar_check`/`finalizar_check` vía
+  service_role, `/api/check` valida que la foto esté en SU carpeta (anti-IDOR explícito), webhook
+  de Hotmart con comparación de hottok a prueba de timing-attack + idempotencia real con tabla
+  `processed_events`, CSP acotada, cero secretos en código de cliente; −2 sin cambio: primer cobro
+  real tras prueba con un cliente real todavía no ocurre (0 clientes reales — normal antes de la
+  primera campaña, se cierra solo con las primeras ventas) + restauración de respaldo nunca
+  ensayada en real) ·
+  VELOCIDAD 5/10 (sin re-medir hoy — última medición 2026-10-15 sigue vigente: LCP real de campo
+  1.1-1.4 s ✓ en las 4 pantallas clave, LCP simulado con antivirus/4G lenta 3.4-3.8 s ✗, JS de la
+  landing sobre presupuesto) ·
+  RETENCIÓN 14/15 (sin cambios: loop 5/5, analítica 5/5, dunning 4/5 — faltan cancelación
+  retentiva y win-back, nunca construidos).
+  ⚠️ Corrección de un dato desactualizado: la sección "Estrategia de monetización" de este archivo
+  decía precio más barato $8.99/mes — el código real del paywall (vigente desde el 2026-10-04) es
+  $4.99/mes efectivo (plan Anual $59.99/año). Con el costo de IA real ($0.0101/análisis × 90/mes
+  tope = $0.909/mes), el heavy-user-tope representa 18.2% del plan más barato — pasa el gate de
+  20% pero con margen angosto (la mediana de uso real es mucho menor).
+  BLOQUEANTES REALES para el primer mes (no impiden empezar, sí hay que vigilarlos/cerrarlos):
+  (1) Hoy y Progreso (2 de las pantallas de la app interna) siguen NO LISTA de verdad — re-pasar
+  revisor-visual + corregir cuando haya presupuesto de sesión; (2) restauración de respaldo de la
+  base de datos nunca ensayada en real (Supabase Pro ya la ofrece, falta probarla); (3) el primer
+  ciclo real de prueba→cobro con un cliente real todavía no ha ocurrido — se cierra solo con las
+  primeras ventas, vigilar de cerca el panel de Hotmart/admin en los primeros días de tráfico
+  pagado. Mejorable, no bloqueante: sin Sentry/alertas de error en tiempo real (hay un sustituto
+  casero con `error_log` + `/admin/salud`), sin runbook de incidentes propio, `MANUAL-DEL-DUENO.md`
+  con 11 días de desfase (no menciona dunning/D1-D7/racha/reconciliación), nunca se hizo un "test
+  de estreno" formal encarnando al avatar ni un pre-mortem documentado.
+  Evidencia: docs/revisiones/repaso-2026-10-17{,b,c}/ (landing, onboarding, paywall), veredictos en
+  docs/revisiones/{landing,onboarding,paywall}-veredicto.md, auditoría de seguridad/datos/pago/
+  legal hecha hoy sobre el código real (RLS, webhook, RPCs, CSP, secretos — sin hallazgos nuevos).
   VENTA 17/20 (sin cambios: estructura ✓ · copy 18/20 · render landing 33/40·16/20 sin re-revisar) ·
   FUNNEL 19/20 (E2E en producción hoy ✓: landing→10 pasos de onboarding→paywall→link Hotmart off=foybda2j sck=tiktok_paywall_anual, eventos onboarding_inicio/resultado/paywall_pago_click, botón de pago visible sin conexión, login vacío con mensaje; puente D1-D7 CONSTRUIDO 14-oct ✓; bug del login con "s" corregido hoy; −1: veredictos de onboarding/paywall por re-pasar tras cambios no visuales de hoy) ·
   PRODUCTO 16/20 (sin cambios: Hoy 36/40·17/20 previo a los avisos de prueba/cobro, Resultado 37/40·16/20, Progreso 29/40·14/20 sin re-revisar) ·
@@ -487,21 +591,95 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Cuando exista la app interna: montar los screenshots reales en el carrusel de la landing y volver a pasar el revisor-visual para cerrar esa puerta del todo
 
 ## Problemas conocidos ⚠️
-- veredicto:landing — PENDIENTE 2026-10-16, es el siguiente paso claro: el carrusel "La app por
-  dentro" (`app/page.tsx` L131-140, `components/landing/AppPorDentro.tsx`) necesita 2 capturas
-  NUEVAS — el frame 1 (`/capturas/ocasion.webp`) muestra el selector de foto vacío en vez de una
-  foto ya puesta, y el frame 3 (`/capturas/resultado-ejes.webp`) es casi el mismo scroll que el
-  frame 2 (`/capturas/resultado.webp`), repite las mismas tarjetas. Se necesita entrar con la
-  cuenta real del dueño (como hoy con Hoy/Perfil) a una pantalla con datos semilla — Historial o
-  Hábitos son buenas candidatas para el frame 3 — y recortar/exportar a webp con
-  `scripts/captura-sesion-prod.mjs` + edición de imagen, igual que se hizo con los 4 archivos
-  actuales de `public/capturas/`. Sin este paso la landing se queda NO LISTA (30/40·15/20).
-- veredicto:hoy — defecto #4 del revisor (2026-10-16) sin resolver a propósito: la tarjeta
-  "Pendiente · Outfit 5/10" y "Misión de la semana" compiten por ser "la próxima acción" sin
-  jerarquía clara entre sí. No es un fix de una línea — es una decisión de qué foco gana cuando
-  ambas aplican (p. ej. fusionar en un solo bloque, o la Misión manda si falta poco para
-  cumplirla). Dejar para una sesión de pulido de `components/app/HoyInicio.tsx` +
-  `components/app/MisionSemana.tsx` juntos, no a mitad de otra tarea.
+- veredicto:hoy — PULIDO 2026-10-20 (4 rondas de revisor-visual sobre components/app/HoyInicio.tsx
+  + MisionSemana.tsx + RachaGlowUp.tsx). Subió de 32/40·16/20 (16-oct) a **35/40 · 19/20 · NO LISTA**:
+  craft pasa con holgura, usabilidad se quedó 4 rondas seguidas a 1 solo punto del gate de 36, cada
+  vez por un defecto distinto y cada vez más fino (jerarquía de tarjetas → peso de fuente → tamaño
+  de ícono). El propio revisor-visual lo señaló: a este nivel ya no es un fix de 1 línea, es el
+  mismo patrón de "pulido acumulado" que el onboarding. Se PARA aquí la cadena automática — queda a
+  decisión del dueño (mostrarle docs/revisiones/hoy-375.png y preguntarle, mismo criterio que se usó
+  con onboarding el 2026-09-18 y el 2026-10-17) si la acepta así o se sigue puliendo en otra sesión.
+  Pendiente real sin resolver (fuera de alcance de hoy): la mascota Niki no aparece en esta pantalla
+  (aprobada en FICHA-ARTE.md pero nunca incorporada aquí); el concepto "gemas" no tiene explicación
+  la primera vez (a diferencia de "congeladores", que sí la tiene). Veredicto en
+  docs/revisiones/hoy-veredicto.md, histórico de las 4 rondas en docs/revisiones/repaso-2026-10-20/.
+- veredicto:progreso — PULIDO 2026-10-20 (3 rondas de revisor-visual sobre app/app/progreso/page.tsx
+  + components/app/RutaPresencia.tsx). Los 5 defectos del veredicto de 2026-10-04 (29/40·14/20) YA
+  ESTABAN RESUELTOS de una sesión anterior sin re-certificar (dato héroe, CTA de acción, sin --gold
+  fuera de la landing, meses con enlace fijo, ícono por ocasión) — al re-certificar aparecieron 5
+  defectos NUEVOS: la lista "Tus Checks" sin filtro ni tope (regla UX #14), demasiados tamaños de
+  texto simultáneos, celebración del resumen mensual sin movimiento real, chips de filtro sin techo
+  de carga cognitiva, tamaño táctil bajo 44px. Se corrigieron: filtro por ocasión (solo las que el
+  usuario usó, ordenadas por frecuencia, techo de 3 + chip "Otras", corte de lista a 15 + "ver más"),
+  tamaños de texto consolidados, spring real en la celebración, chips a 44px. ESTADO FINAL:
+  **29/40 · 15/20 · NO LISTA** (mejora real desde 28/40·15/20, lejos del gate — mismo patrón de
+  heurísticas estancadas en "bien" sin bug puntual que lo explique). Pendiente real sin resolver
+  (fuera de alcance de hoy): la lista "Tus meses con Niki" no tiene el mismo tope que ya se aplicó a
+  "Tus Checks" — se rompe igual con 6+ meses de uso; falta tooltip para "Nivel X al promediar Y · vas
+  en Z"; el tagline del header no cambia según el contexto. Queda a decisión del dueño (mismo
+  criterio que Hoy) si se acepta así o se sigue puliendo. Veredicto en
+  docs/revisiones/progreso-veredicto.md, histórico de las 3 rondas en docs/revisiones/repaso-2026-10-20/.
+- ✅ PURCHASE EN META CONFIRMADO 2026-10-17: el evento "Comprar" ya aparece en Administrador de
+  eventos → píxel …098022 → Resumen, Activo, calidad de coincidencia 8.0/10, "Última recepción:
+  hace un día" (de la compra de prueba del 16-oct). Cierra del todo el punto 3 del plan del
+  viernes (confirmado con captura del dueño). Sigue el punto 4: re-certificar.
+- veredicto:onboarding — 2026-10-17, 5 pasadas del día, ESTADO FINAL: usabilidad 29→31/40, craft
+  14→16/20 (craft YA CRUZA el gate), copy 17/20 (estable). Se corrigieron en cadena: aire muerto
+  en "tiempo", asimetría de las 2 pantallas de reconocimiento, `ConteoPct` mostrando "0%" con el
+  anillo ya relleno, el stagger de `PantallaPregunta` sin apagar con `reduce`, y el wrapper de
+  transición entre pasos con el mismo problema (los 3 últimos eran variantes del mismo patrón
+  "reduce no se propaga", ya corregidas las 6 instancias del archivo). Usabilidad sigue 5 puntos
+  bajo el gate de 36/40, pero YA NO por bugs puntuales: el propio revisor de la 5ª pasada dice que
+  9/10 heurísticas caen en "3 — bien, se le nota qué afinar" en vez de "4 — ejemplar", y que
+  cruzar el gate exige pulido acumulado (variar las 2 tarjetas de reconocimiento para que no se
+  sientan plantilla repetida, microcopy de error más rico), no un fix de 1-2 líneas más. Dado el
+  costo del revisor (~100-130k tokens cada pasada, 5 corridas hoy) se PARA aquí la cadena
+  automática y se deja a decisión del dueño: mismo patrón que la Sesión 2 (2026-09-18), donde
+  aprobó el onboarding a ojo con las capturas pese a no cruzar el gate automático. Capturas
+  vigentes: docs/revisiones/repaso-2026-10-17c/qa-ob-00.png a qa-ob-10.png. Veredicto en
+  docs/revisiones/onboarding-veredicto.md. EN REVISIÓN DIRECTA DEL DUEÑO 2026-10-17: ante la
+  pregunta explícita de cómo seguir, eligió "apruébalo tú viendo las capturas" (no más rondas
+  automáticas por ahora) y está entrando a http://localhost:3000/onboarding desde su propia
+  computadora para verlo en vivo antes de dar su veredicto — mismo patrón ya aceptado una vez con
+  esta pantalla el 2026-09-18 ("el usuario revisó las capturas él mismo y dio el visto bueno, así
+  que se prioriza su aprobación directa sobre el puntaje automático"). Pendiente de su respuesta;
+  ✅ APROBADO DIRECTAMENTE POR EL DUEÑO 2026-10-17: entró en vivo a http://localhost:3000/onboarding
+  desde su computadora y dijo "yo la veo bien hasta ahora" — se prioriza esta aprobación directa
+  sobre el puntaje automático (31/40·16/20·copy 17/20), mismo criterio ya usado el 2026-09-18 con
+  esta misma pantalla. El veredicto automático del revisor-visual (docs/revisiones/onboarding-
+  veredicto.md) queda como referencia técnica, no como bloqueante.
+- ✅ veredicto:paywall — RE-CERTIFICADO 2026-10-17, LISTA 37/40·18/20·copy 18/20 (CON margen, antes
+  pasaba exacto en el mínimo). Se corrigió el defecto #3 que faltaba (4 tamaños de texto → el
+  precio de la tarjeta bajó de 20px a 16px, se funde con el nombre del plan) y se confirmó que el
+  defecto #2 ("gratis" huérfano) ya estaba resuelto con un espacio que no se rompe. Veredicto en
+  docs/revisiones/paywall-veredicto.md, capturas docs/revisiones/repaso-2026-10-17/qa-paywall-0{1,2,3}.png.
+  Nota: el hook pre-stop puede seguir marcándolo "CADUCADO" después de esto porque compara contra
+  CUALQUIER .tsx más nuevo del repo (p. ej. app/onboarding/page.tsx, tocado después para otros 2
+  defectos) — `app/paywall/page.tsx` en sí NO cambió desde la re-certificación; falso positivo del
+  mismo tipo ya documentado antes para onboarding (ver notas de 2026-09-27/28 más abajo).
+- ✅ veredicto:landing — RE-CERTIFICADA 2026-10-17, LISTA 36/40·16/20·copy 19/20 (3 pasadas del
+  día). Se corrigieron los 2 defectos de las capturas del carrusel (`/capturas/ocasion.webp` ahora
+  muestra "Cita" elegida + una foto YA puesta — silueta genérica neutra, nadie identificable,
+  decisión explícita del dueño: "usa una genérica" en vez de esperar una foto real suya;
+  `/capturas/resultado-ejes.webp` ahora es la pantalla real Progreso/Ruta de Presencia de su
+  cuenta, ya no repite el scroll del frame 2 — ambas tomadas en producción con su sesión real y
+  convertidas a webp con el canvas de Chromium, sin instalar sharp/cwebp), el contraste del label
+  "DESPUÉS" (se quitó `opacity-70` que bajaba el contraste a ~3.55:1, ahora ~6.4:1) y la
+  inconsistencia de nombre "VIP" (Hero decía "Prueba VIP gratis" pero la sección Oferta llamaba a
+  los planes solo "Anual"/"Mensual" — se alinearon a "VIP Pro Anual"/"VIP Pro Mensual", igual que
+  ya dice la pantalla de planes real). Los otros 3 defectos del veredicto viejo (2026-10-16 00:00)
+  — duplicado "$59.99 al año", stack de precios $120/$39/$27 sin fuente, plazo de garantía
+  ambiguo — ya estaban corregidos desde antes (commit ec364f0), solo sin re-certificar. Pendientes
+  de pulido NO bloqueantes (anotados por el revisor, no urgentes): aclarar que la prueba gratis es
+  solo del plan Anual en el Hero/CTA final; el label del frame 3 del carrusel ("Outfit, postura y
+  actitud, explicados") describe mejor el resultado inmediato que la pantalla de Progreso que
+  ahora se muestra ahí — considerar ajustar el texto o la captura en el próximo pulido; falta el
+  nivel "hundido" de profundidad en toda la página. Veredicto en docs/revisiones/landing-veredicto.md,
+  captura docs/revisiones/repaso-2026-10-17c/landing-375.png.
+- veredicto:hoy — ✅ RESUELTO 2026-10-20: el defecto #4 de abajo (de la ronda 2026-10-16: "Pendiente"
+  y "Misión de la semana" compitiendo por ser "la próxima acción") se corrigió reordenando las
+  tarjetas (Misión primero, con CTA propio) y bajando "Pendiente" a un tratamiento de recapitulación
+  — ver la entrada nueva de `veredicto:hoy` al inicio de esta sección para el estado actual completo.
 - "Check"/"Glow-Up" en español — el revisor-visual de Hoy (2026-10-16) sugirió traducirlos
   ("Check"→"revisión", "Glow-Up"→algo en español). DESCARTADO A PROPÓSITO: "Check de Presencia" es
   el mecanismo bautizado de la app (decidido en Sesión 1, usado en landing/onboarding/paywall/
@@ -571,6 +749,14 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - ADQUISICIÓN (2026-10-04, /adquisicion, PLAN APROBADO — formato 2: Niki protagonista, sin salir a cámara): ETAPA 0 (0 clientes, ~$0 en ads). HECHO: medición por red (?src= → localStorage niki_src 30 días → sck "tiktok_paywall_anual" en Hotmart; probado de punta a punta) + lote semana 1 en contenido/semana-01 (GUIONES.md con 3 videos + carrusel de 7 PNG 1080x1350 + Niki 1000px sin fondo + capturas). Bio: holaniki.com/?src=tiktok | ig | fb. Siguiente: afiliados Hotmart (kit) y semana 2 según el ganador. Canal principal propuesto: orgánico short-form (mismo video vertical en TikTok + IG Reels + FB Reels, 3 videos + 1 carrusel/semana, TikTok SEO) + afiliados Hotmart. Antes de publicar: medir canal (?src= en landing → sck del checkout) — PENDIENTE de construir. Cuentas: el dueño aún no las tiene; se crean con hola@holaniki.com (reenvía a su Gmail), mismo @usuario en las 3, TikTok empresa, IG profesional, FB como Página + Meta Business Suite, 2FA. Esperando: formato de video (a cámara / Niki protagonista / mezcla) = OK del plan.
 - AVISO PREVIO (2026-10-05, pedido del dueño, opción 1 = solo expectativa, sin lista de espera ni premio): 3 días antes de la semana 1 — contenido/aviso-previo/ (GUIA.md + 3 publicaciones 4:5 + 3 historias 9:16, fuente aviso-previo.html): Día 1 "Muy pronto estaré contigo", Día 2 problema "¿saliste sin saber si te veías bien?", Día 3 "¡Ya llegué!" + link. Enlace del perfil sin cambios. Después arranca semana-01.
 - IDEA PARA DESPUÉS (2026-10-05): versión en inglés (botón "English version", pedido del dueño). Decisión: V2, NO ahora — todo el contenido de redes es en español, inglés exige i18n completa (UI, IA, correos, legales, checkout) + contenido en inglés + competencia directa con Umax/apps US. Reabrir tras primeras ventas en LATAM o si la analítica muestra tráfico angloparlante (archivo 39). Logo: se mantiene el Anillo plano en esquinas/favicon; la mascota 3D solo ≥40px (regla FICHA-ARTE, reconfirmada al dueño).
+- ✅ SEMANA 2 — Jue 15 carrusel "5 errores en tu primera cita" PUBLICADO. ✅ Sáb 17 video "Reunión
+  de trabajo" PUBLICADO 2026-10-17 ~18:10 (TikTok + Meta Business Suite como reel + historia IG con
+  enlace ?src=ig_reunion, los 3 confirmados por el dueño — se adelantó de la hora habitual 7 pm por
+  decisión del agente: 50 min antes no vale la pena rehacerlo). ✅ Dom 18 carrusel "Tu postura habla
+  antes que tú" (entrevista parte 2) PROGRAMADO 2026-10-17 para mañana 19:00 en TikTok + Facebook +
+  Instagram (feed) — confirmado por el dueño; la historia IG con sticker de enlace (?src=
+  ig_entrevista2) NO se puede programar, queda pendiente de que el dueño la suba a mano desde el
+  celular mañana a esa misma hora. Mar 20 (video "Cena formal") sigue para después, sin tocar hoy.
 - PLAN 2026-10-05: ✅ Día 1 del aviso previo PUBLICADO 2026-10-05 18:03 (IG+FB vía Meta Business Suite con "Personalizar" por red; TikTok vía TikTok Studio); próxima sesión /pre-lanzamiento (revisión completa) ANTES del Día 3 (miércoles 7-oct, que manda tráfico con "link en mi perfil").
 - IDEA PARA DESPUÉS (2026-10-04): página "madre" de marca (propia imagen/logo/dominio para Niki + futuros proyectos), sugerida en el curso. Decisión del dueño: NO por ahora. Hacerla cuando haya un 2º producto o ventas constantes (1 sesión). Opcional: reservar el dominio si ya tiene el nombre.
 - ✅ PRECIO ANUAL $59.99 PUBLICADO 2026-10-04 (rama precio-anual-59 integrada). Hotmart verificado en el checkout real: mismo plan off=foybda2j, $59.99 USD → "$1,334.00 / año" en MXN con impuestos, prueba gratis presente; Mensual sin cambio ($335.24/mes con IVA). Historia:: landing, pantalla de planes, correo de fin de prueba, margen del panel, ECONOMICS y regla anual/mensual del webhook (≥$30 USD = anual; antes ≥$100 habría registrado el anual nuevo como mensual). Falta: el dueño cambia el precio del plan Anual en Hotmart (mismo plan/oferta foybda2j o uno nuevo → si cambia el código `off`, actualizar lib/hotmart/checkout.ts), y recién ahí merge a main + push.

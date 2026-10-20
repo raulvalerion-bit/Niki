@@ -100,7 +100,7 @@ export function RachaGlowUp({ estado, hoy }: { estado: EstadoRacha; hoy: string 
         </motion.span>
         <div className="min-w-0 flex-1">
           <p className="text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--accent)]">Racha Glow-Up</p>
-          <p className="text-[15px] font-bold leading-[1.3] text-[var(--text-primary)]">{titulo}</p>
+          <p className="text-[17px] font-semibold leading-[1.3] text-[var(--text-primary)]">{titulo}</p>
         </div>
         {completo && <Trophy size={20} color="var(--accent)" aria-label="Glow-Up completo" />}
       </div>
@@ -139,7 +139,7 @@ export function RachaGlowUp({ estado, hoy }: { estado: EstadoRacha; hoy: string 
         type="button"
         onClick={() => setExplicar((v) => !v)}
         aria-expanded={explicar}
-        className="-mx-2 mt-1 flex min-h-11 items-center gap-1.5 px-2 text-left text-[12px] font-medium text-[var(--text-primary)]"
+        className="mt-1 flex min-h-8 w-fit items-center gap-1.5 rounded-full bg-[var(--chip-bg)] px-3 py-1 text-left text-[12px] font-medium text-[var(--text-primary)]"
       >
         <Snowflake size={14} color="var(--accent)" aria-hidden="true" />
         {estado.congeladores === 1 ? '1 congelador' : `${estado.congeladores} congeladores`}

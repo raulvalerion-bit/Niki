@@ -145,40 +145,43 @@ export function HoyInicio({
       )}
 
 
+      {/* La Misión de la semana es LA próxima acción de esta pantalla (tiene meta + gemas + CTA
+          propio); el resumen del último Check va DEBAJO, en tono de recapitulación ("Tu último
+          ajuste"), nunca compitiendo por el mismo foco (defecto #4 del revisor-visual, 2026-10-16). */}
+      {ultimo && (
+        <motion.div {...aparece(3)} className="mt-6 w-full">
+          <MisionSemana hoy={hoy} />
+        </motion.div>
+      )}
       {ultimo && ejeMasBajo ? (
         <motion.a
-          {...aparece(3)}
+          {...aparece(4)}
           href={`/app/historial/${ultimo.id}`}
           onClick={(e) => {
             e.preventDefault();
             abrirCheck(ultimo.id);
           }}
-          className="mt-6 flex w-full items-center gap-3 rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--accent)_28%,transparent)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)] active:scale-[0.98]"
+          className="mt-4 flex w-full items-center gap-3 rounded-[var(--radius-card)] bg-[color-mix(in_oklab,var(--text-primary)_6%,transparent)] p-4 text-left shadow-[inset_0_1px_3px_color-mix(in_oklab,var(--text-primary)_12%,transparent)] active:scale-[0.98]"
         >
           <span className="flex size-9 shrink-0 items-center justify-center rounded-[var(--radius-button)] bg-[var(--chip-bg)]">
             <Target size={18} color="var(--accent)" aria-hidden="true" />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--accent)]">
-              Pendiente · {NOMBRE_EJE[ejeMasBajo]} {ultimo.resultado[ejeMasBajo].nota}/10
+            <p className="text-[12px] font-bold uppercase tracking-[0.06em] text-[var(--text-primary)]">
+              Tu último ajuste · {NOMBRE_EJE[ejeMasBajo]} {ultimo.resultado[ejeMasBajo].nota}/10
             </p>
-            <p className="mt-1 text-[15px] font-semibold leading-[1.4] text-[var(--text-primary)]">{ultimo.resultado.ajuste_clave}</p>
+            <p className="mt-1 text-[17px] font-semibold leading-[1.3] text-[var(--text-primary)]">{ultimo.resultado.ajuste_clave}</p>
           </div>
           <ChevronRight size={18} color="var(--text-tertiary)" aria-hidden="true" />
         </motion.a>
       ) : (
         <motion.div
-          {...aparece(3)}
-          className="mt-6 w-full rounded-[var(--radius-card)] border border-[color-mix(in_oklab,var(--text-tertiary)_18%,transparent)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]"
+          {...aparece(4)}
+          className="mt-4 w-full rounded-[var(--radius-card)] bg-[color-mix(in_oklab,var(--text-primary)_6%,transparent)] p-4 text-left shadow-[inset_0_1px_3px_color-mix(in_oklab,var(--text-primary)_12%,transparent)]"
         >
           <p className="text-[15px] leading-[1.45] text-[var(--text-primary)]">
             Con tu primer Check, Niki empieza a conocer tu estilo: cada foto afina un poco más tus consejos.
           </p>
-        </motion.div>
-      )}
-      {ultimo && (
-        <motion.div {...aparece(4)} className="mt-4 w-full">
-          <MisionSemana hoy={hoy} />
         </motion.div>
       )}
       {racha && (
