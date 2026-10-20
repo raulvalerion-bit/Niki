@@ -26,6 +26,13 @@ const csp = [
 
 const nextConfig: NextConfig = {
   devIndicators: false,
+  // Tráfico frío de ads (TikTok/Meta) = casi siempre primera visita: el CSS
+  // atómico de Tailwind es chico, así que el intercambio del 38 favorece
+  // inlinearlo (quita la espera de red antes de pintar) sobre dejarlo en caché
+  // para visitas que vuelven. La CSP ya permite 'unsafe-inline' en style-src.
+  experimental: {
+    inlineCss: true,
+  },
   async headers() {
     return [
       {
