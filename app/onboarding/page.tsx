@@ -227,7 +227,7 @@ function BarraProgreso({ pct }: { pct: number }) {
 
 /** Porcentaje héroe que cuenta en vez de saltar (baseline #2). */
 function ConteoPct({ valor, reduce }: { valor: number; reduce: boolean }) {
-  const mv = useMotionValue(0);
+  const mv = useMotionValue(reduce ? valor : 0);
   const texto = useTransform(mv, (v) => `${Math.round(v)}%`);
   useEffect(() => {
     if (reduce) {
@@ -568,9 +568,9 @@ function PantallaPregunta({
         {opciones.map((op, i) => (
           <motion.div
             key={op.valor}
-            initial={{ opacity: 0, y: reduce ? 0 : 10 }}
+            initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25, delay: reduce ? 0 : i * 0.06 }}
+            transition={{ duration: reduce ? 0 : 0.25, delay: reduce ? 0 : i * 0.06 }}
           >
             <ChipOpcion
               opcion={op}
@@ -987,10 +987,10 @@ export default function Onboarding() {
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={paso}
-          initial={{ opacity: 0, x: reduce ? 0 : 24 }}
+          initial={{ opacity: reduce ? 1 : 0, x: reduce ? 0 : 24 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: reduce ? 0 : -24 }}
-          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          exit={{ opacity: reduce ? 1 : 0, x: reduce ? 0 : -24 }}
+          transition={{ duration: reduce ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-1 flex-col"
         >
           {paso === 'apertura' && (
@@ -1028,6 +1028,7 @@ export default function Onboarding() {
               icon={DOLOR_ICONO[respuestas.dolor ?? 'todo']}
               titulo="No es falta de estilo"
               texto={RECONOCIMIENTO_DOLOR[respuestas.dolor ?? 'todo']}
+              centrado={false}
               extra={
                 <div className="mt-6 w-full rounded-[var(--radius-card)] bg-[var(--surface)] p-4 text-left shadow-[var(--shadow-1)]">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--text-secondary)]">

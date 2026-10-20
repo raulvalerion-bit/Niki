@@ -1,6 +1,6 @@
 # Manual del dueño — Niki
 
-Todo lo que necesitas para operar tu app sin depender de nadie. Escrito el 2026-09-28 · actualizado el 2026-10-06.
+Todo lo que necesitas para operar tu app sin depender de nadie. Escrito el 2026-09-28 · actualizado el 2026-10-17.
 
 ## 1. Tus cuentas (dónde vive cada pieza)
 | Servicio | Para qué sirve | Dónde entras |
@@ -40,10 +40,18 @@ Entra a **holaniki.com/admin** con tu correo. Ahí ves:
 | Un cliente reclama un cobro | Disputa | Hotmart → la venta; si procede, reembolsa |
 
 ## 5. Costos mensuales hoy
-- IA: ~1.1 centavos de dólar por Check (medido en 3 análisis reales). Máximo por cliente (3 Checks al día todo el mes): ~US$1.13 al mes.
+- IA: ~1 centavo de dólar por Check (medido en llamadas reales). Máximo por cliente (3 Checks al día todo el mes): ~US$0.91 al mes.
 - Supabase Pro (US$25/mes, con respaldos diarios) y Vercel Pro (US$20/mes): activos desde el 2026-09-28.
 - Dominio: US$11.48 al año.
+- Precio vigente de Niki: plan Anual $59.99/año (≈$4.99/mes, con 3 días de prueba gratis) · plan Mensual $14.99/mes (sin prueba, cobra desde el primer día).
 
-## 6. Qué NO tocar
+## 6. Si un cliente deja de pagar (cobro fallido)
+Esto ya es automático, no tienes que hacer nada: si la tarjeta de un cliente falla, la app le manda
+4 correos (días 1, 3, 5 y 7) pidiéndole que actualice su pago, y le muestra un aviso suave dentro
+de la app mientras tanto. Si para el día 8 no pagó, pierde el acceso solo (sin que tú hagas nada).
+Si vuelve a pagar en cualquier momento de esos 8 días, recupera el acceso solo. Lo ves en Panel →
+Ventas o Panel → Usuarios (columna de estado).
+
+## 7. Qué NO tocar
 - No cambies el producto de Hotmart ni sus ofertas sin avisar al agente: la app reconoce el producto `8595742` y los precios actuales.
 - No borres variables en Vercel. Si una clave se filtra, crea una nueva en el servicio, cámbiala en Vercel y borra la vieja.

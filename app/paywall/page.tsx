@@ -164,7 +164,7 @@ function TarjetaPlan({
           </span>
           <span className="text-[16px] font-semibold text-[var(--text-primary)]">{plan.nombre}</span>
         </span>
-        <span className="text-[20px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
+        <span className="text-[16px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
           <ConteoPrecio valor={plan.valor} decimales={plan.decimales} />
           <span className="text-[13px] font-medium text-[var(--text-secondary)] [font-family:var(--font-body)]">/mes</span>
         </span>

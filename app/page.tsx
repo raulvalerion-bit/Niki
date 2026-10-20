@@ -148,7 +148,7 @@ export default function LandingNiki() {
         trialDias={3}
         trialEnMensual={false}
         anual={{
-          nombre: 'Anual',
+          nombre: 'VIP Pro Anual',
           badge: 'MÁS POPULAR',
           precioMes: '$5',
           totalAnual: 'Se cobra $59.99 al año',
@@ -163,7 +163,7 @@ export default function LandingNiki() {
           ],
         }}
         mensual={{
-          nombre: 'Mensual',
+          nombre: 'VIP Pro Mensual',
           precioMes: '$14.99',
           ctaLabel: 'Quiero el plan mensual',
           descomposicionDia: 'Se cobra hoy, sin prueba gratis',

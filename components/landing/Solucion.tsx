@@ -112,7 +112,7 @@ export function Solucion({
             </div>
             {/* "Después": fondo dorado pleno (pedido del usuario) */}
             <div className="rounded-[var(--radius-card)] bg-[var(--gold)] p-5">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--gold-text)] opacity-70">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[var(--gold-text)]">
                 {antesDespues.labelDespues}
               </p>
               <p className="mt-2 text-[15px] font-medium leading-snug text-[var(--gold-text)]">
