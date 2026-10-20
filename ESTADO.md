@@ -1,6 +1,8 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-10-20 (tarde) — Pulido de Hoy y Progreso (4ª certificación /100 pendiente
-de correr tras esto) + guardado de todo lo acumulado del 17 y del 20 de octubre.
+Última actualización: 2026-10-20 (noche) — Sesión completa: guardado de lo acumulado del 17-oct,
+pulido de Hoy/Progreso (aprobado por el dueño), re-certificación a 88/100, y pasada de /velocidad
+contra producción real (favicon corregido y aligerado; se probó inlinear el CSS, empeoró todo, se
+revirtió el mismo día). Todo publicado, producción = 68e5bb5.
 
 Resumen de la sesión de hoy: al retomar, la re-certificación del 2026-10-17 (84/100, APTA para
 tráfico pagado) seguía SIN GUARDAR NI PUBLICAR (solo en disco). El dueño pidió pulir Hoy y Progreso
@@ -516,9 +518,12 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   `first_paid_at` real en `profiles` es la cuenta del DUEÑO (prueba del 16-oct, ya reembolsada) —
   CERO clientes reales han completado prueba→cobro todavía; restauración de respaldo de Supabase
   Pro sigue sin ensayarse en real) ·
-  VELOCIDAD 5/10 (sin re-medir — última medición 2026-10-15 sigue vigente; los cambios de hoy
-  [ícono de mascota ~12 KB webp, lógica de filtro/corte] no mueven el presupuesto de forma
-  relevante) ·
+  VELOCIDAD 5/10 (RE-MEDIDA el mismo día en producción tras esta certificación — ver entrada
+  `/velocidad 2026-10-20` más abajo: favicon corregido [-6 KB/página, gana poco en LCP porque no
+  estaba en la ruta crítica], se probó inlinear el CSS y se revirtió por empeorar todo. Mismo nivel
+  que antes: LCP 3.1-3.7 s en las 4 pantallas clave, todavía sobre la meta de 2.5 s — el tope real
+  es el JS de React+Next+motion antes del LCP, sin solución sin sacrificar animaciones o migrar
+  arquitectura) ·
   RETENCIÓN 14/15 (sin cambios: loop 5/5, analítica 5/5, dunning 4/5 — faltan cancelación
   retentiva y win-back).
   ⚠️ ÚNICO PILAR BAJO EL 80%: VELOCIDAD (50%) — es la prioridad real del primer mes según la banda
@@ -735,7 +740,59 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - veredicto:onboarding y veredicto:paywall — POSPUESTO 2026-10-13 (re-revisión): el código de esas pantallas NO cambió; lo nuevo es el aviso de cookies global (components/AvisoCookies.tsx, montado en app/layout.tsx) que aparece abajo UNA vez hasta que la persona elige Aceptar/Rechazar — en onboarding y planes tapa el botón fijo hasta ese toque. Captura: docs/revisiones/aviso-cookies-375.png (sin revisor: componente secundario). Los veredictos LISTA del 6-oct siguen describiendo las pantallas; re-lanzar revisor-visual de ambas en la próxima pasada de pulido (cuidando créditos por decisión del dueño). Si la tasa onboarding→resultado cae tras el aviso, considerar mostrarlo solo en la página principal.
 - veredicto:onboarding y veredicto:paywall — 3ª PASADA FINAL 2026-10-06 sobre el código actual (commit del 6-oct): onboarding LISTA 36/40·16/20·copy 18; paywall LISTA 36/40·16/20·copy 18 — vigentes. Siguiente pulido del paywall (no tocado para no caducar el veredicto la víspera del lanzamiento): bajo el botón Anual volver a aclarar el precio ("Hoy pagas $0 · Hotmart muestra $59.99 del año"), gap-3 entre planes, "$5/mes" en landing+planes, paso Hoy de la prueba sin repetir $0. Onboarding: chips de ejes con borde fino (no parecer filtros) y mt-4. Historial: RE-REVISADOS 2026-10-06 (2 pasadas c/u): LISTA 36/40·16/20 ambos (copy 18 y 17). Después del veredicto se aplicaron SOLO defectos señalados por el propio revisor en la 2ª pasada: onboarding → candados de "Lo que Niki va a revisar" compactados en 3 chips de una línea (el CTA fijo los tapaba); paywall → bajo el botón "Garantía del Primer Ajuste Honesto · 7 días" (recupera el plazo) y en Mensual "Se renueva cada mes · cancelas cuando quieras" (antes quedaba tapada). Capturas actualizadas en docs/revisiones/repaso-2026-10-06/. Pendientes del revisor, no bloqueantes: banner "¡Bienvenidos!" (decisión del DUEÑO: amarillo fuera de FICHA-ARTE y plural masculino — si lo confirma, registrarlo en FICHA-ARTE; si no, quitarlo), lema repetido en el encabezado de cada paso, aire muerto en "No es falta de estilo", mascota de apertura estática, $4.99×12≠$59.99 (proponer "$5/mes" en landing+planes), 4 tamaños de letra en planes.
 - ANALÍTICA: Vercel Web Analytics ACTIVADO 2026-10-06 (requirió volver a publicar). Ver en Vercel → niki → Analytics: visitas por página y eventos onboarding_inicio / onboarding_resultado / paywall_pago_click (con plan y red).
-- VELOCIDAD (/velocidad 2026-10-15, commits 9c3ea9d + d2db25e): medición = Lighthouse 13.5 móvil (Moto G Power simulado, 4G lenta) desde la laptop con --blocked-url-patterns="*kaspersky-labs.com*" (anula la inyección de Kaspersky), mediana de 3 corridas por página; PageSpeed web agotó su cuota anónima. ANTES → DESPUÉS: landing puntaje 79→82, LCP 4.16→3.66 s, peso total 657→514 KB · onboarding 87→86, LCP 3.71→3.42 s, 479→378 KB · planes 76→81, LCP 3.87→3.82 s, JS 347→318 KB · login 77→82, LCP 3.95→3.74 s, JS 336→306 KB · CLS 0 en todas. LCP REAL observado (sin simular) = primer pintado en las 4 (1.1-1.4 s): el titular/imagen ya sale del HTML del servidor. HECHO: imágenes a webp de su tamaño (capturas 500px, banners 720px, mascota 192px, gema animada 60px; originales intactos), zod fuera del navegador (lib/env.ts sin zod; servidor sigue con zod en env-server.ts), Supabase cargado bajo demanda en planes y entrar (lib/supabase/diferido.ts), titular de planes y primer paso del onboarding sin fade inicial (initial={false}; el resto sigue escalonado). Meta LCP <2.0/2.5 s NO cumplida en el simulador: el límite restante es el JS base (React+Next ≈125 KB brotli + motion ≈47 KB) que el modelo de Lighthouse carga antes del LCP; quitar motion de la landing = descartado (rompe animaciones baseline). DESCARTADO: convertir la landing a componentes de servidor (todas las secciones usan motion → ahorro mínimo, riesgo alto). PRESUPUESTO para nuevas funciones: landing JS ≤252 KB y total ≤520 KB; planes/entrar JS ≤320 KB; imágenes nuevas siempre webp a 2x su tamaño en pantalla. Pendiente: datos de CAMPO (usuarios reales) cuando haya tráfico — PageSpeed web/CrUX.
+- VELOCIDAD (/velocidad 2026-10-20, commits a92f6f8 + 68e5bb5): CAMBIO DE MÉTODO respecto al
+  15-oct: se midió contra PRODUCCIÓN real (holaniki.com) en vez de una copia local — una copia
+  local con `next start` sirve SIN comprimir (hallazgo nuevo: 36 KB de HTML sin gzip/brotli,
+  mientras que Vercel sí comprime), así que los números locales eran pesimistas y no comparables
+  contra producción. Desde hoy, medir SIEMPRE contra holaniki.com. Mediana de 2-3 corridas por
+  página, Lighthouse móvil, `--blocked-url-patterns="*kaspersky-labs.com*"` (la inyección de
+  Kaspersky sigue viva y contamina quien mida sin este flag — confirmado de nuevo hoy).
+  ANTES → DESPUÉS (producción): landing LCP 3.54→3.56 s (497→511 KB tras quitarle solo el favicon;
+  sin cambio relevante — el favicon no estaba en la ruta crítica de pintado) · onboarding LCP
+  3.23→3.26 s, 369→363 KB · paywall LCP 3.12→3.25 s, 456→450 KB · login LCP 3.11→3.11 s,
+  429→423 KB · CLS 0 en las 4, antes y después (confirmado limpio tras revertir el experimento,
+  ver abajo). La variación de LCP entre mediciones (hasta ±0.5 s en la misma página sin tocar
+  nada) es RUIDO DE RED REAL de medir contra internet, no del código — normal y más honesto que
+  medir en localhost.
+  HECHO (gana, bajo riesgo, en producción):
+  (1) `app/favicon.ico` pesaba 26 KB y ni siquiera era la marca real (un círculo con un triángulo
+  genérico, resto de algún scaffold) — reconstruido desde el Anillo Niki real (mismo degradé/trazo
+  que el resto de la app) en 16/32/48px, 3.3 KB (ahorro real medido: ~6 KB por página, confirmado
+  en producción). Dato aparte de velocidad: corrige un error de marca que llevaba desde el
+  2026-09-17 sin que nadie lo notara (el ícono de la pestaña del navegador no era el de Niki).
+  PROBADO Y DESCARTADO (no acumular esto de nuevo sin volver a medir):
+  (2) `experimental.inlineCss` de Next.js — la documentación de esta versión (bundleada en
+  node_modules/next/dist/docs) lo recomienda para CSS atómico (Tailwind) + tráfico frío de
+  anuncios, que es justo nuestro caso. Medido en producción: EMPEORA todo — +238 KB (el CSS se
+  duplica entre el `<style>` inline y el payload de hidratación RSC, advertencia que la propia
+  doc ya menciona pero cuyo impacto real no se puede saber sin medir), LCP peor (4.8 s vs 3.5 s) y
+  apareció un salto visual (CLS 0.045) que antes no existía. Revertido el mismo día (commit
+  68e5bb5) tras medir "después" y ver la regresión — nunca se declaró mejora sin la medición.
+  NO SE TOCÓ, evaluado y descartado por riesgo (no es "pendiente", es decisión tomada hoy):
+  (3) Quitar algún grosor de letra de Manrope (se cargan 400/500/600/700): `font-normal` (400) no
+  aparece como clase explícita en ningún componente, PERO el CSS global no fija un peso base
+  distinto — cualquier texto sin clase de peso explícita en algún rincón de la app cae en 400 por
+  default del navegador. Sin poder auditar eso al 100% con confianza, no se quitó: el riesgo de
+  texto invisible/con peso incorrecto en un lugar no revisado pesa más que el ahorro (~15-25 KB).
+  (4) La imagen `niki-celebrando.webp` en el CTA final de la landing — Lighthouse la marcó como
+  "servida más grande de lo que se ve" (48px vs 192px), pero es un ARTEFACTO DE MEDICIÓN: esa
+  imagen entra con `whileInView` + `scale: 0.6` inicial (80px × 0.6 = 48px, coincide exacto); la
+  herramienta la midió a mitad de su animación de entrada, no en su tamaño real. No hacía falta
+  tocar nada.
+  SIGUE PENDIENTE (de sesiones anteriores, sin cambios): el límite real hoy es el JS base de
+  React+Next+motion que debe cargar y correr ANTES del LCP bajo CPU limitada de un Android gama
+  media — no hay forma de bajarlo sin sacrificar las animaciones baseline (prohibido) o migrar a
+  componentes de servidor (ya evaluado y descartado: riesgo alto, ahorro mínimo). Además, "Hoy" y
+  "Progreso" (las pantallas post-login) no se pudieron medir hoy con este método — dependen de un
+  `fetch` del cliente a Supabase DESPUÉS de hidratar, así que buena parte de su demora percibida
+  es arquitectónica (pedir los datos en el servidor antes de mandar el HTML eliminaría ese viaje
+  redondo, pero es un cambio de arquitectura, no un ajuste de pulido — queda anotado para una
+  sesión dedicada si se decide atacarlo).
+  PRESUPUESTO (sin cambios): landing JS ≤252 KB y total ≤520 KB; planes/entrar JS ≤320 KB;
+  imágenes nuevas siempre webp a 2x su tamaño en pantalla; favicon ≤5 KB (nuevo, por lo de hoy).
+  Capturas de verificación visual (sin romper nada) en
+  docs/revisiones/repaso-2026-10-20/velocidad-{landing,onboarding,paywall,login}-375.png.
+- VELOCIDAD anterior (/velocidad 2026-10-15, commits 9c3ea9d + d2db25e): medición = Lighthouse 13.5 móvil (Moto G Power simulado, 4G lenta) desde la laptop con --blocked-url-patterns="*kaspersky-labs.com*" (anula la inyección de Kaspersky), mediana de 3 corridas por página; PageSpeed web agotó su cuota anónima. ANTES → DESPUÉS: landing puntaje 79→82, LCP 4.16→3.66 s, peso total 657→514 KB · onboarding 87→86, LCP 3.71→3.42 s, 479→378 KB · planes 76→81, LCP 3.87→3.82 s, JS 347→318 KB · login 77→82, LCP 3.95→3.74 s, JS 336→306 KB · CLS 0 en todas. LCP REAL observado (sin simular) = primer pintado en las 4 (1.1-1.4 s): el titular/imagen ya sale del HTML del servidor. HECHO: imágenes a webp de su tamaño (capturas 500px, banners 720px, mascota 192px, gema animada 60px; originales intactos), zod fuera del navegador (lib/env.ts sin zod; servidor sigue con zod en env-server.ts), Supabase cargado bajo demanda en planes y entrar (lib/supabase/diferido.ts), titular de planes y primer paso del onboarding sin fade inicial (initial={false}; el resto sigue escalonado). Meta LCP <2.0/2.5 s NO cumplida en el simulador: el límite restante es el JS base (React+Next ≈125 KB brotli + motion ≈47 KB) que el modelo de Lighthouse carga antes del LCP; quitar motion de la landing = descartado (rompe animaciones baseline). DESCARTADO: convertir la landing a componentes de servidor (todas las secciones usan motion → ahorro mínimo, riesgo alto). PRESUPUESTO para nuevas funciones: landing JS ≤252 KB y total ≤520 KB; planes/entrar JS ≤320 KB; imágenes nuevas siempre webp a 2x su tamaño en pantalla. Pendiente: datos de CAMPO (usuarios reales) cuando haya tráfico — PageSpeed web/CrUX.
 - BUG CRÍTICO CORREGIDO 2026-10-15 (9c3ea9d): el login rechazaba todo correo con la letra "s" (regex sin barras: /^[^s@]+@.../ desde el 2026-10-03) mostrando "Escribe tu correo completo" — p. ej. sofia@gmail.com, luis@hotmail.com, cualquier @yahoo.es. Ahora lib/correo.ts + tests/correo.test.ts (62 pruebas OK).
 - veredicto:paywall — 5ª edición (2026-10-04): solo LÓGICA, sin cambio visual: el link de pago agrega la red de origen al sck (leerOrigen). Probado: /?src=tiktok → sck=tiktok_paywall_anual.
 - veredicto:paywall — 4ª edición (2026-10-04): solo CIFRAS del plan Anual ($4.99 · $59.99/año · $0.17/día · ~8 meses gratis), mismo largo de texto y layout; verificado en producción (holaniki.com/paywall muestra $59.99). No requiere re-revisión visual.
