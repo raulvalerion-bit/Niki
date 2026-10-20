@@ -26,13 +26,12 @@ const csp = [
 
 const nextConfig: NextConfig = {
   devIndicators: false,
-  // Tráfico frío de ads (TikTok/Meta) = casi siempre primera visita: el CSS
-  // atómico de Tailwind es chico, así que el intercambio del 38 favorece
-  // inlinearlo (quita la espera de red antes de pintar) sobre dejarlo en caché
-  // para visitas que vuelven. La CSP ya permite 'unsafe-inline' en style-src.
-  experimental: {
-    inlineCss: true,
-  },
+  // PROBADO y DESCARTADO 2026-10-20 (/velocidad): experimental.inlineCss duplica el CSS
+  // (una vez en <style>, otra en el payload de hidratación RSC — advertencia documentada
+  // en node_modules/next/dist/docs/.../inlineCss.md) y en esta app eso pesó más de lo que
+  // ahorró: medido en producción, +238 KB y LCP peor (4.8s vs 3.5s) en las 4 pantallas
+  // clave, con un salto visual (CLS 0.045) que antes no existía. No reactivar sin volver a
+  // medir con el mismo método (Lighthouse móvil contra holaniki.com, 2-3 corridas).
   async headers() {
     return [
       {
