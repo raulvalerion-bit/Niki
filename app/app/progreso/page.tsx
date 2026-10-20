@@ -59,6 +59,7 @@ function Cuenta({ valor }: { valor: number }) {
 }
 
 const CORTE_CHECKS = 15;
+const CORTE_MESES = 4; // mismo patrón que CORTE_CHECKS (regla UX #14): nunca una lista sin tope.
 const TECHO_CHIPS = 3; // gate de carga cognitiva: ≤4 opciones por decisión ("Todas" + 3 + "Otras").
 const OTRAS = '__otras__';
 
@@ -68,6 +69,7 @@ export default function Progreso() {
   const [mesActual] = useState(() => mesDe(new Date().toISOString()));
   const [filtro, setFiltro] = useState<string | null>(null);
   const [verTodos, setVerTodos] = useState(false);
+  const [verTodosMeses, setVerTodosMeses] = useState(false);
 
   const ejes = useMemo(() => (checks ? EJES.map((e) => progresoEje(checks, e)) : []), [checks]);
   const foco = useMemo(() => ejeFoco(ejes), [ejes]);
@@ -239,7 +241,7 @@ export default function Progreso() {
         <section aria-label="Resúmenes de cada mes" className="mt-8">
           <h2 className="text-[17px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">Tus meses con Niki</h2>
           <div className="mt-3 flex flex-wrap gap-2">
-            {mesesConResumen.map((m) => (
+            {(verTodosMeses ? mesesConResumen : mesesConResumen.slice(0, CORTE_MESES)).map((m) => (
               <Link
                 key={m}
                 href={`/app/progreso/mes/${m}`}
@@ -249,6 +251,15 @@ export default function Progreso() {
                 <ChevronRight size={16} aria-hidden="true" />
               </Link>
             ))}
+            {!verTodosMeses && mesesConResumen.length > CORTE_MESES && (
+              <button
+                type="button"
+                onClick={() => setVerTodosMeses(true)}
+                className="flex h-11 items-center gap-1 rounded-full bg-[var(--chip-bg)] px-4 text-[13px] font-semibold text-[var(--text-secondary)] transition-transform duration-100 active:scale-[0.97]"
+              >
+                Ver los {mesesConResumen.length - CORTE_MESES} meses restantes
+              </button>
+            )}
           </div>
         </section>
       )}

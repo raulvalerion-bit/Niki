@@ -34,16 +34,24 @@ junto. Se hizo:
   uso; corregir con el mismo patrón cuando se retome esta pantalla. Captura:
   docs/revisiones/progreso-375.png. Veredicto: docs/revisiones/progreso-veredicto.md.
 
-⚠️ **Ninguna de las dos cruzó el gate automático del revisor (≥36/40 y ≥16/20).** Ambas mejoraron de
-verdad (verificado en código y capturas, no solo en el número), pero ninguna se declara "LISTA" en
-el sentido estricto del SO. Igual que se hizo con el onboarding el 2026-09-18 y el 2026-10-17, la
-decisión de aceptarlas así (o seguir puliendo en otra sesión) es del dueño, no del agente — queda
-pendiente mostrarle las capturas y preguntarle.
+✅ Ninguna de las dos cruzó el gate automático del revisor (≥36/40 y ≥16/20), pero el dueño VIO las
+capturas (docs/revisiones/{hoy,progreso}-375.png) y las APROBÓ DIRECTAMENTE 2026-10-20 ("ya las vi,
+las encontré bien") — mismo criterio ya usado con el onboarding el 2026-09-18 y el 2026-10-17: se
+prioriza la aprobación directa del dueño sobre el puntaje automático del revisor-visual.
+
+Tras esa aprobación, se resolvieron los 2 pendientes reales que habían quedado fuera de alcance:
+- **Hoy**: la mascota Niki (aprobada en FICHA-ARTE.md) apareció, arriba del título, con la misma
+  animación de entrada (spring) que ya usa onboarding — `niki-feliz.webp`, sin usar todavía en
+  ningún otro punto de la app.
+- **Progreso**: "Tus meses con Niki" ahora tiene el mismo tope que ya tenía "Tus Checks" (techo de
+  4 meses + botón "ver los N restantes") — ya no se rompe con 6+ meses de uso.
+Ajustes menores post-aprobación, verificados con `tsc`+build+capturas pero SIN una 5ª/4ª pasada del
+revisor (ya había aprobación directa del dueño, no se justificaba el costo de otra pasada completa).
 
 Se corrió `tsc`, `npm run build` y `npm run test` (62/62) limpios después de cada ronda. Se guardó
 (commit) y publicó todo lo acumulado desde el 17-oct (API de conversiones de Hotmart, 3 correcciones
-de landing/onboarding/paywall) junto con el pulido de hoy — ver el commit del 2026-10-20 en el
-historial de git para el detalle exacto de archivos.
+de landing/onboarding/paywall) junto con el pulido de Hoy/Progreso y estos 2 últimos ajustes — ver
+los commits del 2026-10-20 en el historial de git para el detalle exacto de archivos.
 
 Última actualización anterior (2026-10-16, tarde) — PUNTOS 2 Y 3 DEL PLAN DEL VIERNES: (2) ✅ el dueño
 apagó "Coincidencia avanzada automática" en Meta (ya estaba apagada de una sesión anterior,
@@ -596,13 +604,14 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   craft pasa con holgura, usabilidad se quedó 4 rondas seguidas a 1 solo punto del gate de 36, cada
   vez por un defecto distinto y cada vez más fino (jerarquía de tarjetas → peso de fuente → tamaño
   de ícono). El propio revisor-visual lo señaló: a este nivel ya no es un fix de 1 línea, es el
-  mismo patrón de "pulido acumulado" que el onboarding. Se PARA aquí la cadena automática — queda a
-  decisión del dueño (mostrarle docs/revisiones/hoy-375.png y preguntarle, mismo criterio que se usó
-  con onboarding el 2026-09-18 y el 2026-10-17) si la acepta así o se sigue puliendo en otra sesión.
-  Pendiente real sin resolver (fuera de alcance de hoy): la mascota Niki no aparece en esta pantalla
-  (aprobada en FICHA-ARTE.md pero nunca incorporada aquí); el concepto "gemas" no tiene explicación
-  la primera vez (a diferencia de "congeladores", que sí la tiene). Veredicto en
-  docs/revisiones/hoy-veredicto.md, histórico de las 4 rondas en docs/revisiones/repaso-2026-10-20/.
+  mismo patrón de "pulido acumulado" que el onboarding. Se PARÓ ahí la cadena automática.
+  ✅ APROBADA DIRECTAMENTE POR EL DUEÑO 2026-10-20 viendo docs/revisiones/hoy-375.png ("ya las vi,
+  las encontré bien") — mismo criterio que onboarding el 2026-09-18 y 2026-10-17. Tras la
+  aprobación se agregó la mascota Niki (`niki-feliz.webp`, arriba del título, con el mismo patrón
+  de entrada que onboarding) que faltaba. Pendiente real sin resolver (menor, no bloqueante): el
+  concepto "gemas" no tiene explicación la primera vez (a diferencia de "congeladores", que sí la
+  tiene). Veredicto en docs/revisiones/hoy-veredicto.md, histórico de las 4 rondas en
+  docs/revisiones/repaso-2026-10-20/.
 - veredicto:progreso — PULIDO 2026-10-20 (3 rondas de revisor-visual sobre app/app/progreso/page.tsx
   + components/app/RutaPresencia.tsx). Los 5 defectos del veredicto de 2026-10-04 (29/40·14/20) YA
   ESTABAN RESUELTOS de una sesión anterior sin re-certificar (dato héroe, CTA de acción, sin --gold
@@ -613,11 +622,12 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   usuario usó, ordenadas por frecuencia, techo de 3 + chip "Otras", corte de lista a 15 + "ver más"),
   tamaños de texto consolidados, spring real en la celebración, chips a 44px. ESTADO FINAL:
   **29/40 · 15/20 · NO LISTA** (mejora real desde 28/40·15/20, lejos del gate — mismo patrón de
-  heurísticas estancadas en "bien" sin bug puntual que lo explique). Pendiente real sin resolver
-  (fuera de alcance de hoy): la lista "Tus meses con Niki" no tiene el mismo tope que ya se aplicó a
-  "Tus Checks" — se rompe igual con 6+ meses de uso; falta tooltip para "Nivel X al promediar Y · vas
-  en Z"; el tagline del header no cambia según el contexto. Queda a decisión del dueño (mismo
-  criterio que Hoy) si se acepta así o se sigue puliendo. Veredicto en
+  heurísticas estancadas en "bien" sin bug puntual que lo explique).
+  ✅ APROBADA DIRECTAMENTE POR EL DUEÑO 2026-10-20 viendo docs/revisiones/progreso-375.png (mismo
+  criterio que Hoy). Tras la aprobación se agregó el tope que faltaba en "Tus meses con Niki"
+  (CORTE_MESES=4 + "ver los N restantes", mismo patrón que "Tus Checks") — ya no se rompe con 6+
+  meses de uso. Pendientes reales sin resolver (menores, no bloqueantes): falta tooltip para "Nivel X
+  al promediar Y · vas en Z"; el tagline del header no cambia según el contexto. Veredicto en
   docs/revisiones/progreso-veredicto.md, histórico de las 3 rondas en docs/revisiones/repaso-2026-10-20/.
 - ✅ PURCHASE EN META CONFIRMADO 2026-10-17: el evento "Comprar" ya aparece en Administrador de
   eventos → píxel …098022 → Resumen, Activo, calidad de coincidencia 8.0/10, "Última recepción:

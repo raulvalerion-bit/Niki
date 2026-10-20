@@ -105,9 +105,18 @@ export function HoyInicio({
 
   return (
     <div className="flex flex-1 flex-col items-center pt-4 text-center">
+      {/* Mascota Niki (FICHA-ARTE.md): la pantalla más vista de la app no tenía ningún
+          dispositivo ownable además del anillo/color (defecto del revisor-visual, 2026-10-20). */}
+      <motion.img
+        {...aparece(0)}
+        src="/iconos/niki-feliz.webp"
+        alt=""
+        aria-hidden="true"
+        className="size-14 drop-shadow-[0_4px_8px_rgba(60,36,18,0.18)]"
+      />
       <motion.h1
         {...aparece(0)}
-        className="text-balance text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]"
+        className="mt-1 text-balance text-[24px] font-bold leading-[1.2] text-[var(--text-primary)] [font-family:var(--font-display)]"
       >
         {restantes === 0 ? 'Ya hiciste tus 3 Checks de hoy' : hechoHoy ? 'Hoy ya cuidaste tu presencia' : 'Tu Check de hoy te espera'}
       </motion.h1>
