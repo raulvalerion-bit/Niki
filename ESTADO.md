@@ -844,8 +844,10 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   análisis) — se le pedirá guiado, paso a paso, al empezar la conexión de la IA real
 - [ ] Más adelante: crear cuentas Hotmart/Resend, comprar dominio (se le pedirá guiado, paso a paso, en la Sesión de servicios externos)
 - [ ] 2026-10-20 (/adquisicion): activar la afiliación del producto `niki` en app.hotmart.com →
-  Afiliados → activar, aprobación MANUAL al inicio, comisión 35% RECURRENTE, subir el kit de
-  docs/copy/kit-afiliados.md al área de afiliados, activar aparición en el Marketplace.
+  Afiliados → EN PROGRESO: comisión ya puesta (30% primera venta + 20% recurrencia, el dueño ya la
+  tenía en 30% solo-primera-venta y le agregó el 20% recurrente), presentación ya ajustada.
+  Falta: encontrar el toggle de "Marketplace"/"Mercado" (visibilidad pública para afiliados) y subir
+  el kit de docs/copy/kit-afiliados.md al área de materiales de afiliados.
 
 ## Notas para la próxima sesión
 - USUARIO EN REDES (2026-10-04): @holaniki_app — Instagram LISTO; TikTok creado (usuario ok; nombre visible "Niki - Check de Presencia" se puede cambiar hasta el 2026-10-11); Facebook: Página creada 2026-10-04 (tipo Empresa); usuario holanikiapp (FB no acepta "_") 2026-10-05; Instagram VINCULADO 2026-10-05. Las 3 redes abiertas en la laptop (IG vía cambio de cuenta desde la personal; TikTok con contraseña propia). Hoja de cuentas sin contraseñas: contenido/MIS-CUENTAS.md. Nombre visible: "Niki - Check de Presencia" (guion).
@@ -854,8 +856,11 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   explicó el criterio del 34 (etapa 0 = 0 clientes reales todavía, confirmado por SQL — paid ads es
   etapa 1, DESPUÉS de las primeras 10-30 ventas y testimonios) y eligió seguir con ETAPA 0: afiliados
   + orgánico primero, paid se deja para cuando haya ventas reales que lo justifiquen. Comisión
-  decidida: 35% RECURRENTE (verificado contra el margen: con el plan Mensual $14.99, después de
-  comisión y costo de IA quedan ~$8-9/mes/cliente — pasa el gate del 40 con margen sano). KIT
+  PROPUESTA 35% recurrente; el dueño en Hotmart ya tenía 30% solo-primera-venta configurado de
+  antes y decidió agregar 20% de recurrencia en vez de cambiar a 35% parejo — resultado: 30% la
+  primera factura + 20% cada renovación. Margen con esto: MEJOR que la propuesta (primer mes neto
+  ~$9.5, meses siguientes ~$11/cliente en el plan Mensual $14.99, tras comisión y costo de IA) —
+  pasa el gate del 40 con margen sano. KIT
   COMPLETO generado en docs/copy/kit-afiliados.md (5 ángulos, 15 copys IG/TikTok, guion UGC de
   30-45s, 5 stories, swipe de 4 correos, ideas de creativos, FAQ, reglas del programa) — fuente:
   FICHA-AVATAR.md. Pendiente del dueño: activar la afiliación en Hotmart (ver "Pendientes del
