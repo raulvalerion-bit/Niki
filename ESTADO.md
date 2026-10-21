@@ -843,13 +843,14 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - [ ] Próxima sesión: crear una cuenta con el proveedor de IA elegido (tiene un costo pequeño por
   análisis) — se le pedirá guiado, paso a paso, al empezar la conexión de la IA real
 - [ ] Más adelante: crear cuentas Hotmart/Resend, comprar dominio (se le pedirá guiado, paso a paso, en la Sesión de servicios externos)
-- [ ] 2026-10-20 (/adquisicion): activar la afiliación del producto `niki` en app.hotmart.com →
-  Afiliados → EN PROGRESO: comisión ✅ (30% primera venta + 20% recurrencia), presentación ✅,
-  visibilidad en el Mercado/Marketplace ✅ (confirmado activo por el dueño). Kit en PDF listo
-  (`Kit-Afiliados-Niki.pdf`, generado y NO versionado en git — archivo local para subir a Drive).
-  Falta: el dueño sube el PDF a una carpeta de Drive compartida, pega ese link en "Link para una
-  carpeta en la nube" del área de materiales de Hotmart, y pega los 4 correos del kit (sección 5)
-  en "Modelo de email".
+- [x] 2026-10-20 (/adquisicion): PROGRAMA DE AFILIADOS DE HOTMART COMPLETO — comisión 30% primera
+  venta + 20% recurrencia, presentación ajustada, visible en el Mercado/Marketplace, materiales
+  subidos (PDF del kit en una carpeta de Drive compartida pegada en "Link para una carpeta en la
+  nube" + los 4 correos del swipe pegados en "Modelo de email"). Fuente del kit:
+  docs/copy/kit-afiliados.md (y `Kit-Afiliados-Niki.pdf`, generado localmente, no versionado en
+  git). Queda a la espera de que algún afiliado se sume — "riesgo cero no es esfuerzo cero": no
+  esperar que se active solo, toca reclutar (ver PASO 4 de 34-ADQUISICION-Y-TRAFICO.md) cuando
+  haya ventas propias que mostrar.
 
 ## Notas para la próxima sesión
 - USUARIO EN REDES (2026-10-04): @holaniki_app — Instagram LISTO; TikTok creado (usuario ok; nombre visible "Niki - Check de Presencia" se puede cambiar hasta el 2026-10-11); Facebook: Página creada 2026-10-04 (tipo Empresa); usuario holanikiapp (FB no acepta "_") 2026-10-05; Instagram VINCULADO 2026-10-05. Las 3 redes abiertas en la laptop (IG vía cambio de cuenta desde la personal; TikTok con contraseña propia). Hoja de cuentas sin contraseñas: contenido/MIS-CUENTAS.md. Nombre visible: "Niki - Check de Presencia" (guion).
