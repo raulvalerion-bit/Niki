@@ -1,8 +1,19 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-10-20 (noche) — Sesión completa: guardado de lo acumulado del 17-oct,
-pulido de Hoy/Progreso (aprobado por el dueño), re-certificación a 88/100, y pasada de /velocidad
-contra producción real (favicon corregido y aligerado; se probó inlinear el CSS, empeoró todo, se
-revirtió el mismo día). Todo publicado, producción = 68e5bb5.
+Última actualización: 2026-10-20 (cierre de sesión) — Sesión larga, todo publicado (producción =
+1269497): (1) guardado de lo acumulado del 17-oct; (2) pulido de Hoy/Progreso, aprobado por el
+dueño; (3) re-certificación a 88/100 — APTO para tráfico pagado; (4) /velocidad contra producción
+real (favicon corregido y aligerado; se probó inlinear el CSS, empeoró todo, se revirtió el mismo
+día); (5) /adquisicion: etapa confirmada en 0 clientes — se prioriza afiliados + orgánico sobre
+paid; programa de afiliados de Hotmart ACTIVADO Y COMPLETO (comisión 30%+20%, Marketplace, kit de
+materiales subido); (6) semana 3 de contenido armada y PUBLICADA el mismo día (carrusel "5 señales
+de buena impresión" + el video de cena pendiente de semana 2) en TikTok+IG+FB — falta solo que el
+dueño suba la historia de Instagram con el link (en curso al cerrar la sesión).
+
+▶️ CIERRE DE SESIÓN 2026-10-20 — todo guardado y publicado, nada pendiente de mi lado. Lo único
+que queda abierto es que el dueño suba la historia de IG del carrusel de hoy (sticker de enlace
+`?src=ig_impresion`) — tarea suya, no bloquea nada. Siguiente sesión: revisar si subió la historia,
+seguir con el calendario de semana 3 (vie 23 video postura, dom 25 video búsqueda, mar 27 video
+amigos), y vigilar Panel → Ventas / Supabase por si ya hay la primera señal de tráfico real.
 
 Resumen de la sesión de hoy: al retomar, la re-certificación del 2026-10-17 (84/100, APTA para
 tráfico pagado) seguía SIN GUARDAR NI PUBLICAR (solo en disco). El dueño pidió pulir Hoy y Progreso
