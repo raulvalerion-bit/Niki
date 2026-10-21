@@ -868,6 +868,22 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
   30-45s, 5 stories, swipe de 4 correos, ideas de creativos, FAQ, reglas del programa) — fuente:
   FICHA-AVATAR.md. Pendiente del dueño: activar la afiliación en Hotmart (ver "Pendientes del
   usuario" arriba) y subir el kit. No se tocó código en esta tarea.
+- CONTENIDO SEMANA 3 (2026-10-20, /contenido-semanal): REVISIÓN SEMANA 2 — TikTok: carrusel cita
+  (15-oct) 2 vistas, video reunión (17-oct) **210 vistas** (el mejor desde la semana 1), carrusel
+  postura (18-oct) 0 vistas; video cena (20-oct) programado 19:00, pendiente de confirmar.
+  Instagram+Facebook (30 días): 317 vistas totales, 80.5% ya seguidores — mismo problema de
+  siempre, se resuelve con constancia, no de un día para otro. Confirmado por SQL: 0 eventos en
+  `event_log` desde el 15-oct — el puente contenido→sitio sigue roto, es la prioridad real, no el
+  tema del video. LECTURA: situación de trabajo + número concreto ganó 2 semanas seguidas (carrusel
+  entrevista 546 vistas semana 1, video reunión 210 semana 2); cita y postura no se movieron,
+  pero la muestra es chica para descartarlos del todo. SEMANA 3 ARMADA (mix aprobado por el dueño)
+  en contenido/semana-03/ (GUIONES.md + COMO-SUBIRLO.md + carrusel ya exportado a PNG): Mié 21
+  carrusel "5 señales de buena impresión" (repite la fórmula ganadora, candidata a Spark Ad si
+  algún día hay paid) · Vie 23 video "Cómo mejorar tu postura" (mismo tema que el carrusel que no
+  se movió, ahora en video — para separar tema de formato) · Dom 25 video "Cómo saber si tu
+  outfit combina" (apunta a búsqueda en TikTok, se mide en semanas no en días) · Mar 27 video "Qué
+  ponerte para salir con amigos" (situación nueva, nunca probada). Racha de cadencia: 2 semanas
+  cumplidas. Siguiente revisión: martes 27-oct.
 - AVISO PREVIO (2026-10-05, pedido del dueño, opción 1 = solo expectativa, sin lista de espera ni premio): 3 días antes de la semana 1 — contenido/aviso-previo/ (GUIA.md + 3 publicaciones 4:5 + 3 historias 9:16, fuente aviso-previo.html): Día 1 "Muy pronto estaré contigo", Día 2 problema "¿saliste sin saber si te veías bien?", Día 3 "¡Ya llegué!" + link. Enlace del perfil sin cambios. Después arranca semana-01.
 - IDEA PARA DESPUÉS (2026-10-05): versión en inglés (botón "English version", pedido del dueño). Decisión: V2, NO ahora — todo el contenido de redes es en español, inglés exige i18n completa (UI, IA, correos, legales, checkout) + contenido en inglés + competencia directa con Umax/apps US. Reabrir tras primeras ventas en LATAM o si la analítica muestra tráfico angloparlante (archivo 39). Logo: se mantiene el Anillo plano en esquinas/favicon; la mascota 3D solo ≥40px (regla FICHA-ARTE, reconfirmada al dueño).
 - ✅ SEMANA 2 — Jue 15 carrusel "5 errores en tu primera cita" PUBLICADO. ✅ Sáb 17 video "Reunión
