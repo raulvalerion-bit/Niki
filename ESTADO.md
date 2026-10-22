@@ -1,5 +1,33 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-10-20 (cierre de sesión) — Sesión larga, todo publicado (producción =
+Última actualización: 2026-10-22 — SEGURIDAD: cerrado el abuso del formulario de login. Al revisar
+Supabase buscando el "primer registro real" que el dueño creyó ver desde TikTok, se encontraron 22
+cuentas creadas en la última semana (de 23 totales, sin contar la del dueño) con `objetivo IS NULL`
+(ninguna completó el onboarding), cero eventos en event_log, y correos sin sentido para el nicho
+(empresas como Intel/un despacho legal, Gmail con puntos insertados al azar, hasta una pasarela
+SMS→correo `@vtext.com`) — patrón de un bot usando el formulario de "entrar con tu correo" para
+disparar `signInWithOtp({shouldCreateUser:true})` con una lista de direcciones al azar (esa llamada
+crea la fila en `auth.users` — y el profile — apenas se PIDE el código, sin verificarlo nunca).
+Riesgo real: Resend manda un correo "tu código es…" a gente que nunca lo pidió; si lo marcan spam,
+daña la reputación del dominio de envío y puede tirar a spam los correos importantes de verdad
+(bienvenida, cobro fallido, recibos). CORREGIDO: `supabase/migrations/20261022000000_rate_limit_otp.sql`
+(tabla `rate_limit_otp` + función `solicitar_otp_permitido`, solo `service_role`, máx 5 solicitudes
+por IP cada 15 min) + nueva ruta `app/api/auth/solicitar-codigo` (valida con la función antes de
+llamar a `signInWithOtp`) + `app/login/page.tsx` ya NO llama a Supabase directo desde el navegador,
+pasa por esa ruta. Probado en real: 5 solicitudes seguidas OK, la 6ª bloqueada (429), datos de
+prueba borrados. `tsc` + `npm run build` limpios. Pendiente de decidir: ¿purgar las 22 cuentas
+fantasma de `profiles`/`auth.users`? (no hacen daño por sí solas, pero ensucian cualquier métrica
+futura de registros — preguntar al dueño antes de borrar cuentas, aunque sean basura, por si acaso).
+
+Última actualización anterior (2026-10-21) — revisión rápida del panel de TikTok semana 3 (dueño): el video
+"Entrevista de trabajo, parte 2" (18-oct) mostraba 0 vistas y no aparecía al revisar desde el
+propio celular del dueño — se sospechó restricción/revisión de TikTok. DESCARTADO: una tercera
+persona ajena a la cuenta buscó el perfil y SÍ pudo ver y darle like al video — confirma que es
+público y visible, las 0 vistas fueron solo floja distribución del algoritmo ese día, no un bug ni
+un bloqueo. El video del 17-oct ("Cómo verte con seguridad en una reunión") es el mejor de la
+semana con 244 vistas. Dueño también confirmó que ya subió la historia de IG pendiente del cierre
+anterior.
+
+Última actualización anterior: 2026-10-20 (cierre de sesión) — Sesión larga, todo publicado (producción =
 1269497): (1) guardado de lo acumulado del 17-oct; (2) pulido de Hoy/Progreso, aprobado por el
 dueño; (3) re-certificación a 88/100 — APTO para tráfico pagado; (4) /velocidad contra producción
 real (favicon corregido y aligerado; se probó inlinear el CSS, empeoró todo, se revirtió el mismo
@@ -648,6 +676,26 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Cuando exista la app interna: montar los screenshots reales en el carrusel de la landing y volver a pasar el revisor-visual para cerrar esa puerta del todo
 
 ## Problemas conocidos ⚠️
+- diseno:login — 2026-10-22: el linter de diseño (post-edit-diseno.sh) marca valores arbitrarios
+  fuera de la escala 4·8·12·16·24·32·48·64 en `app/login/page.tsx` (text-[15px]/[10px]/[17px],
+  rounded-[9px], max-w-[480px]) — TODOS preexistentes de la Sesión de servicios externos
+  (2026-09-19), no tocados en el arreglo de rate-limit del 2026-10-22. Fuera de alcance de esa
+  tarea (cambios mínimos); pendiente de un pulido aparte si se decide revisar `login` a fondo
+  (pantalla secundaria, no una de las 4 del dinero).
+- veredicto:landing / veredicto:paywall — 2026-10-21: el hook pre-stop vuelve a marcarlos
+- veredicto:landing / veredicto:paywall — 2026-10-21: el hook pre-stop vuelve a marcarlos
+  CADUCADOS porque compara contra CUALQUIER .tsx más nuevo del repo, y la sesión del 2026-10-20
+  tocó `app/app/progreso/page.tsx`, `components/app/HoyInicio.tsx` y `components/app/MisionSemana.tsx`
+  (todos de Hoy/Progreso). Ni `app/page.tsx` (landing) ni `app/paywall/page.tsx` cambiaron desde
+  sus re-certificaciones del 2026-10-17 (landing LISTA 36/40·16/20·copy 19/20; paywall LISTA
+  37/40·18/20·copy 18/20) — mismo falso positivo ya documentado para paywall el 2026-10-17 (ver
+  nota de esa fecha abajo), ahora recurre también con landing por los mismos archivos ajenos. No
+  se re-renderizan porque el código real de esas 2 pantallas no cambió.
+- veredicto:onboarding — 2026-10-21: sigue NO LISTA por el puntaje automático (31/40·16/20·copy
+  17/20, docs/revisiones/onboarding-veredicto.md), pero el dueño lo aprobó DIRECTAMENTE viendo las
+  capturas en vivo el 2026-09-18 y de nuevo el 2026-10-17 ("yo la veo bien hasta ahora") — se
+  prioriza esa aprobación sobre el gate automático (detalle completo en la nota de 2026-10-17 más
+  abajo). Sin cambios de código en `app/onboarding/page.tsx` desde esa aprobación.
 - veredicto:hoy — PULIDO 2026-10-20 (4 rondas de revisor-visual sobre components/app/HoyInicio.tsx
   + MisionSemana.tsx + RachaGlowUp.tsx). Subió de 32/40·16/20 (16-oct) a **35/40 · 19/20 · NO LISTA**:
   craft pasa con holgura, usabilidad se quedó 4 rondas seguidas a 1 solo punto del gate de 36, cada

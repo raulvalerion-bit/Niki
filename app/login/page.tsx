@@ -162,14 +162,22 @@ export default function Login() {
     }
     setEnviando(true);
     setError(null);
-    const supabase = await clienteSupabaseDiferido();
-    const { error: errorEnvio } = await supabase.auth.signInWithOtp({
-      email: correo.trim(),
-      options: { shouldCreateUser: true },
-    });
+    // Pasa por el servidor (no supabase.auth.signInWithOtp directo): ahí se
+    // aplica el límite de solicitudes por IP que evita que el formulario se
+    // use para mandar correos a direcciones al azar (ver app/api/auth/solicitar-codigo).
+    const respuesta = await fetch('/api/auth/solicitar-codigo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ correo: correo.trim() }),
+    }).catch(() => null);
     setEnviando(false);
-    if (errorEnvio) {
-      setError('No pudimos enviar el acceso — revisa el correo e intenta de nuevo.');
+    if (!respuesta?.ok) {
+      const cuerpo = await respuesta?.json().catch(() => null);
+      setError(
+        cuerpo?.error === 'limite'
+          ? 'Pediste varios códigos muy seguido — espera unos minutos e intenta de nuevo.'
+          : 'No pudimos enviar el acceso — revisa el correo e intenta de nuevo.'
+      );
       return;
     }
     setPaso('codigo');
