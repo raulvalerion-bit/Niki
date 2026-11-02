@@ -676,6 +676,10 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Cuando exista la app interna: montar los screenshots reales en el carrusel de la landing y volver a pasar el revisor-visual para cerrar esa puerta del todo
 
 ## Problemas conocidos ⚠️
+- veredicto:onboarding — POSPUESTO a propósito, 2026-10-22: docs/revisiones/onboarding-veredicto.md
+  dice 31/40·16/20 NO LISTA (2026-10-17). El dueño vio las capturas y APROBÓ el onboarding
+  DIRECTAMENTE (2026-09-18 y 2026-10-17); se prioriza su aprobación sobre el puntaje automático.
+  No se re-lanza el revisor (costo ~80-90k tokens) hasta que se vuelva a tocar el onboarding.
 - diseno:login — 2026-10-22: el linter de diseño (post-edit-diseno.sh) marca valores arbitrarios
   fuera de la escala 4·8·12·16·24·32·48·64 en `app/login/page.tsx` (text-[15px]/[10px]/[17px],
   rounded-[9px], max-w-[480px]) — TODOS preexistentes de la Sesión de servicios externos
