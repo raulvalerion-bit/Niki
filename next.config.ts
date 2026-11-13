@@ -8,15 +8,18 @@ import type { NextConfig } from "next";
 const SUPABASE = "https://yniyllfhoydkdqowiunr.supabase.co";
 const META_SCRIPT = "https://connect.facebook.net";
 const META_ENVIO = "https://www.facebook.com";
+// Cloudflare Turnstile (verificación anti-bot del login): script, reto en iframe y verificación.
+const TURNSTILE = "https://challenges.cloudflare.com";
 
 const csp = [
   "default-src 'self'",
   // Next.js inyecta scripts inline para hidratar la página.
-  `script-src 'self' 'unsafe-inline' ${META_SCRIPT}`,
+  `script-src 'self' 'unsafe-inline' ${META_SCRIPT} ${TURNSTILE}`,
+  `frame-src ${TURNSTILE}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob: ${SUPABASE} ${META_ENVIO}`,
   "font-src 'self' data:",
-  `connect-src 'self' ${SUPABASE} wss://yniyllfhoydkdqowiunr.supabase.co ${META_SCRIPT} ${META_ENVIO}`,
+  `connect-src 'self' ${SUPABASE} wss://yniyllfhoydkdqowiunr.supabase.co ${META_SCRIPT} ${META_ENVIO} ${TURNSTILE}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

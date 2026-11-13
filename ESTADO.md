@@ -3,8 +3,13 @@
 cuentas de bot (sin objetivo, sin login, sin Checks, sin eventos) de `auth.users` (+ profiles en
 cascada). Quedan 2: la del dueño (admin, objetivo lleno) y raul_valerio@yahoo.com (compra de prueba
 reembolsada del 27-sep). ⚠️ El bot SIGUE creando cuentas (~3-5/día hasta hoy 13-nov): el límite de 5
-por IP cada 15 min no basta si rota IPs. Pendiente a decidir: CAPTCHA (Turnstile) o exigir pasar el
-onboarding antes de crear cuenta en `app/api/auth/solicitar-codigo`.
+por IP cada 15 min no basta si rota IPs. CONSTRUIDO (en la rama `claude/hopeful-mayer-incxy3`, NO
+publicado): Cloudflare Turnstile (gratis) — `lib/turnstile.ts` + `components/TurnstileLogin.tsx` +
+verificación en `app/api/auth/solicitar-codigo` + CSP en `next.config.ts`; fail-closed en producción.
+⚠️ ANTES DE PUBLICAR (si no, el login queda bloqueado): el dueño crea el sitio en Cloudflare y se
+ponen en Vercel `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (pública) y `TURNSTILE_SECRET_KEY` (secreta, solo
+la pega el dueño en Vercel). Luego probar el login en vivo. También: Next 16.4.0 → 16.4.6 (3 fallas
+críticas nuevas; con 16.4.0 el build se negaba a compilar). Queda `zod` <4.6.6 (alta, no urgente).
 
 Última actualización anterior: 2026-10-22 — SEGURIDAD: cerrado el abuso del formulario de login. Al revisar
 Supabase buscando el "primer registro real" que el dueño creyó ver desde TikTok, se encontraron 22
