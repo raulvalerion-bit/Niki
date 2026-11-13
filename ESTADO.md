@@ -688,6 +688,11 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Cuando exista la app interna: montar los screenshots reales en el carrusel de la landing y volver a pasar el revisor-visual para cerrar esa puerta del todo
 
 ## Problemas conocidos ⚠️
+- veredicto:landing y veredicto:paywall — CADUCADOS solo por fecha (2026-11-13), falso positivo igual al
+  del 2026-09-28: el hook compara contra CUALQUIER .tsx más nuevo, y lo único tocado hoy fue el login
+  (`app/login/page.tsx`, `components/TurnstileLogin.tsx`: el widget anti-bot es invisible, sin cambio
+  visual). `app/page.tsx` (landing) y `app/paywall/` NO se tocaron. Se re-lanza el revisor de cada una
+  solo si se toca su código. El login es pantalla secundaria: sin revisor.
 - diseno:login — 2026-10-22: el linter de diseño (post-edit-diseno.sh) marca valores arbitrarios
   fuera de la escala 4·8·12·16·24·32·48·64 en `app/login/page.tsx` (text-[15px]/[10px]/[17px],
   rounded-[9px], max-w-[480px]) — TODOS preexistentes de la Sesión de servicios externos
