@@ -1,5 +1,17 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-10-22 — SEGURIDAD: cerrado el abuso del formulario de login. Al revisar
+Última actualización: 2026-11-13 — LIMPIEZA DE CUENTAS FANTASMA (autorizada por el dueño): borradas 97
+cuentas de bot (sin objetivo, sin login, sin Checks, sin eventos) de `auth.users` (+ profiles en
+cascada). Quedan 2: la del dueño (admin, objetivo lleno) y raul_valerio@yahoo.com (compra de prueba
+reembolsada del 27-sep). ⚠️ El bot SIGUE creando cuentas (~3-5/día hasta hoy 13-nov): el límite de 5
+por IP cada 15 min no basta si rota IPs. CONSTRUIDO (en la rama `claude/hopeful-mayer-incxy3`, NO
+publicado): Cloudflare Turnstile (gratis) — `lib/turnstile.ts` + `components/TurnstileLogin.tsx` +
+verificación en `app/api/auth/solicitar-codigo` + CSP en `next.config.ts`; fail-closed en producción.
+⚠️ ANTES DE PUBLICAR (si no, el login queda bloqueado): el dueño crea el sitio en Cloudflare y se
+ponen en Vercel `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (pública) y `TURNSTILE_SECRET_KEY` (secreta, solo
+la pega el dueño en Vercel). Luego probar el login en vivo. También: Next 16.4.0 → 16.4.6 (3 fallas
+críticas nuevas; con 16.4.0 el build se negaba a compilar). Queda `zod` <4.6.6 (alta, no urgente).
+
+Última actualización anterior: 2026-10-22 — SEGURIDAD: cerrado el abuso del formulario de login. Al revisar
 Supabase buscando el "primer registro real" que el dueño creyó ver desde TikTok, se encontraron 22
 cuentas creadas en la última semana (de 23 totales, sin contar la del dueño) con `objetivo IS NULL`
 (ninguna completó el onboarding), cero eventos en event_log, y correos sin sentido para el nicho
@@ -676,6 +688,11 @@ Niki analiza fotos de cuerpo entero por IA y da feedback instantáneo de outfit,
 - Cuando exista la app interna: montar los screenshots reales en el carrusel de la landing y volver a pasar el revisor-visual para cerrar esa puerta del todo
 
 ## Problemas conocidos ⚠️
+- veredicto:landing y veredicto:paywall — CADUCADOS solo por fecha (2026-11-13), falso positivo igual al
+  del 2026-09-28: el hook compara contra CUALQUIER .tsx más nuevo, y lo único tocado hoy fue el login
+  (`app/login/page.tsx`, `components/TurnstileLogin.tsx`: el widget anti-bot es invisible, sin cambio
+  visual). `app/page.tsx` (landing) y `app/paywall/` NO se tocaron. Se re-lanza el revisor de cada una
+  solo si se toca su código. El login es pantalla secundaria: sin revisor.
 - diseno:login — 2026-10-22: el linter de diseño (post-edit-diseno.sh) marca valores arbitrarios
   fuera de la escala 4·8·12·16·24·32·48·64 en `app/login/page.tsx` (text-[15px]/[10px]/[17px],
   rounded-[9px], max-w-[480px]) — TODOS preexistentes de la Sesión de servicios externos

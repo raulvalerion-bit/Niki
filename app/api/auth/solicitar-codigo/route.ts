@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { crearClienteSupabaseAdmin } from '@/lib/supabase/admin';
+import { verificarTurnstile } from '@/lib/turnstile';
 
 // Puerta de entrada ÚNICA para pedir el código de acceso por correo. Antes
 // app/login/page.tsx llamaba a supabase.auth.signInWithOtp directo desde el
@@ -12,7 +13,12 @@ import { crearClienteSupabaseAdmin } from '@/lib/supabase/admin';
 // IP cada 15 min, supabase/migrations/20261022000000_rate_limit_otp.sql)
 // antes de pedirle a Supabase que mande el correo.
 
-const Body = z.object({ correo: z.string().email().max(254) });
+// 2026-11-13: el límite por IP no frenó al bot (rota de IP, ~3-5 cuentas falsas
+// al día). Se suma Cloudflare Turnstile: sin un token válido no se manda nada.
+const Body = z.object({
+  correo: z.string().email().max(254),
+  token: z.string().max(2048).optional(),
+});
 
 function ipDe(req: NextRequest): string {
   const reenviado = req.headers.get('x-forwarded-for');
@@ -24,8 +30,13 @@ export async function POST(req: NextRequest) {
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: 'datos' }, { status: 400 });
 
-  const admin = crearClienteSupabaseAdmin();
   const ip = ipDe(req);
+
+  const captcha = await verificarTurnstile(parsed.data.token, ip);
+  if (captcha === 'invalido') return NextResponse.json({ error: 'captcha' }, { status: 403 });
+  if (captcha !== 'ok') return NextResponse.json({ error: 'servidor' }, { status: 500 });
+
+  const admin = crearClienteSupabaseAdmin();
 
   const { data: permitido, error: errorLimite } = await admin.rpc('solicitar_otp_permitido', {
     p_ip: ip,

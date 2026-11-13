@@ -20,6 +20,7 @@ import { Mail, ArrowLeft, X, LifeBuoy } from 'lucide-react';
 import { clienteSupabaseDiferido } from '@/lib/supabase/diferido';
 import { correoValido } from '@/lib/correo';
 import { registrarEvento, registrarSesionDiaria } from '@/lib/eventos';
+import { TurnstileLogin } from '@/components/TurnstileLogin';
 
 type Paso = 'correo' | 'codigo' | 'rescate';
 
@@ -153,11 +154,20 @@ export default function Login() {
   const [enviando, setEnviando] = useState(false);
   const [verificando, setVerificando] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Verificación "no soy un robot" (Cloudflare Turnstile). Sin clave pública
+  // configurada (desarrollo local) no se muestra y el servidor lo omite.
+  const siteKeyTurnstile = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? '';
+  const [tokenTurnstile, setTokenTurnstile] = useState<string | null>(null);
+  const [reinicioTurnstile, setReinicioTurnstile] = useState(0);
 
   async function enviarCodigo() {
     // Nunca un botón mudo (regla de UX #11): si falta el correo, se dice.
     if (!correoValido(correo)) {
       setError('Escribe tu correo completo (por ejemplo, tu@gmail.com) para mandarte el código.');
+      return;
+    }
+    if (siteKeyTurnstile && !tokenTurnstile) {
+      setError('Estamos verificando que eres una persona — espera un segundo e intenta de nuevo.');
       return;
     }
     setEnviando(true);
@@ -168,14 +178,18 @@ export default function Login() {
     const respuesta = await fetch('/api/auth/solicitar-codigo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ correo: correo.trim() }),
+      body: JSON.stringify({ correo: correo.trim(), token: tokenTurnstile ?? undefined }),
     }).catch(() => null);
     setEnviando(false);
+    // El token es de un solo uso: se pide uno nuevo para el siguiente envío (reenviar, otro correo).
+    if (siteKeyTurnstile) setReinicioTurnstile((n) => n + 1);
     if (!respuesta?.ok) {
       const cuerpo = await respuesta?.json().catch(() => null);
       setError(
         cuerpo?.error === 'limite'
           ? 'Pediste varios códigos muy seguido — espera unos minutos e intenta de nuevo.'
+          : cuerpo?.error === 'captcha'
+          ? 'No pudimos confirmar que eres una persona — recarga la página e intenta de nuevo.'
           : 'No pudimos enviar el acceso — revisa el correo e intenta de nuevo.'
       );
       return;
@@ -281,6 +295,10 @@ export default function Login() {
       />
 
       <Encabezado onAtras={() => { setError(null); setPaso('correo'); }} mostrarAtras={paso !== 'correo'} />
+
+      {siteKeyTurnstile && (
+        <TurnstileLogin siteKey={siteKeyTurnstile} reinicio={reinicioTurnstile} onToken={setTokenTurnstile} />
+      )}
 
       {paso === 'correo' && (
         <div className="mt-6 flex flex-1 flex-col items-center pt-8 text-center">
