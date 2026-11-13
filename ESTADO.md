@@ -6,8 +6,7 @@ reembolsada del 27-sep). ⚠️ El bot SIGUE creando cuentas (~3-5/día hasta ho
 por IP cada 15 min no basta si rota IPs. PUBLICADO 2026-11-13 (PR https://github.com/raulvalerion-bit/Niki/pull/1,
 producción = 8885023, claves ya en Vercel/Production): Cloudflare Turnstile (gratis) — `lib/turnstile.ts` + `components/TurnstileLogin.tsx` +
 verificación en `app/api/auth/solicitar-codigo` + CSP en `next.config.ts`; fail-closed en producción.
-⚠️ PENDIENTE: probar el login EN VIVO (desde la sesión de la nube holaniki.com está fuera de la red
-permitida; lo prueba el dueño pidiendo un código) y vigilar 2-3 días que no entren cuentas nuevas con
+✅ Login EN VIVO probado por el dueño 2026-11-13 (incógnito: llegó el código y entró a /app). ⚠️ PENDIENTE: vigilar 2-3 días que no entren cuentas nuevas con
 `objetivo IS NULL`. Nota: las claves de Turnstile y SUPABASE_SECRET_KEY existen solo en Production, por
 eso los deploys de Preview fallan (es configuración, no bug de código). También: Next 16.4.0 → 16.4.6 (3 fallas
 críticas nuevas; con 16.4.0 el build se negaba a compilar). Queda `zod` <4.6.6 (alta, no urgente).
