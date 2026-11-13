@@ -1,5 +1,12 @@
 # ESTADO — Niki (AI Image & Outfit Feedback)
-Última actualización: 2026-10-22 — SEGURIDAD: cerrado el abuso del formulario de login. Al revisar
+Última actualización: 2026-11-13 — LIMPIEZA DE CUENTAS FANTASMA (autorizada por el dueño): borradas 97
+cuentas de bot (sin objetivo, sin login, sin Checks, sin eventos) de `auth.users` (+ profiles en
+cascada). Quedan 2: la del dueño (admin, objetivo lleno) y raul_valerio@yahoo.com (compra de prueba
+reembolsada del 27-sep). ⚠️ El bot SIGUE creando cuentas (~3-5/día hasta hoy 13-nov): el límite de 5
+por IP cada 15 min no basta si rota IPs. Pendiente a decidir: CAPTCHA (Turnstile) o exigir pasar el
+onboarding antes de crear cuenta en `app/api/auth/solicitar-codigo`.
+
+Última actualización anterior: 2026-10-22 — SEGURIDAD: cerrado el abuso del formulario de login. Al revisar
 Supabase buscando el "primer registro real" que el dueño creyó ver desde TikTok, se encontraron 22
 cuentas creadas en la última semana (de 23 totales, sin contar la del dueño) con `objetivo IS NULL`
 (ninguna completó el onboarding), cero eventos en event_log, y correos sin sentido para el nicho
